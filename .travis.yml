@@ -7,7 +7,7 @@ branches:
 notifications:
   email:
     recipients:
-      - gusguma@gmail.com
+      - $EMAIL
 # services:
 # - mysql
 # - mongodb
