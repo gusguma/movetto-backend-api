@@ -1,5 +1,6 @@
-package com.movetto.api;
+package com.movetto.api.rest_controllers;
 
+import com.movetto.api.Badge;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

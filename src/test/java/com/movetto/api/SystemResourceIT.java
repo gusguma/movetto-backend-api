@@ -1,5 +1,6 @@
 package com.movetto.api;
 
+import com.movetto.api.rest_controllers.SystemResource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
