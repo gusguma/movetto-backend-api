@@ -2,7 +2,6 @@ package com.movetto.api.rest_controllers;
 
 import com.movetto.api.dao.DirectionDao;
 import com.movetto.api.entity.Direction;
-import com.movetto.api.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,5 +57,4 @@ public class DirectionResource {
         directionDao.delete(direction);
         return "Deleted direction id - " + id;
     }
-
 }
