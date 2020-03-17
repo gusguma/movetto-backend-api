@@ -1,6 +1,10 @@
 package com.movetto.api.rest_controllers;
 
+import com.movetto.api.dao.CustomerDao;
+import com.movetto.api.dao.PartnerDao;
 import com.movetto.api.dao.UserDao;
+import com.movetto.api.entity.Customer;
+import com.movetto.api.entity.Partner;
 import com.movetto.api.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +19,33 @@ public class UserResource {
     public static final String ID = "/{id}";
     public static final String EMAIL = "/{email}";
     public static final String UID = "/{uid}";
+    public static final String CUSTOMER = "/customer";
+    public static final String PARTNER = "/partner";
 
     private final UserDao userDao;
+    private final CustomerDao customerDao;
+    private final PartnerDao partnerDao;
 
     @Autowired
-    public UserResource(UserDao userDao) {
+    public UserResource(UserDao userDao, CustomerDao customerDao, PartnerDao partnerDao) {
         this.userDao = userDao;
+        this.customerDao = customerDao;
+        this.partnerDao = partnerDao;
     }
 
     @GetMapping
     public List<User> findAllUsers(){
         return userDao.findAll();
+    }
+
+    @GetMapping(value = CUSTOMER)
+    public List<Customer> findAllCustomers (){
+        return customerDao.findAll();
+    }
+
+    @GetMapping(value = PARTNER)
+    public List<Partner> findAllPartners (){
+        return partnerDao.findAll();
     }
 
     @GetMapping(value = ID)
