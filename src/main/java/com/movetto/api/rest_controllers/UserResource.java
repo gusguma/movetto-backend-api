@@ -19,8 +19,8 @@ public class UserResource {
     public static final String ID = "/{id}";
     public static final String EMAIL = "/{email}";
     public static final String UID = "/{uid}";
-    public static final String CUSTOMER = "/customer";
-    public static final String PARTNER = "/partner";
+    public static final String CUSTOMER = "/customers";
+    public static final String PARTNER = "/partners";
 
     private final UserDao userDao;
     private final CustomerDao customerDao;
@@ -33,7 +33,7 @@ public class UserResource {
         this.partnerDao = partnerDao;
     }
 
-    @GetMapping
+    @GetMapping(value = "")
     public List<User> findAllUsers(){
         return userDao.findAll();
     }
@@ -69,7 +69,7 @@ public class UserResource {
         return user;
     }
 
-    @PostMapping
+    @PostMapping(value = "")
     public User saveUser(@RequestBody User user){
         User userDataBase = userDao.findUserByEmail(user.getEmail());
         if (userDataBase == null){
@@ -80,7 +80,7 @@ public class UserResource {
         }
     }
 
-    @PutMapping
+    @PutMapping(value = "")
     public User updateUser(@RequestBody User user){
         userDao.save(user);
         return user;

@@ -21,7 +21,7 @@ public class DirectionResource {
         this.directionDao = directionDao;
     }
 
-    @GetMapping
+    @GetMapping(value = "")
     public List<Direction> findAllDirections(){
         return directionDao.findAll();
     }
@@ -33,7 +33,7 @@ public class DirectionResource {
         return direction;
     }
 
-    @PostMapping
+    @PostMapping(value = "")
     public Direction saveDirection(@RequestBody Direction direction){
         Direction directionDatabase = directionDao.findDirectionById(direction.getId());
         if (directionDatabase == null){
@@ -44,7 +44,7 @@ public class DirectionResource {
         }
     }
 
-    @PutMapping
+    @PutMapping(value = "")
     public Direction updateDirection(@RequestBody Direction direction){
         directionDao.save(direction);
         return direction;
