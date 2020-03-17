@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
@@ -17,26 +18,15 @@ public class User {
     private String email;
 
     @Column(unique = true, nullable = false)
-    private String phone;
-
-    @Column(nullable = false)
     private String uid;
-
-    private String street;
-    private String postalCode;
-    private String city;
-    private String state;
-    private String country;
-    private String nif;
 
     public User() {
         //Empty for framework
     }
 
-    public User(String displayName, String email, String phone, String uid) {
+    public User(String displayName, String email, String uid) {
         this.displayName = displayName;
         this.email = email;
-        this.phone = phone;
         this.uid = uid;
     }
 
@@ -52,36 +42,8 @@ public class User {
         return email;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
     public String getUid() {
         return uid;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getNif() {
-        return nif;
     }
 
     @Override
@@ -92,21 +54,12 @@ public class User {
         return getId() == user.getId() &&
                 getDisplayName().equals(user.getDisplayName()) &&
                 getEmail().equals(user.getEmail()) &&
-                getPhone().equals(user.getPhone()) &&
-                getUid().equals(user.getUid()) &&
-                Objects.equals(getStreet(), user.getStreet()) &&
-                Objects.equals(getPostalCode(), user.getPostalCode()) &&
-                Objects.equals(getCity(), user.getCity()) &&
-                Objects.equals(getState(), user.getState()) &&
-                Objects.equals(getCountry(), user.getCountry()) &&
-                Objects.equals(getNif(), user.getNif());
+                getUid().equals(user.getUid());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getDisplayName(), getEmail(), getPhone(),
-                getUid(), getStreet(), getPostalCode(), getCity(), getState(),
-                getCountry(), getNif());
+        return Objects.hash(getId(), getDisplayName(), getEmail(), getUid());
     }
 
     @Override
@@ -115,14 +68,7 @@ public class User {
                 "id=" + id +
                 ", displayName='" + displayName + '\'' +
                 ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
                 ", uid='" + uid + '\'' +
-                ", street='" + street + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", country='" + country + '\'' +
-                ", nif='" + nif + '\'' +
                 '}';
     }
 }

@@ -51,8 +51,13 @@ public class UserResource {
 
     @PostMapping
     public User saveUser(@RequestBody User user){
-        userDao.save(user);
-        return user;
+        User userDataBase = userDao.findUserByEmail(user.getEmail());
+        if (userDataBase == null){
+            userDao.save(user);
+            return user;
+        } else {
+            return userDataBase;
+        }
     }
 
     @PutMapping
