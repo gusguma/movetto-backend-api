@@ -1,7 +1,7 @@
 package com.movetto.api.rest_controllers;
 
-import com.movetto.api.dao.DirectionDao;
-import com.movetto.api.entity.Direction;
+import com.movetto.api.daos.DirectionDao;
+import com.movetto.api.entities.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,14 +14,14 @@ public class DirectionResource {
 
     public static final String ID = "/{id}";
 
+    @Autowired
     private final DirectionDao directionDao;
 
-    @Autowired
     public DirectionResource(DirectionDao directionDao) {
         this.directionDao = directionDao;
     }
 
-    @GetMapping(value = "")
+    @GetMapping
     public List<Direction> findAllDirections(){
         return directionDao.findAll();
     }
@@ -33,7 +33,7 @@ public class DirectionResource {
         return direction;
     }
 
-    @PostMapping(value = "")
+    @PostMapping
     public Direction saveDirection(@RequestBody Direction direction){
         Direction directionDatabase = directionDao.findDirectionById(direction.getId());
         if (directionDatabase == null){
@@ -44,7 +44,7 @@ public class DirectionResource {
         }
     }
 
-    @PutMapping(value = "")
+    @PutMapping
     public Direction updateDirection(@RequestBody Direction direction){
         directionDao.save(direction);
         return direction;
