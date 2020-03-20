@@ -1,7 +1,5 @@
 package com.movetto.api.entities;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,5 +52,9 @@ public class Package {
 
     public double getHigh() {
         return high;
+    }
+
+    public PackageStatus getStatus() {
+        return status;
     }
 }
