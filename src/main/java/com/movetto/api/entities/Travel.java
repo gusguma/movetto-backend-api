@@ -9,10 +9,8 @@ public class Travel {
     @GeneratedValue
     private int id;
     @OneToOne
-    @Column(nullable = false)
     private Direction start;
     @OneToOne
-    @Column(nullable = false)
     private Direction finish;
     @Column(nullable = false)
     private int people;
