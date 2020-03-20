@@ -1,6 +1,7 @@
 package com.movetto.api.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,18 +23,22 @@ public class User {
     private String uid;
 
     @Column(unique = true)
+    @JsonInclude(Include.NON_NULL)
     private String phone;
 
     @Column(unique = true)
+    @JsonInclude(Include.NON_NULL)
     private String customerId;
 
     @Column(unique = true)
+    @JsonInclude(Include.NON_NULL)
     private String partnerId;
 
     @Column(unique = true)
+    @JsonInclude(Include.NON_NULL)
     private String driverId;
 
-    @JsonIgnore
+    @JsonInclude(Include.NON_NULL)
     @OneToMany(fetch = FetchType.EAGER)
     private List<Direction> directions;
 
