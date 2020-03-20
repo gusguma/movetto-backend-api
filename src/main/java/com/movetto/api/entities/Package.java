@@ -21,6 +21,8 @@ public class Package {
     private double lenght;
     @Column(nullable = false)
     private double high;
+    @Column(nullable = false)
+    private PackageStatus status;
 
     public Package() {
         //Empty for Framework
@@ -31,6 +33,7 @@ public class Package {
         this.width = width;
         this.lenght = lenght;
         this.high = high;
+        this.status = PackageStatus.PREPARED;
     }
 
     public int getId() {
