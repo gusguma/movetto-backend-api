@@ -3,7 +3,6 @@ package com.movetto.api.rest_controllers;
 import com.movetto.api.daos.UserDao;
 import com.movetto.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,9 +75,9 @@ public class UserResource {
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user){
-        userDao.save(user);
-        return user;
+    public ResponseEntity<User> updateUser(@RequestBody User user){
+        User updateUser = userDao.save(user);
+        return ResponseEntity.ok(updateUser);
     }
 
     @DeleteMapping(value = ID)
