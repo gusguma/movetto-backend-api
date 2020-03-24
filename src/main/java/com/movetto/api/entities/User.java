@@ -48,7 +48,11 @@ public class User {
     public User() {
         this.registrationDate = LocalDateTime.now();
         this.active = true;
-        this.roles = new HashSet<Role>();
+        this.directions = new HashSet<>();
+        directions.add(new Direction
+                ("","","","","","")
+        );
+        this.roles = new HashSet<>();
         roles.add(Role.USER);
     }
 
