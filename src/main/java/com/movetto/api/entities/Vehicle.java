@@ -2,10 +2,7 @@ package com.movetto.api.entities;
 
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Vehicle {
@@ -18,6 +15,7 @@ public class Vehicle {
     private String name;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private VehicleType vehicleType;
 
     @Column(unique = true)

@@ -1,10 +1,11 @@
 package com.movetto.api.entities;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -23,27 +24,32 @@ public class User {
     private String uid;
 
     @Column(unique = true)
-    @JsonInclude(Include.NON_NULL)
     private String phone;
 
     @Column(unique = true)
-    @JsonInclude(Include.NON_NULL)
     private String customerId;
 
     @Column(unique = true)
-    @JsonInclude(Include.NON_NULL)
     private String partnerId;
 
     @Column(unique = true)
-    @JsonInclude(Include.NON_NULL)
     private String driverId;
 
-    @JsonInclude(Include.NON_NULL)
     @OneToMany(fetch = FetchType.EAGER)
-    private List<Direction> directions;
+    private Set<Direction> directions;
+
+    @ManyToMany
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
+
+    private LocalDateTime registrationDate;
+    private Boolean active;
 
     public User() {
-        //Empty for framework
+        this.registrationDate = LocalDateTime.now();
+        this.active = true;
+        this.roles = new HashSet<Role>();
+        roles.add(Role.USER);
     }
 
     public User(String displayName, String email, String uid) {
@@ -84,7 +90,7 @@ public class User {
         return driverId;
     }
 
-    public List<Direction> getDirections() {
+    public Set<Direction> getDirections() {
         return directions;
     }
 

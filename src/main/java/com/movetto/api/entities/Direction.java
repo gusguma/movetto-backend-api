@@ -1,7 +1,6 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 public class Direction {
