@@ -4,18 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity
 public enum Role {
 
-    ADMIN, CUSTOMER, PARTNER, USER;
-
-    @Id
-    @GeneratedValue
-    private int id;
-
-    private String name;
+    ADMIN,USER,CUSTOMER,PARTNER;
 
     public String roleName(){
-        return this.name = toString();
+        return "ROLE_" + this.toString();
     }
 }

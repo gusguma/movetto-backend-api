@@ -3,6 +3,8 @@ package com.movetto.api.entities;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Vehicle {
@@ -10,40 +12,33 @@ public class Vehicle {
     @Id
     @GeneratedValue
     private int id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private VehicleType vehicleType;
-
     @Column(unique = true)
     private String registration;
-
-    @Column(nullable = false)
     private double maxVolume;
-
-    @Column(nullable = false)
     private double maxWeight;
-
-    @Column(nullable = false)
     private double maxLenght;
-
-    @Column(nullable = false)
     private double maxWidth;
-
-    @Column(nullable = false)
     private double maxHigh;
 
+    @ManyToOne
+    private User user;
+
+    private LocalDateTime registrationDate;
+    private Boolean active;
+
     public Vehicle() {
-        //Empty for framework
+        this.registrationDate = LocalDateTime.now();
+        this.active = true;
     }
 
     public Vehicle(String name, VehicleType vehicleType,
                    @Nullable String registration, double maxVolume,
                    double maxWeight, double maxLenght, double maxWidth,
                    double maxHigh) {
+        this();
         this.name = name;
         this.vehicleType = vehicleType;
         this.registration = registration;
@@ -54,39 +49,4 @@ public class Vehicle {
         this.maxHigh = maxHigh;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public VehicleType getVehicleType() {
-        return vehicleType;
-    }
-
-    public String getRegistration() {
-        return registration;
-    }
-
-    public double getMaxVolume() {
-        return maxVolume;
-    }
-
-    public double getMaxWeight() {
-        return maxWeight;
-    }
-
-    public double getMaxLenght() {
-        return maxLenght;
-    }
-
-    public double getMaxWidth() {
-        return maxWidth;
-    }
-
-    public double getMaxHigh() {
-        return maxHigh;
-    }
 }
