@@ -3,6 +3,7 @@ package com.movetto.api.rest_controllers;
 import com.movetto.api.business_controllers.CustomerController;
 import com.movetto.api.business_controllers.PartnerController;
 import com.movetto.api.business_controllers.UserController;
+import com.movetto.api.entities.Direction;
 import com.movetto.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +64,7 @@ public class UserResource {
 
     @PutMapping
     public ResponseEntity<User> updateCustomer(@RequestBody User user){
-        return customerController.addCustomerData(user);
+        return customerController.addCustomerData(user, new Direction());
     }
 
     @DeleteMapping(value = UID)
