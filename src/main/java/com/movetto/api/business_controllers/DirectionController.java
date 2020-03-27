@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 public class DirectionController {
 
@@ -18,6 +21,16 @@ public class DirectionController {
     public DirectionController(DirectionDao directionDao, UserController userController) {
         this.directionDao = directionDao;
         this.userController = userController;
+    }
+
+    public ResponseEntity <List<Direction>> findUserDirections(String uid) {
+        Optional<List<Direction>> directions = directionDao.findDirectionsByUserUid(uid);
+        if (directions.isPresent()){
+            List<Direction> directionList = directions.get();
+            return ResponseEntity.ok(directionList);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     public ResponseEntity<Direction> saveDirection(String uid, Direction direction){

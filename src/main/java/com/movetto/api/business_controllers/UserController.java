@@ -1,7 +1,7 @@
 package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.UserDao;
-import com.movetto.api.entities.Direction;
+import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +25,6 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    public ResponseEntity<List<User>> readPartners(){
-        List<User> partners = userDao.findUsersByPartnerIdIsNotNull();
-        return ResponseEntity.ok(partners);
-    }
-
     public ResponseEntity<User> readUserByUid(String uid){
         Optional<User> optionalUser = userDao.findUserByUid(uid);
         return optionalUser.map(ResponseEntity::ok)
@@ -40,6 +35,10 @@ public class UserController {
         Optional<User> optionalUser = userDao.findUserByEmail(email);
         return optionalUser.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());
+    }
+
+    public Optional<User> readUserByUidRolesLike(String uid, Role role){
+        return userDao.findUserByUidAndRolesLike(uid, role);
     }
 
     public ResponseEntity<User> saveUser(User user){
@@ -62,10 +61,7 @@ public class UserController {
             oldUser.setDisplayName(user.getDisplayName());
             oldUser.setActive(user.isActive());
             oldUser.setRoles(user.getRoles());
-            oldUser.setCustomerId(user.getCustomerId());
-            oldUser.setDriverId(user.getDriverId());
             oldUser.setEmail(user.getEmail());
-            oldUser.setPartnerId(user.getPartnerId());
             oldUser.setPhone(user.getPhone());
             userDao.save(oldUser);
             return ResponseEntity.ok(oldUser);
@@ -74,15 +70,15 @@ public class UserController {
         }
     }
 
-    public void deleteUser(String uid){
+    public String deleteUser(String uid){
         Optional<User> optionalUser = userDao.findUserByUid(uid);
         if (optionalUser.isPresent()){
             User user = optionalUser.get();
             user.setActive(false);
             userDao.save(user);
-            System.out.println("El Usuario " + user.getUid() + " se ha eliminado.");
+            return "El Usuario " + user.getUid() + " se ha eliminado.";
         } else {
-            System.out.println("User uid not found - " + uid);
+            return "User uid not found - " + uid;
         }
     }
 }

@@ -31,6 +31,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Direction> directions;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Vehicle> vehicles;
+
     private LocalDateTime registrationDate;
     private Boolean active;
 
@@ -110,6 +116,22 @@ public class User {
 
     public void setDriverId(String driverId) {
         this.driverId = driverId;
+    }
+
+    public Set<Direction> getDirections() {
+        return directions;
+    }
+
+    public void setDirections(Set<Direction> directions) {
+        this.directions = directions;
+    }
+
+    public Set<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Set<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     public Set<Role> getRoles() {

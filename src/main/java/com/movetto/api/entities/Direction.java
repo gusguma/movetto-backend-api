@@ -20,6 +20,7 @@ public class Direction {
 
     @Embedded
     private Coordinate coordinate;
+
     @ManyToOne
     private User user;
 
