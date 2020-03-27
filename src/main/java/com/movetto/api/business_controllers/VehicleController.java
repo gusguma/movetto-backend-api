@@ -1,8 +1,6 @@
 package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.VehicleDao;
-import com.movetto.api.entities.Direction;
-import com.movetto.api.entities.User;
 import com.movetto.api.entities.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
