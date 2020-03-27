@@ -1,10 +1,9 @@
 package com.movetto.api.entities;
 
 public enum PackageStatus {
-    PREPARED(1), COLLECTED(2), TRANSIT(3), DETAINED(4), SHIPPED(5), DELETED(0);
-    private int packageStatus;
+    PREPARED, COLLECTED, TRANSIT, DETAINED, SHIPPED, DELETED;
 
-    private PackageStatus (int packageStatus){
-        this.packageStatus = packageStatus;
+    public String packageStatusName(){
+        return "PACKAGE_STATUS_" + this.toString();
     }
 }

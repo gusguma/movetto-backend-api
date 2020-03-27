@@ -1,9 +1,6 @@
 package com.movetto.api.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Package {
@@ -20,6 +17,7 @@ public class Package {
     @Column(nullable = false)
     private double high;
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private PackageStatus status;
 
     public Package() {
