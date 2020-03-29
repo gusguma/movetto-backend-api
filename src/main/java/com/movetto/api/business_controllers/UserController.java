@@ -1,9 +1,12 @@
 package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.UserDao;
+import com.movetto.api.dtos.UserDto;
+import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -20,41 +23,41 @@ public class UserController {
         this.userDao = userDao;
     }
 
-    public ResponseEntity<List<User>> readUsers(){
-        List<User> users = userDao.findAll();
-        return ResponseEntity.ok(users);
+    public List<UserMinimumDto> readUsers(){
+        return userDao.findAllUsers();
     }
 
     public ResponseEntity<User> readUserByUid(String uid){
-        Optional<User> optionalUser = userDao.findUserByUid(uid);
-        return optionalUser.map(ResponseEntity::ok)
+        return userDao.findUserByUid(uid).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     public ResponseEntity<User> readUserByEmail(String email){
-        Optional<User> optionalUser = userDao.findUserByEmail(email);
-        return optionalUser.map(ResponseEntity::ok)
+        return userDao.findUserByEmail(email).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    public Optional<User> readUserByUidRolesLike(String uid, Role role){
-        return userDao.findUserByUidAndRolesLike(uid, role);
+    public ResponseEntity<User> readUserByUidRolesLike(String uid, Role role){
+        return userDao.findUserByUidAndRolesLike(uid, role).map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    public ResponseEntity<User> saveUser(User user){
-       ResponseEntity<User> existUserUid = readUserByUid(user.getUid());
-       ResponseEntity<User> existUserEmail = readUserByEmail(user.getEmail());
-       if (!existUserUid.hasBody() && !existUserEmail.hasBody()){
-           userDao.save(user);
-           System.out.println("El Usuario " + user.getUid() + " se ha guardado correctamente.");
-           return ResponseEntity.ok(user);
-       } else {
-           System.out.println("El Usuario " + user.getUid() + " ya existe.");
-           return existUserUid;
-       }
+    public ResponseEntity<User> saveUser(UserMinimumDto user){
+        if (readUserByUid(user.getUid()).hasBody()){
+            return ResponseEntity
+                    .status(HttpStatus.FOUND)
+                    .build();
+        } else {
+            User userCreate = new User();
+            userCreate.setDisplayName(user.getDisplayName());
+            userCreate.setEmail(user.getEmail());
+            userCreate.setUid(user.getUid());
+            userDao.save(userCreate);
+            return ResponseEntity.ok(userCreate);
+        }
     }
 
-    public ResponseEntity<User> updateUser(User user){
+    public ResponseEntity<User> updateUser(UserDto user){
         Optional<User> optionalUser = userDao.findUserByUid(user.getUid());
         if (optionalUser.isPresent()){
             User oldUser = optionalUser.get();
@@ -70,15 +73,15 @@ public class UserController {
         }
     }
 
-    public String deleteUser(String uid){
+    public ResponseEntity<String> deleteUser(String uid){
         Optional<User> optionalUser = userDao.findUserByUid(uid);
-        if (optionalUser.isPresent()){
+        if (optionalUser.isPresent() && optionalUser.get().isActive()){
             User user = optionalUser.get();
             user.setActive(false);
             userDao.save(user);
-            return "El Usuario " + user.getUid() + " se ha eliminado.";
+            return ResponseEntity.ok("El usuario " + user.getDisplayName() + " se ha eliminado");
         } else {
-            return "User uid not found - " + uid;
+            return ResponseEntity.notFound().build();
         }
     }
 }

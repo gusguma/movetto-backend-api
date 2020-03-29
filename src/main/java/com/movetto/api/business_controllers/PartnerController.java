@@ -1,9 +1,11 @@
 package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.UserDao;
+import com.movetto.api.dtos.UserDto;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -21,9 +23,33 @@ public class PartnerController extends UserController {
         this.partnerDao = userDao;
     }
 
-    public ResponseEntity<List<User>> readPartners(){
-        List<User> partners = partnerDao.findUsersByRolesLike(Role.PARTNER);
-        return ResponseEntity.ok(partners);
+    public ResponseEntity<List<UserDto>> readPartners(){
+        List<UserDto> customers = partnerDao.findUsersByRolesLike(Role.PARTNER);
+        if (customers.isEmpty()){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(customers);
+        }
+    }
+
+    public ResponseEntity<User> savePartner(UserDto user){
+        ResponseEntity<User> userExist = readUserByUid(user.getUid());
+        ResponseEntity<User> userPartner = readUserByUidRolesLike(user.getUid(),Role.PARTNER);
+        if(userPartner.hasBody()){
+            return ResponseEntity
+                    .status(HttpStatus.FOUND).build();
+        } else if (userExist.hasBody()){
+            User userPartnerNew = userExist.getBody();
+            assert userPartnerNew != null;
+            userPartnerNew.setPartnerId(user.getPartnerId());
+            userPartnerNew.setDriverId(user.getDriverId());
+            userPartnerNew.getRoles().add(Role.PARTNER);
+            userPartnerNew.setDirections(user.getDirections());
+            partnerDao.save(userPartnerNew);
+            return ResponseEntity.ok(userPartnerNew);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     public ResponseEntity<User> savePartner(User user){

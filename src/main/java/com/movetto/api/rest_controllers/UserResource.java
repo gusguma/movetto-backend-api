@@ -1,6 +1,8 @@
 package com.movetto.api.rest_controllers;
 
 import com.movetto.api.business_controllers.*;
+import com.movetto.api.dtos.UserDto;
+import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.Direction;
 import com.movetto.api.entities.User;
 import com.movetto.api.entities.Vehicle;
@@ -41,7 +43,7 @@ public class UserResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAllUsers(){
+    public List<UserMinimumDto> findAllUsers(){
         return userController.readUsers();
     }
 
@@ -51,44 +53,48 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<User> saveUser(@RequestBody User user){
+    public ResponseEntity<User> saveUser(@RequestBody UserMinimumDto user){
         return userController.saveUser(user);
     }
 
     @PutMapping
-    public ResponseEntity<User> updateUser(@RequestBody User user){
+    public ResponseEntity<User> updateUser(@RequestBody UserDto user){
         return userController.updateUser(user);
     }
 
     @DeleteMapping(value = UID)
-    public String deleteUser(@PathVariable String uid){
+    public ResponseEntity<String> deleteUser(@PathVariable String uid){
         return userController.deleteUser(uid);
     }
 
     @GetMapping(value = CUSTOMERS)
-    public ResponseEntity<List<User>> findAllCustomers(){
+    public ResponseEntity<List<UserDto>> findAllCustomers(){
         return customerController.readCustomers();
     }
 
     @PostMapping(value = CUSTOMERS)
-    public ResponseEntity<User> saveCustomer(@RequestBody User user){
+    public ResponseEntity<User> saveCustomer(@RequestBody UserDto user){
         return customerController.saveCustomer(user);
     }
 
     @PutMapping(value = CUSTOMERS)
-    public ResponseEntity<User> updateCustomer(@RequestBody User user){
+    public ResponseEntity<User> updateCustomer(@RequestBody UserDto user){
         return customerController.updateCustomer(user);
     }
 
     @DeleteMapping(value = CUSTOMERS + UID)
-    public String deleteCustomer(@PathVariable String uid){
+    public ResponseEntity<String> deleteCustomer(@PathVariable String uid){
         return customerController.deleteCustomer(uid);
     }
 
     @GetMapping(value = PARTNERS)
-    public ResponseEntity<List<User>> findAllPartners(){
+    public ResponseEntity<List<UserDto>> findAllPartners(){
         return partnerController.readPartners();
     }
+
+
+
+
 
     @PostMapping(value = PARTNERS)
     public ResponseEntity<User> savePartner(@RequestBody User user){
