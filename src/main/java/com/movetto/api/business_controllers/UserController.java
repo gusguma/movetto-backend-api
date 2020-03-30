@@ -58,16 +58,14 @@ public class UserController {
     }
 
     public ResponseEntity<User> updateUser(UserDto user){
-        Optional<User> optionalUser = userDao.findUserByUid(user.getUid());
-        if (optionalUser.isPresent()){
-            User oldUser = optionalUser.get();
-            oldUser.setDisplayName(user.getDisplayName());
-            oldUser.setActive(user.isActive());
-            oldUser.setRoles(user.getRoles());
-            oldUser.setEmail(user.getEmail());
-            oldUser.setPhone(user.getPhone());
-            userDao.save(oldUser);
-            return ResponseEntity.ok(oldUser);
+        ResponseEntity<User> userStored = readUserByUid(user.getUid());
+        if (userStored.hasBody()){
+            User userUpdated = userStored.getBody();
+            assert userUpdated != null;
+            userUpdated.setDisplayName(user.getDisplayName());
+            userUpdated.setPhone(user.getPhone());
+            userDao.save(userUpdated);
+            return ResponseEntity.ok(userUpdated);
         } else {
             return ResponseEntity.notFound().build();
         }

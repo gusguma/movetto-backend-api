@@ -17,7 +17,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
     Optional<User> findUserByUid(String uid);
     Optional<User> findUserByEmail(String email);
 
-    List<UserDto> findUsersByRolesLike(Role role);
+    Optional<List<User>> findUsersByRolesLike(Role role);
     Optional<User> findUserByUidAndRolesLike(String uid, Role role);
 
 }

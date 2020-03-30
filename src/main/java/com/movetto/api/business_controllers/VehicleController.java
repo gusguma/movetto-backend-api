@@ -13,21 +13,21 @@ import java.util.Optional;
 public class VehicleController {
 
     private VehicleDao vehicleDao;
-    private UserController userController;
 
     @Autowired
     public VehicleController(VehicleDao vehicleDao, UserController userController) {
         this.vehicleDao = vehicleDao;
-        this.userController = userController;
     }
 
     public ResponseEntity<List<Vehicle>> findUserVehicles(String uid) {
-        Optional<List<Vehicle>> vehicles = vehicleDao.findVehiclesByUserUid(uid);
-        if (vehicles.isPresent()){
-            List<Vehicle> vehiclesList = vehicles.get();
-            return ResponseEntity.ok(vehiclesList);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return vehicleDao.findVehiclesByUserUid(uid).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.noContent().build());
     }
+
+    public ResponseEntity<Vehicle> findVehicleById(int id) {
+        return vehicleDao.findVehiclesById(id).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.noContent().build());
+    }
+
+
 }

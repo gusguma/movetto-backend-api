@@ -68,7 +68,7 @@ public class UserResource {
     }
 
     @GetMapping(value = CUSTOMERS)
-    public ResponseEntity<List<UserDto>> findAllCustomers(){
+    public ResponseEntity<List<User>> findAllCustomers(){
         return customerController.readCustomers();
     }
 
@@ -88,26 +88,22 @@ public class UserResource {
     }
 
     @GetMapping(value = PARTNERS)
-    public ResponseEntity<List<UserDto>> findAllPartners(){
+    public ResponseEntity<List<User>> findAllPartners(){
         return partnerController.readPartners();
     }
 
-
-
-
-
     @PostMapping(value = PARTNERS)
-    public ResponseEntity<User> savePartner(@RequestBody User user){
+    public ResponseEntity<User> savePartner(@RequestBody UserDto user){
         return partnerController.savePartner(user);
     }
 
     @PutMapping(value = PARTNERS)
-    public ResponseEntity<User> updatePartner(@RequestBody User user){
+    public ResponseEntity<User> updatePartner(@RequestBody UserDto user){
         return partnerController.updatePartner(user);
     }
 
     @DeleteMapping(value = PARTNERS + UID)
-    public String deletePartner(@PathVariable String uid){
+    public ResponseEntity<String> deletePartner(@PathVariable String uid){
         return partnerController.deletePartner(uid);
     }
 

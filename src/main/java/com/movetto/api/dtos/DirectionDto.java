@@ -1,58 +1,57 @@
-package com.movetto.api.entities;
+package com.movetto.api.dtos;
 
-import javax.persistence.*;
+import com.movetto.api.entities.Coordinate;
+import com.movetto.api.entities.User;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-@Entity
-public class Direction {
+public class DirectionDto {
 
-    @Id
-    @GeneratedValue
+    @NotNull
     private int id;
-    @Column(nullable = false)
+    @NotNull
     private String name;
     private String street;
+    @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.POSTAL_CODE)
     private String postalCode;
     private String city;
     private String state;
     private String country;
     private int hash;
 
-    @Embedded
     private Coordinate coordinate;
-    @ManyToOne
+    @NotNull
     private User user;
 
-    private LocalDateTime registrationDate;
+    private LocalDateTime localDateTime;
     private boolean active;
 
-    public Direction() {
-        this.name = "default";
-        this.hash = hashCode();
-        this.registrationDate = LocalDateTime.now();
-        this.active = true;
+    public DirectionDto(){
+        //Empty for Framework
     }
 
-    public Direction(String street, String postalCode, String city,
-                     String state, String country, Coordinate coordinate,
-                     User user) {
-        this();
+    public DirectionDto(@NotNull int id, @NotNull String name, String street,
+                        @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.POSTAL_CODE) String postalCode,
+                        String city, String state, String country, int hash, Coordinate coordinate,
+                        @NotNull User user, LocalDateTime localDateTime, boolean active) {
+        this.id = id;
+        this.name = name;
         this.street = street;
         this.postalCode = postalCode;
         this.city = city;
         this.state = state;
         this.country = country;
+        this.hash = hash;
         this.coordinate = coordinate;
         this.user = user;
+        this.localDateTime = localDateTime;
+        this.active = active;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -103,6 +102,10 @@ public class Direction {
         this.country = country;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getHash() {
         return hash;
     }
@@ -127,12 +130,12 @@ public class Direction {
         this.user = user;
     }
 
-    public LocalDateTime getRegistrationDate() {
-        return registrationDate;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public boolean isActive() {
@@ -144,35 +147,8 @@ public class Direction {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Direction)) return false;
-        Direction direction = (Direction) o;
-        return getId() == direction.getId() &&
-                getHash() == direction.getHash() &&
-                isActive() == direction.isActive() &&
-                getName().equals(direction.getName()) &&
-                Objects.equals(getStreet(), direction.getStreet()) &&
-                Objects.equals(getPostalCode(), direction.getPostalCode()) &&
-                Objects.equals(getCity(), direction.getCity()) &&
-                Objects.equals(getState(), direction.getState()) &&
-                Objects.equals(getCountry(), direction.getCountry()) &&
-                Objects.equals(getCoordinate(), direction.getCoordinate()) &&
-                Objects.equals(getUser(), direction.getUser()) &&
-                Objects.equals(getRegistrationDate(), direction.getRegistrationDate());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getStreet(),
-                getPostalCode(), getCity(), getState(), getCountry(),
-                getHash(), getCoordinate(), getUser(), getRegistrationDate(),
-                isActive());
-    }
-
-    @Override
     public String toString() {
-        return "Direction{" +
+        return "DirectionDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", street='" + street + '\'' +
@@ -183,7 +159,7 @@ public class Direction {
                 ", hash=" + hash +
                 ", coordinate=" + coordinate +
                 ", user=" + user +
-                ", registrationDate=" + registrationDate +
+                ", localDateTime=" + localDateTime +
                 ", active=" + active +
                 '}';
     }

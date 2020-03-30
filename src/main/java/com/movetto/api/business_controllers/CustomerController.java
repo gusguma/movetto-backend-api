@@ -4,7 +4,6 @@ import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.UserDto;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +23,9 @@ public class CustomerController extends UserController {
         this.customerDao = userDao;
     }
 
-    public ResponseEntity<List<UserDto>> readCustomers(){
-        List<UserDto> customers = customerDao.findUsersByRolesLike(Role.CUSTOMER);
-        if (customers.isEmpty()){
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(customers);
-        }
+    public ResponseEntity<List<User>> readCustomers(){
+        return customerDao.findUsersByRolesLike(Role.CUSTOMER).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.noContent().build());
     }
 
     public ResponseEntity<User> saveCustomer(UserDto user){
@@ -75,6 +70,4 @@ public class CustomerController extends UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
 }

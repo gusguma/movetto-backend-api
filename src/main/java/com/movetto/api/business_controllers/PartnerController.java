@@ -23,13 +23,9 @@ public class PartnerController extends UserController {
         this.partnerDao = userDao;
     }
 
-    public ResponseEntity<List<UserDto>> readPartners(){
-        List<UserDto> customers = partnerDao.findUsersByRolesLike(Role.PARTNER);
-        if (customers.isEmpty()){
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(customers);
-        }
+    public ResponseEntity<List<User>> readPartners(){
+        return partnerDao.findUsersByRolesLike(Role.PARTNER).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.noContent().build());
     }
 
     public ResponseEntity<User> savePartner(UserDto user){
@@ -52,32 +48,12 @@ public class PartnerController extends UserController {
         }
     }
 
-    public ResponseEntity<User> savePartner(User user){
-        Optional<User> userStored = partnerDao.findUserByUid(user.getUid());
-        if (userStored.isPresent()){
-            User userPartner = userStored.get();
-            if (userPartner.getRoles().contains(Role.PARTNER)){
-                ResponseEntity.badRequest().body("Partner Exist");
-            } else {
-                userPartner.setPartnerId(user.getPartnerId());
-                userPartner.setDriverId(user.getDriverId());
-                userPartner.getRoles().add(Role.PARTNER);
-                userPartner.setDirections(user.getDirections());
-                partnerDao.save(userPartner);
-            }
-            return ResponseEntity.ok(userPartner);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    public ResponseEntity<User> updatePartner(User user){
+    public ResponseEntity<User> updatePartner(UserDto user){
         Optional<User> userStored = partnerDao.findUserByUidAndRolesLike(user.getUid(),Role.PARTNER);
         if (userStored.isPresent()){
             User userPartner = userStored.get();
             userPartner.setPartnerId(user.getPartnerId());
             userPartner.setDriverId(user.getDriverId());
-            userPartner.setDirections(user.getDirections());
             partnerDao.save(userPartner);
             return ResponseEntity.ok(userPartner);
         } else {
@@ -85,15 +61,15 @@ public class PartnerController extends UserController {
         }
     }
 
-    public String deletePartner(String uid){
+    public ResponseEntity<String> deletePartner(String uid){
         Optional<User> userStored = partnerDao.findUserByUidAndRolesLike(uid,Role.PARTNER);
         if (userStored.isPresent()){
             User userPartner = userStored.get();
             userPartner.getRoles().remove(Role.PARTNER);
             partnerDao.save(userPartner);
-            return "Partner Deleted";
+            return ResponseEntity.ok("El colaborador " + userPartner.getDisplayName() + "se ha eliminado.");
         } else {
-            return ResponseEntity.notFound().build().toString();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
