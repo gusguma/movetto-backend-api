@@ -1,22 +1,17 @@
-package com.movetto.api.entities;
+package com.movetto.api.dtos;
 
-import org.springframework.lang.Nullable;
+import com.movetto.api.entities.User;
+import com.movetto.api.entities.VehicleType;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-@Entity
-public class Vehicle {
+public class VehicleDto {
 
-    @Id
-    @GeneratedValue
     private int id;
-    @Column(nullable = false)
+    @NotNull
     private String name;
-    @Enumerated(value = EnumType.STRING)
     private VehicleType vehicleType;
-    @Column(unique = true)
     private String registration;
     private double maxVolume;
     private double maxWeight;
@@ -25,24 +20,16 @@ public class Vehicle {
     private double maxHigh;
     private int hash;
 
-    @ManyToOne
     private User user;
 
     private LocalDateTime registrationDate;
     private Boolean active;
 
-    public Vehicle() {
-        this.name = "default";
-        this.hash = hashCode();
-        this.registrationDate = LocalDateTime.now();
-        this.active = true;
-    }
-
-    public Vehicle(String name, VehicleType vehicleType,
-                   @Nullable String registration, double maxVolume,
-                   double maxWeight, double maxLenght, double maxWidth,
-                   double maxHigh) {
-        this();
+    public VehicleDto(int id, @NotNull String name, VehicleType vehicleType,
+                      String registration, double maxVolume, double maxWeight,
+                      double maxLenght, double maxWidth, double maxHigh, int hash,
+                      User user, LocalDateTime registrationDate, Boolean active) {
+        this.id = id;
         this.name = name;
         this.vehicleType = vehicleType;
         this.registration = registration;
@@ -51,6 +38,10 @@ public class Vehicle {
         this.maxLenght = maxLenght;
         this.maxWidth = maxWidth;
         this.maxHigh = maxHigh;
+        this.hash = hash;
+        this.user = user;
+        this.registrationDate = registrationDate;
+        this.active = active;
     }
 
     public int getId() {
@@ -149,7 +140,7 @@ public class Vehicle {
         this.registrationDate = registrationDate;
     }
 
-    public Boolean isActive() {
+    public Boolean getActive() {
         return active;
     }
 
@@ -158,36 +149,8 @@ public class Vehicle {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Vehicle)) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return getId() == vehicle.getId() &&
-                Double.compare(vehicle.getMaxVolume(), getMaxVolume()) == 0 &&
-                Double.compare(vehicle.getMaxWeight(), getMaxWeight()) == 0 &&
-                Double.compare(vehicle.getMaxLenght(), getMaxLenght()) == 0 &&
-                Double.compare(vehicle.getMaxWidth(), getMaxWidth()) == 0 &&
-                Double.compare(vehicle.getMaxHigh(), getMaxHigh()) == 0 &&
-                getHash() == vehicle.getHash() &&
-                getName().equals(vehicle.getName()) &&
-                getVehicleType() == vehicle.getVehicleType() &&
-                Objects.equals(getRegistration(), vehicle.getRegistration()) &&
-                Objects.equals(getUser(), vehicle.getUser()) &&
-                Objects.equals(getRegistrationDate(), vehicle.getRegistrationDate()) &&
-                Objects.equals(isActive(), vehicle.isActive());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getVehicleType(), getRegistration(),
-                getMaxVolume(), getMaxWeight(), getMaxLenght(), getMaxWidth(),
-                getMaxHigh(), getHash(), getUser(), getRegistrationDate(),
-                isActive());
-    }
-
-    @Override
     public String toString() {
-        return "Vehicle{" +
+        return "VehicleDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", vehicleType=" + vehicleType +

@@ -1,8 +1,10 @@
 package com.movetto.api.rest_controllers;
 
-import com.movetto.api.daos.DirectionDao;
+import com.movetto.api.business_controllers.DirectionController;
+import com.movetto.api.dtos.DirectionDto;
 import com.movetto.api.entities.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,49 +14,37 @@ import java.util.List;
 public class DirectionResource {
     public static final String DIRECTION = "/directions";
 
-    public static final String ID = "/{id}";
+    public static final String HASH = "/{hash}";
+
+    private DirectionController directionController;
 
     @Autowired
-    private final DirectionDao directionDao;
-
-    public DirectionResource(DirectionDao directionDao) {
-        this.directionDao = directionDao;
+    public DirectionResource(DirectionController directionController) {
+        this.directionController = directionController;
     }
 
     @GetMapping
     public List<Direction> findAllDirections(){
-        return directionDao.findAll();
+        return directionController.readDirections();
     }
 
-    @GetMapping(value = ID)
-    public Direction findDirectionById(@PathVariable int id){
-        Direction direction = directionDao.findDirectionById(id);
-        if (direction == null) throw new RuntimeException("Direction id not found - " + id);
-        return direction;
+    @GetMapping(value = HASH)
+    public ResponseEntity<Direction> findDirectionByHash(@PathVariable int hash){
+        return directionController.findDirectionByHash(hash);
     }
 
     @PostMapping
-    public Direction saveDirection(@RequestBody Direction direction){
-        Direction directionDatabase = directionDao.findDirectionById(direction.getId());
-        if (directionDatabase == null){
-            directionDao.save(direction);
-            return direction;
-        } else {
-            return directionDatabase;
-        }
+    public ResponseEntity<Direction> saveDirection(@RequestBody DirectionDto direction){
+        return directionController.saveDirection(direction);
     }
 
     @PutMapping
-    public Direction updateDirection(@RequestBody Direction direction){
-        directionDao.save(direction);
-        return direction;
+    public ResponseEntity<Direction> updateDirection(@RequestBody DirectionDto direction){
+        return directionController.updateDirection(direction);
     }
 
-    @DeleteMapping(value = ID)
-    public String deleteDirectionById(@PathVariable int id){
-        Direction direction = directionDao.findDirectionById(id);
-        if (direction == null) throw new RuntimeException("Direction id not found - " + id);
-        directionDao.delete(direction);
-        return "Deleted direction id - " + id;
+    @DeleteMapping(value = HASH)
+    public ResponseEntity<String> deleteDirectionByHash(@PathVariable int hash){
+        return directionController.deleteDirection(hash);
     }
 }

@@ -1,9 +1,11 @@
 package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.UserDao;
+import com.movetto.api.dtos.UserDto;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -14,44 +16,42 @@ import java.util.Optional;
 public class CustomerController extends UserController {
 
     private UserDao customerDao;
-    private DirectionController directionController;
 
     @Autowired
-    public CustomerController(UserDao userDao, DirectionController directionController) {
+    public CustomerController(UserDao userDao) {
         super(userDao);
         this.customerDao = userDao;
-        this.directionController = directionController;
     }
 
     public ResponseEntity<List<User>> readCustomers(){
-        List<User> customers = customerDao.findUsersByRolesLike(Role.CUSTOMER);
-        return ResponseEntity.ok(customers);
+        return customerDao.findUsersByRolesLike(Role.CUSTOMER).map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.noContent().build());
     }
 
-    public ResponseEntity<User> saveCustomer(User user){
-        Optional<User> userStored = customerDao.findUserByUid(user.getUid());
-        if (userStored.isPresent()){
-            User userCustomer = userStored.get();
-            if (userCustomer.getRoles().contains(Role.CUSTOMER)){
-                ResponseEntity.badRequest().body("Customer Exist");
-            } else {
-                userCustomer.setCustomerId(user.getCustomerId());
-                userCustomer.getRoles().add(Role.CUSTOMER);
-                userCustomer.setDirections(user.getDirections());
-                customerDao.save(userCustomer);
-            }
-            return ResponseEntity.ok(userCustomer);
+    public ResponseEntity<User> saveCustomer(UserDto user){
+        ResponseEntity<User> userExist = readUserByUid(user.getUid());
+        ResponseEntity<User> userCustomer = readUserByUidRolesLike(user.getUid(),Role.CUSTOMER);
+        if(userCustomer.hasBody()){
+            return ResponseEntity
+                    .status(HttpStatus.FOUND).build();
+        } else if (userExist.hasBody()){
+            User userCustomerNew = userExist.getBody();
+            assert userCustomerNew != null;
+            userCustomerNew.setCustomerId(user.getCustomerId());
+            userCustomerNew.getRoles().add(Role.CUSTOMER);
+            userCustomerNew.setDirections(user.getDirections());
+            customerDao.save(userCustomerNew);
+            return ResponseEntity.ok(userCustomerNew);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    public ResponseEntity<User> updateCustomer(User user){
+    public ResponseEntity<User> updateCustomer(UserDto user){
         Optional<User> userStored = customerDao.findUserByUidAndRolesLike(user.getUid(),Role.CUSTOMER);
         if (userStored.isPresent()){
             User userCustomer = userStored.get();
             userCustomer.setCustomerId(user.getCustomerId());
-            userCustomer.setDirections(user.getDirections());
             customerDao.save(userCustomer);
             return ResponseEntity.ok(userCustomer);
         } else {
@@ -59,17 +59,15 @@ public class CustomerController extends UserController {
         }
     }
 
-    public String deleteCustomer(String uid){
+    public ResponseEntity<String> deleteCustomer(String uid){
         Optional<User> userStored = customerDao.findUserByUidAndRolesLike(uid,Role.CUSTOMER);
         if (userStored.isPresent()){
             User userCustomer = userStored.get();
             userCustomer.getRoles().remove(Role.PARTNER);
             customerDao.save(userCustomer);
-            return "Customer Deleted";
+            return ResponseEntity.ok("El cliente " + userCustomer.getDisplayName() + "se ha eliminado.");
         } else {
-            return ResponseEntity.notFound().build().toString();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
 }
