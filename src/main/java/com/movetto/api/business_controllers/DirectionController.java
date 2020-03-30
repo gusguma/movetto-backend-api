@@ -44,6 +44,7 @@ public class DirectionController {
             Direction directionCreate = new Direction();
             setDataDirection(directionCreate,direction);
             directionCreate.setUser(direction.getUser());
+            directionCreate.setHash(directionCreate.hashCode());
             directionDao.save(directionCreate);
             return ResponseEntity.ok(directionCreate);
         }
