@@ -37,8 +37,7 @@ public class PartnerController extends UserController {
         } else if (userExist.hasBody()){
             User userPartnerNew = userExist.getBody();
             assert userPartnerNew != null;
-            userPartnerNew.setPartnerId(user.getPartnerId());
-            userPartnerNew.setDriverId(user.getDriverId());
+            userPartnerNew.setPartner(user.getPartner());
             userPartnerNew.getRoles().add(Role.PARTNER);
             userPartnerNew.setDirections(user.getDirections());
             partnerDao.save(userPartnerNew);
@@ -52,8 +51,7 @@ public class PartnerController extends UserController {
         Optional<User> userStored = partnerDao.findUserByUidAndRolesLike(user.getUid(),Role.PARTNER);
         if (userStored.isPresent()){
             User userPartner = userStored.get();
-            userPartner.setPartnerId(user.getPartnerId());
-            userPartner.setDriverId(user.getDriverId());
+            userPartner.setPartner(user.getPartner());
             partnerDao.save(userPartner);
             return ResponseEntity.ok(userPartner);
         } else {

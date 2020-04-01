@@ -32,12 +32,17 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Direction> directions;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Vehicle> vehicles;
+
     private LocalDateTime registrationDate;
     private Boolean active;
 
     public User() {
         this.roles = new HashSet<>();
         roles.add(Role.USER);
+        this.directions = new HashSet<>();
+        this.vehicles = new HashSet<>();
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
@@ -125,6 +130,14 @@ public class User {
         this.directions = directions;
     }
 
+    public Set<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Set<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
@@ -133,7 +146,7 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
     }
 
@@ -146,13 +159,25 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getEmail().equals(user.getEmail()) &&
-                getUid().equals(user.getUid());
+        return getId() == user.getId() &&
+                getDisplayName().equals(user.getDisplayName()) &&
+                getEmail().equals(user.getEmail()) &&
+                getUid().equals(user.getUid()) &&
+                Objects.equals(getPhone(), user.getPhone()) &&
+                Objects.equals(getCustomer(), user.getCustomer()) &&
+                Objects.equals(getPartner(), user.getPartner()) &&
+                Objects.equals(getRoles(), user.getRoles()) &&
+                Objects.equals(getDirections(), user.getDirections()) &&
+                Objects.equals(getVehicles(), user.getVehicles()) &&
+                Objects.equals(getRegistrationDate(), user.getRegistrationDate()) &&
+                Objects.equals(active, user.active);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getEmail(), getUid());
+        return Objects.hash(getId(), getDisplayName(), getEmail(), getUid(), getPhone(),
+                getCustomer(), getPartner(), getRoles(), getDirections(), getVehicles(),
+                getRegistrationDate(), active);
     }
 
     @Override
@@ -167,6 +192,7 @@ public class User {
                 ", partner=" + partner +
                 ", roles=" + roles +
                 ", directions=" + directions +
+                ", vehicles=" + vehicles +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +
                 '}';
@@ -217,6 +243,11 @@ public class User {
 
         public Builder directions (Set<Direction> directions){
             this.user.directions = directions;
+            return this;
+        }
+
+        public Builder vehicles (Set<Vehicle> vehicles){
+            this.user.vehicles = vehicles;
             return this;
         }
 

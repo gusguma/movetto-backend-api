@@ -37,7 +37,7 @@ public class CustomerController extends UserController {
         } else if (userExist.hasBody()){
             User userCustomerNew = userExist.getBody();
             assert userCustomerNew != null;
-            userCustomerNew.setCustomerId(user.getCustomerId());
+            userCustomerNew.setCustomer(user.getCustomer());
             userCustomerNew.getRoles().add(Role.CUSTOMER);
             userCustomerNew.setDirections(user.getDirections());
             customerDao.save(userCustomerNew);
@@ -51,7 +51,7 @@ public class CustomerController extends UserController {
         Optional<User> userStored = customerDao.findUserByUidAndRolesLike(user.getUid(),Role.CUSTOMER);
         if (userStored.isPresent()){
             User userCustomer = userStored.get();
-            userCustomer.setCustomerId(user.getCustomerId());
+            userCustomer.setCustomer(user.getCustomer());
             customerDao.save(userCustomer);
             return ResponseEntity.ok(userCustomer);
         } else {

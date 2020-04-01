@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping(DirectionResource.DIRECTION)
 public class DirectionResource {
+
     public static final String DIRECTION = "/directions";
 
     public static final String HASH = "/{hash}";
