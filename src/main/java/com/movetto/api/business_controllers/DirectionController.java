@@ -21,12 +21,15 @@ public class DirectionController {
         this.directionDao = directionDao;
     }
 
-    public List<Direction> readDirections(){
-        return directionDao.findAll();
+    public ResponseEntity<List<Direction>> readDirections(){
+        List<Direction> directions = directionDao.findAll();
+        return (directions.isEmpty()) ? ResponseEntity
+                .noContent().build() : ResponseEntity.ok(directions);
     }
 
-    public ResponseEntity<List<Direction>> findUserDirections(String uid) {
-        return directionDao.findDirectionsByUserUid(uid).map(ResponseEntity::ok)
+    public ResponseEntity<List<Direction>> readDirectionsByUid(String uid) {
+        return directionDao.findDirectionsByUserUid(uid)
+                .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.noContent().build());
     }
 

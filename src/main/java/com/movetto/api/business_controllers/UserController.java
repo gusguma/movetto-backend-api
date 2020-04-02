@@ -23,27 +23,33 @@ public class UserController {
         this.userDao = userDao;
     }
 
-    public List<UserMinimumDto> readUsers(){
-        return userDao.findAllUsers();
+    public ResponseEntity<List<UserMinimumDto>> readUsers(){
+        List<UserMinimumDto> users = userDao.findAllUsers();
+        return (users.isEmpty()) ? ResponseEntity
+                .noContent().build() : ResponseEntity.ok(users);
     }
 
     public ResponseEntity<User> readUserByUid(String uid){
-        return userDao.findUserByUid(uid).map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+        return userDao.findUserByUid(uid)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     public ResponseEntity<User> readUserByEmail(String email){
-        return userDao.findUserByEmail(email).map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+        return userDao.findUserByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<User> readUserByUidRolesLike(String uid, Role role){
-        return userDao.findUserByUidAndRolesLike(uid, role).map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+    public ResponseEntity<User> readUserByUidAndRolesLike(String uid, Role role){
+        return userDao.findUserByUidAndRolesLike(uid, role)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<User> saveUser(UserMinimumDto user){
-        if (readUserByUid(user.getUid()).hasBody()){
+    public ResponseEntity<UserMinimumDto> saveUser(UserMinimumDto user){
+        Optional<User> userExist = userDao.findUserByUid(user.getUid());
+        if (userExist.isPresent()){
             return ResponseEntity
                     .status(HttpStatus.FOUND)
                     .build();
@@ -53,15 +59,18 @@ public class UserController {
             userCreate.setEmail(user.getEmail());
             userCreate.setUid(user.getUid());
             userDao.save(userCreate);
-            return ResponseEntity.ok(userCreate);
+            return ResponseEntity.ok(new UserMinimumDto(
+                    userCreate.getDisplayName(),
+                    userCreate.getEmail(),
+                    userCreate.getUid()
+            ));
         }
     }
 
     public ResponseEntity<User> updateUser(UserDto user){
-        ResponseEntity<User> userStored = readUserByUid(user.getUid());
-        if (userStored.hasBody()){
-            User userUpdated = userStored.getBody();
-            assert userUpdated != null;
+        Optional<User> userExist = userDao.findUserByUid(user.getUid());
+        if (userExist.isPresent()){
+            User userUpdated = userExist.get();
             userUpdated.setDisplayName(user.getDisplayName());
             userUpdated.setPhone(user.getPhone());
             userDao.save(userUpdated);
@@ -72,9 +81,9 @@ public class UserController {
     }
 
     public ResponseEntity<String> deleteUser(String uid){
-        Optional<User> optionalUser = userDao.findUserByUid(uid);
-        if (optionalUser.isPresent() && optionalUser.get().isActive()){
-            User user = optionalUser.get();
+        Optional<User> userExist = userDao.findUserByUid(uid);
+        if (userExist.isPresent() && userExist.get().isActive()){
+            User user = userExist.get();
             user.setActive(false);
             userDao.save(user);
             return ResponseEntity.ok("El usuario " + user.getDisplayName() + " se ha eliminado");

@@ -1,6 +1,7 @@
 package com.movetto.api.rest_controllers;
 
 import com.movetto.api.business_controllers.*;
+import com.movetto.api.dtos.DirectionDto;
 import com.movetto.api.dtos.UserDto;
 import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.Direction;
@@ -43,7 +44,7 @@ public class UserResource {
     }
 
     @GetMapping
-    public List<UserMinimumDto> findAllUsers(){
+    public ResponseEntity<List<UserMinimumDto>> findAllUsers(){
         return userController.readUsers();
     }
 
@@ -53,7 +54,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<User> saveUser(@RequestBody UserMinimumDto user){
+    public ResponseEntity<UserMinimumDto> saveUser(@RequestBody UserMinimumDto user){
         return userController.saveUser(user);
     }
 
@@ -109,7 +110,7 @@ public class UserResource {
 
     @GetMapping(value = UID + DIRECTIONS)
     public ResponseEntity<List<Direction>> findUserDirections(@PathVariable String uid){
-        return directionController.findUserDirections(uid);
+        return directionController.readDirectionsByUid(uid);
     }
 
     @GetMapping(value = UID + VEHICLES)

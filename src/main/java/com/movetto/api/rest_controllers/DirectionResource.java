@@ -25,9 +25,11 @@ public class DirectionResource {
     }
 
     @GetMapping
-    public List<Direction> findAllDirections(){
+    public ResponseEntity<List<Direction>> findAllDirections(){
         return directionController.readDirections();
     }
+
+
 
     @GetMapping(value = HASH)
     public ResponseEntity<Direction> findDirectionByHash(@PathVariable int hash){
