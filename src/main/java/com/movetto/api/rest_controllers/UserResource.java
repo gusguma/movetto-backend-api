@@ -1,7 +1,6 @@
 package com.movetto.api.rest_controllers;
 
 import com.movetto.api.business_controllers.*;
-import com.movetto.api.dtos.DirectionDto;
 import com.movetto.api.dtos.UserDto;
 import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.Direction;
