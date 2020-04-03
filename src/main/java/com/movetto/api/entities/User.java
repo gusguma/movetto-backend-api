@@ -12,20 +12,18 @@ public class User {
     @Id
     @GeneratedValue
     private int id;
-    @Column(nullable = false)
     private String displayName;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String uid;
     @Column(unique = true)
     private String phone;
-    @Column(unique = true)
-    private String customerId;
-    @Column(unique = true)
-    private String partnerId;
-    @Column(unique = true)
-    private String driverId;
+
+    @Embedded
+    private Customer customer;
+    @Embedded
+    private Partner partner;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -41,10 +39,12 @@ public class User {
     private Boolean active;
 
     public User() {
-        this.registrationDate = LocalDateTime.now();
-        this.active = true;
         this.roles = new HashSet<>();
         roles.add(Role.USER);
+        this.directions = new HashSet<>();
+        this.vehicles = new HashSet<>();
+        this.registrationDate = LocalDateTime.now();
+        this.active = true;
     }
 
     public User(String displayName, String email, String uid) {
@@ -52,6 +52,10 @@ public class User {
         this.displayName = displayName;
         this.email = email;
         this.uid = uid;
+    }
+
+    public Builder builder(){
+        return new Builder();
     }
 
     public int getId() {
@@ -94,28 +98,28 @@ public class User {
         this.phone = phone;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public String getPartnerId() {
-        return partnerId;
+    public Partner getPartner() {
+        return partner;
     }
 
-    public void setPartnerId(String partnerId) {
-        this.partnerId = partnerId;
+    public void setPartner(Partner partner) {
+        this.partner = partner;
     }
 
-    public String getDriverId() {
-        return driverId;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Set<Direction> getDirections() {
@@ -132,14 +136,6 @@ public class User {
 
     public void setVehicles(Set<Vehicle> vehicles) {
         this.vehicles = vehicles;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     public LocalDateTime getRegistrationDate() {
@@ -168,19 +164,20 @@ public class User {
                 getEmail().equals(user.getEmail()) &&
                 getUid().equals(user.getUid()) &&
                 Objects.equals(getPhone(), user.getPhone()) &&
-                Objects.equals(getCustomerId(), user.getCustomerId()) &&
-                Objects.equals(getPartnerId(), user.getPartnerId()) &&
-                Objects.equals(getDriverId(), user.getDriverId()) &&
+                Objects.equals(getCustomer(), user.getCustomer()) &&
+                Objects.equals(getPartner(), user.getPartner()) &&
                 Objects.equals(getRoles(), user.getRoles()) &&
+                Objects.equals(getDirections(), user.getDirections()) &&
+                Objects.equals(getVehicles(), user.getVehicles()) &&
                 Objects.equals(getRegistrationDate(), user.getRegistrationDate()) &&
-                Objects.equals(isActive(), user.isActive());
+                Objects.equals(active, user.active);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getDisplayName(), getEmail(), getUid(),
-                getPhone(), getCustomerId(), getPartnerId(), getDriverId(),
-                getRoles(), getRegistrationDate(), isActive());
+        return Objects.hash(getId(), getDisplayName(), getEmail(), getUid(), getPhone(),
+                getCustomer(), getPartner(), getRoles(), getDirections(), getVehicles(),
+                getRegistrationDate(), active);
     }
 
     @Override
@@ -191,12 +188,76 @@ public class User {
                 ", email='" + email + '\'' +
                 ", uid='" + uid + '\'' +
                 ", phone='" + phone + '\'' +
-                ", customerId='" + customerId + '\'' +
-                ", partnerId='" + partnerId + '\'' +
-                ", driverId='" + driverId + '\'' +
+                ", customer=" + customer +
+                ", partner=" + partner +
                 ", roles=" + roles +
+                ", directions=" + directions +
+                ", vehicles=" + vehicles +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +
                 '}';
+    }
+
+    public static class Builder {
+
+        private User user;
+
+        private Builder(){
+            this.user = new User();
+        }
+
+        public Builder displayName(String displayName){
+            this.user.setDisplayName(displayName);
+            return this;
+        }
+
+        public Builder email (String email){
+            this.user.setEmail(email);
+            return this;
+        }
+
+        public Builder uid (String uid){
+            this.user.setEmail(uid);
+            return this;
+        }
+
+        public Builder phone (String phone){
+            this.user.setEmail(phone);
+            return this;
+        }
+
+        public Builder customer (Customer customer){
+            this.user.setCustomer(customer);
+            return this;
+        }
+
+        public Builder partner (Partner partner){
+            this.user.setPartner(partner);
+            return this;
+        }
+
+        public Builder roles (Set<Role> roles){
+            this.user.roles = roles;
+            return this;
+        }
+
+        public Builder directions (Set<Direction> directions){
+            this.user.directions = directions;
+            return this;
+        }
+
+        public Builder vehicles (Set<Vehicle> vehicles){
+            this.user.vehicles = vehicles;
+            return this;
+        }
+
+        public Builder registrationDate(LocalDateTime registrationDate){
+            this.user.registrationDate = registrationDate;
+            return this;
+        }
+
+        public User build (){
+            return this.user;
+        }
     }
 }

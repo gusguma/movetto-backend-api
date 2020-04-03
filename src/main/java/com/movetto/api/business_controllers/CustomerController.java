@@ -24,22 +24,29 @@ public class CustomerController extends UserController {
     }
 
     public ResponseEntity<List<User>> readCustomers(){
-        return customerDao.findUsersByRolesLike(Role.CUSTOMER).map(ResponseEntity::ok)
+        return this.customerDao.findUsersByRolesLike(Role.CUSTOMER)
+                .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.noContent().build());
     }
 
+    public ResponseEntity<User> readCustomer(String uid, Role role){
+        return this.customerDao.findUserByUidAndRolesLike(uid, role)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     public ResponseEntity<User> saveCustomer(UserDto user){
-        ResponseEntity<User> userExist = readUserByUid(user.getUid());
-        ResponseEntity<User> userCustomer = readUserByUidRolesLike(user.getUid(),Role.CUSTOMER);
-        if(userCustomer.hasBody()){
+        Optional<User> userExist = customerDao.findUserByUid(user.getUid());
+        Optional<User> userCustomerExist = customerDao
+                .findUserByUidAndRolesLike(user.getUid(),Role.CUSTOMER);
+        if(userCustomerExist.isPresent()){
             return ResponseEntity
                     .status(HttpStatus.FOUND).build();
-        } else if (userExist.hasBody()){
-            User userCustomerNew = userExist.getBody();
-            assert userCustomerNew != null;
-            userCustomerNew.setCustomerId(user.getCustomerId());
+        } else if (userExist.isPresent()){
+            User userCustomerNew = userExist.get();
+            userCustomerNew.setCustomer(user.getCustomer());
             userCustomerNew.getRoles().add(Role.CUSTOMER);
-            userCustomerNew.setDirections(user.getDirections());
+            userCustomerNew.setDirections(user.getDirections());//TODO
             customerDao.save(userCustomerNew);
             return ResponseEntity.ok(userCustomerNew);
         } else {
@@ -48,26 +55,28 @@ public class CustomerController extends UserController {
     }
 
     public ResponseEntity<User> updateCustomer(UserDto user){
-        Optional<User> userStored = customerDao.findUserByUidAndRolesLike(user.getUid(),Role.CUSTOMER);
-        if (userStored.isPresent()){
-            User userCustomer = userStored.get();
-            userCustomer.setCustomerId(user.getCustomerId());
-            customerDao.save(userCustomer);
-            return ResponseEntity.ok(userCustomer);
+        Optional<User> userExist = customerDao
+                .findUserByUidAndRolesLike(user.getUid(),Role.CUSTOMER);
+        if (userExist.isPresent()){
+            User userCustomerUpdated = userExist.get();
+            userCustomerUpdated.setCustomer(user.getCustomer());
+            userCustomerUpdated.setDirections(user.getDirections());//TODO
+            customerDao.save(userCustomerUpdated);
+            return ResponseEntity.ok(userCustomerUpdated);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     public ResponseEntity<String> deleteCustomer(String uid){
-        Optional<User> userStored = customerDao.findUserByUidAndRolesLike(uid,Role.CUSTOMER);
-        if (userStored.isPresent()){
-            User userCustomer = userStored.get();
-            userCustomer.getRoles().remove(Role.PARTNER);
-            customerDao.save(userCustomer);
-            return ResponseEntity.ok("El cliente " + userCustomer.getDisplayName() + "se ha eliminado.");
+        Optional<User> userExist = customerDao.findUserByUidAndRolesLike(uid,Role.CUSTOMER);
+        if (userExist.isPresent()){
+            User userCustomerDeleted = userExist.get();
+            userCustomerDeleted .getRoles().remove(Role.PARTNER);
+            customerDao.save(userCustomerDeleted );
+            return ResponseEntity.ok("El cliente " + userCustomerDeleted.getDisplayName() + "se ha eliminado.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.notFound().build();
         }
     }
 }

@@ -2,10 +2,7 @@ package com.movetto.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.movetto.api.entities.Direction;
-import com.movetto.api.entities.Role;
-import com.movetto.api.entities.User;
-import com.movetto.api.entities.Vehicle;
+import com.movetto.api.entities.*;
 
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
@@ -16,16 +13,12 @@ public class UserDto extends UserMinimumDto {
 
     @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.MOBILE_NUMBER)
     private String phone;
-    @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.REGISTER_ID )
-    private String customerId;
-    @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.REGISTER_ID )
-    private String partnerId;
-    @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.REGISTER_ID )
-    private String driverId;
+
+    private Customer customer;
+    private Partner partner;
 
     private Set<Role> roles;
     private Set<Direction> directions;
-    private Set<Vehicle> vehicles;
 
     private LocalDateTime registrationDate;
     private boolean active;
@@ -37,12 +30,10 @@ public class UserDto extends UserMinimumDto {
     public UserDto(User user) {
         super(user.getDisplayName(), user.getEmail(), user.getUid());
         this.phone = user.getPhone();
-        this.customerId = user.getCustomerId();
-        this.partnerId = user.getPartnerId();
-        this.driverId = user.getDriverId();
+        this.customer = user.getCustomer();
+        this.partner = user.getPartner();
         this.roles = user.getRoles();
         this.directions = user.getDirections();
-        this.vehicles = user.getVehicles();
         this.registrationDate = user.getRegistrationDate();
         this.active = user.isActive();
     }
@@ -55,28 +46,20 @@ public class UserDto extends UserMinimumDto {
         this.phone = phone;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public String getPartnerId() {
-        return partnerId;
+    public Partner getPartner() {
+        return partner;
     }
 
-    public void setPartnerId(String partnerId) {
-        this.partnerId = partnerId;
-    }
-
-    public String getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
+    public void setPartner(Partner partner) {
+        this.partner = partner;
     }
 
     public Set<Role> getRoles() {
@@ -93,14 +76,6 @@ public class UserDto extends UserMinimumDto {
 
     public void setDirections(Set<Direction> directions) {
         this.directions = directions;
-    }
-
-    public Set<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(Set<Vehicle> vehicles) {
-        this.vehicles = vehicles;
     }
 
     public LocalDateTime getRegistrationDate() {
@@ -123,12 +98,10 @@ public class UserDto extends UserMinimumDto {
     public String toString() {
         return "UserDto{" +
                 "phone='" + phone + '\'' +
-                ", customerId='" + customerId + '\'' +
-                ", partnerId='" + partnerId + '\'' +
-                ", driverId='" + driverId + '\'' +
+                ", customer=" + customer +
+                ", partner=" + partner +
                 ", roles=" + roles +
                 ", directions=" + directions +
-                ", vehicles=" + vehicles +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +
                 '}';

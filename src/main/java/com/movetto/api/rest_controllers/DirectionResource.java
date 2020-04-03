@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping(DirectionResource.DIRECTION)
 public class DirectionResource {
+
     public static final String DIRECTION = "/directions";
 
     public static final String HASH = "/{hash}";
@@ -24,9 +25,11 @@ public class DirectionResource {
     }
 
     @GetMapping
-    public List<Direction> findAllDirections(){
+    public ResponseEntity<List<Direction>> findAllDirections(){
         return directionController.readDirections();
     }
+
+
 
     @GetMapping(value = HASH)
     public ResponseEntity<Direction> findDirectionByHash(@PathVariable int hash){

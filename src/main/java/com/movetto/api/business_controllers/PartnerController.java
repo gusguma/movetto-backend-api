@@ -24,21 +24,27 @@ public class PartnerController extends UserController {
     }
 
     public ResponseEntity<List<User>> readPartners(){
-        return partnerDao.findUsersByRolesLike(Role.PARTNER).map(ResponseEntity::ok)
+        return partnerDao.findUsersByRolesLike(Role.PARTNER)
+                .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.noContent().build());
     }
 
+    public ResponseEntity<User> readPartner(String uid, Role role){
+        return this.partnerDao.findUserByUidAndRolesLike(uid, role)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     public ResponseEntity<User> savePartner(UserDto user){
-        ResponseEntity<User> userExist = readUserByUid(user.getUid());
-        ResponseEntity<User> userPartner = readUserByUidRolesLike(user.getUid(),Role.PARTNER);
-        if(userPartner.hasBody()){
+        Optional<User> userExist = partnerDao.findUserByUid(user.getUid());
+        Optional<User> userPartnerExist = partnerDao
+                .findUserByUidAndRolesLike(user.getUid(),Role.PARTNER);
+        if(userPartnerExist.isPresent()){
             return ResponseEntity
                     .status(HttpStatus.FOUND).build();
-        } else if (userExist.hasBody()){
-            User userPartnerNew = userExist.getBody();
-            assert userPartnerNew != null;
-            userPartnerNew.setPartnerId(user.getPartnerId());
-            userPartnerNew.setDriverId(user.getDriverId());
+        } else if (userExist.isPresent()){
+            User userPartnerNew = userExist.get();
+            userPartnerNew.setPartner(user.getPartner());
             userPartnerNew.getRoles().add(Role.PARTNER);
             userPartnerNew.setDirections(user.getDirections());
             partnerDao.save(userPartnerNew);
@@ -49,13 +55,14 @@ public class PartnerController extends UserController {
     }
 
     public ResponseEntity<User> updatePartner(UserDto user){
-        Optional<User> userStored = partnerDao.findUserByUidAndRolesLike(user.getUid(),Role.PARTNER);
+        Optional<User> userStored = partnerDao
+                .findUserByUidAndRolesLike(user.getUid(),Role.PARTNER);
         if (userStored.isPresent()){
-            User userPartner = userStored.get();
-            userPartner.setPartnerId(user.getPartnerId());
-            userPartner.setDriverId(user.getDriverId());
-            partnerDao.save(userPartner);
-            return ResponseEntity.ok(userPartner);
+            User userPartnerUpdated = userStored.get();
+            userPartnerUpdated.setPartner(user.getPartner());
+            userPartnerUpdated.setDirections(user.getDirections());//TODO
+            partnerDao.save(userPartnerUpdated);
+            return ResponseEntity.ok(userPartnerUpdated);
         } else {
             return ResponseEntity.notFound().build();
         }
