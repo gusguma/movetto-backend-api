@@ -1,50 +1,31 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-public class Travel {
+public class Travel extends ServiceType {
 
-    @Id
-    @GeneratedValue
-    private int id;
-    @OneToOne
-    private Direction start;
-    @OneToOne
-    private Direction finish;
-    @Column(nullable = false)
     private int people;
-    @Column(nullable = false)
-    private double price;
+    private LocalDateTime travelDatetime;
 
     public Travel(){
-        //Empty for Framework
+        this.people = 1;
+        setServiceType(ServiceTypeEnum.TRAVEL);
     }
 
-    public Travel(Direction start, Direction finish, int people, double price){
-        this.start = start;
-        this.finish = finish;
+    public Travel(int people, LocalDateTime travelDatetime){
+        this();
         this.people = people;
-        this.price = price;
+        this.travelDatetime = travelDatetime;
     }
 
-    public int getId() {
-        return id;
+    public Travel(Direction startDirection, Direction endDirection,
+                  Vehicle vehicle, Customer customer, Partner partner) {
+        super(customer, partner, vehicle);
+        setStartDirection(startDirection);
+        setEndDirection(endDirection);
     }
 
-    public Direction getStart() {
-        return start;
-    }
 
-    public Direction getFinish() {
-        return finish;
-    }
-
-    public int getPeople() {
-        return people;
-    }
-
-    public double getPrice() {
-        return price;
-    }
 }

@@ -1,7 +1,7 @@
 package com.movetto.api.dtos;
 
 import com.movetto.api.entities.User;
-import com.movetto.api.entities.VehicleType;
+import com.movetto.api.entities.VehicleTypeEnum;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ public class VehicleDto {
     private int id;
     @NotNull
     private String name;
-    private VehicleType vehicleType;
+    private VehicleTypeEnum vehicleType;
     private String registration;
     private double maxVolume;
     private double maxWeight;
@@ -25,7 +25,7 @@ public class VehicleDto {
     private LocalDateTime registrationDate;
     private Boolean active;
 
-    public VehicleDto(int id, @NotNull String name, VehicleType vehicleType,
+    public VehicleDto(int id, @NotNull String name, VehicleTypeEnum vehicleType,
                       String registration, double maxVolume, double maxWeight,
                       double maxLenght, double maxWidth, double maxHigh, int hash,
                       User user, LocalDateTime registrationDate, Boolean active) {
@@ -60,11 +60,11 @@ public class VehicleDto {
         this.name = name;
     }
 
-    public VehicleType getVehicleType() {
+    public VehicleTypeEnum getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(VehicleType vehicleType) {
+    public void setVehicleType(VehicleTypeEnum vehicleType) {
         this.vehicleType = vehicleType;
     }
 

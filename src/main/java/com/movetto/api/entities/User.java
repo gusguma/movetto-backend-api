@@ -198,66 +198,66 @@ public class User {
                 '}';
     }
 
-    public static class Builder {
+    public class Builder {
 
         private User user;
 
         private Builder(){
-            this.user = new User();
+            user = new User();
         }
 
         public Builder displayName(String displayName){
-            this.user.setDisplayName(displayName);
+            user.displayName = displayName;
             return this;
         }
 
         public Builder email (String email){
-            this.user.setEmail(email);
+            user.email = email;
             return this;
         }
 
         public Builder uid (String uid){
-            this.user.setEmail(uid);
+            user.uid = uid;
             return this;
         }
 
         public Builder phone (String phone){
-            this.user.setEmail(phone);
+            user.phone = phone;
             return this;
         }
 
         public Builder customer (Customer customer){
-            this.user.setCustomer(customer);
+            user.customer = customer;
             return this;
         }
 
         public Builder partner (Partner partner){
-            this.user.setPartner(partner);
+            user.partner = partner;
             return this;
         }
 
         public Builder roles (Set<Role> roles){
-            this.user.roles = roles;
+            user.roles = roles;
             return this;
         }
 
         public Builder directions (Set<Direction> directions){
-            this.user.directions = directions;
+            user.directions = directions;
             return this;
         }
 
         public Builder vehicles (Set<Vehicle> vehicles){
-            this.user.vehicles = vehicles;
+            user.vehicles = vehicles;
             return this;
         }
 
         public Builder registrationDate(LocalDateTime registrationDate){
-            this.user.registrationDate = registrationDate;
+            user.registrationDate = registrationDate;
             return this;
         }
 
         public User build (){
-            return this.user;
+            return user;
         }
     }
 }

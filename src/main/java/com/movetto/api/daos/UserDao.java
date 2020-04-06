@@ -1,6 +1,5 @@
 package com.movetto.api.daos;
 
-import com.movetto.api.dtos.UserDto;
 import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;

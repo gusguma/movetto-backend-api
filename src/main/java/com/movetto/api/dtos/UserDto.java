@@ -8,6 +8,7 @@ import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+
 @JsonInclude(Include.NON_NULL)
 public class UserDto extends UserMinimumDto {
 

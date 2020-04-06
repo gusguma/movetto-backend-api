@@ -1,6 +1,7 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Package {
@@ -8,17 +9,16 @@ public class Package {
     @Id
     @GeneratedValue
     private int id;
-    @Column(nullable = false)
     private double weight;
-    @Column(nullable = false)
     private double width;
-    @Column(nullable = false)
     private double lenght;
-    @Column(nullable = false)
     private double high;
-    @Column(nullable = false)
+
     @Enumerated(value = EnumType.STRING)
     private PackageStatus status;
+
+    @ManyToOne()
+    private Shipment shipment;
 
     public Package() {
         //Empty for Framework
@@ -36,23 +36,92 @@ public class Package {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public double getWeight() {
         return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     public double getWidth() {
         return width;
     }
 
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
     public double getLenght() {
         return lenght;
+    }
+
+    public void setLenght(double lenght) {
+        this.lenght = lenght;
     }
 
     public double getHigh() {
         return high;
     }
 
+    public void setHigh(double high) {
+        this.high = high;
+    }
+
     public PackageStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(PackageStatus status) {
+        this.status = status;
+    }
+
+    public Shipment getShipment() {
+        return shipment;
+    }
+
+    public void setShipment(Shipment shipment) {
+        this.shipment = shipment;
+    }
+
+    public double getVolume(){
+        return width * lenght * high;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Package)) return false;
+        Package aPackage = (Package) o;
+        return getId() == aPackage.getId() &&
+                Double.compare(aPackage.getWeight(), getWeight()) == 0 &&
+                Double.compare(aPackage.getWidth(), getWidth()) == 0 &&
+                Double.compare(aPackage.getLenght(), getLenght()) == 0 &&
+                Double.compare(aPackage.getHigh(), getHigh()) == 0 &&
+                getStatus() == aPackage.getStatus() &&
+                getShipment().equals(aPackage.getShipment());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getWeight(), getWidth(), getLenght(),
+                getHigh(), getStatus(), getShipment());
+    }
+
+    @Override
+    public String toString() {
+        return "Package{" +
+                "id=" + id +
+                ", weight=" + weight +
+                ", width=" + width +
+                ", lenght=" + lenght +
+                ", high=" + high +
+                ", status=" + status +
+                ", shipment=" + shipment +
+                '}';
     }
 }
