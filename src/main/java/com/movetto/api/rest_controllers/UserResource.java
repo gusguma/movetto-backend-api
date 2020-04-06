@@ -4,6 +4,7 @@ import com.movetto.api.business_controllers.*;
 import com.movetto.api.dtos.UserDto;
 import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.Direction;
+import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 import com.movetto.api.entities.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,11 @@ public class UserResource {
         return customerController.readCustomers();
     }
 
+    @GetMapping(value = CUSTOMERS + UID)
+    public ResponseEntity<User> findUserCustomer(@PathVariable String uid){
+        return customerController.readCustomer(uid, Role.CUSTOMER);
+    }
+
     @PostMapping(value = CUSTOMERS)
     public ResponseEntity<User> saveCustomer(@RequestBody UserDto user){
         return customerController.saveCustomer(user);
@@ -90,6 +96,11 @@ public class UserResource {
     @GetMapping(value = PARTNERS)
     public ResponseEntity<List<User>> findAllPartners(){
         return partnerController.readPartners();
+    }
+
+    @GetMapping(value = PARTNERS + UID)
+    public ResponseEntity<User> findUserPartner(@PathVariable String uid){
+        return partnerController.readPartner(uid, Role.PARTNER);
     }
 
     @PostMapping(value = PARTNERS)

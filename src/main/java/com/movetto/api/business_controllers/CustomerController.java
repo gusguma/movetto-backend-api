@@ -4,6 +4,7 @@ import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.UserDto;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

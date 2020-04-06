@@ -2,7 +2,7 @@ package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.VehicleDao;
 import com.movetto.api.dtos.VehicleDto;
-import com.movetto.api.entities.Vehicle;
+import com.movetto.api.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,13 +41,31 @@ public class VehicleController {
                     .status(HttpStatus.FOUND)
                     .build();
         } else {
-            Vehicle vehicleCreate = new Vehicle();
+            Vehicle vehicleCreate = selectVehicle(vehicle);
             setDataVehicle(vehicleCreate,vehicle);
-            vehicleCreate.setUser(vehicle.getUser());
             vehicleCreate.setHash(vehicleCreate.hashCode());
             vehicleDao.save(vehicleCreate);
             return ResponseEntity.ok(vehicleCreate);
         }
+    }
+
+    private Vehicle selectVehicle(VehicleDto vehicle){
+        Vehicle vehicleCreate;
+        switch (vehicle.getVehicleType()) {
+            case BIKE:
+                vehicleCreate = new Bike(vehicle.getUser());
+                break;
+            case MOTORCYCLE:
+                vehicleCreate = new Motorcycle(vehicle.getUser(), vehicle.getRegistration());
+                break;
+            case VAN:
+                vehicleCreate = new Van(vehicle.getUser(), vehicle.getRegistration());
+                break;
+            default:
+                vehicleCreate = new Car(vehicle.getUser(), vehicle.getRegistration());
+                break;
+        }
+        return vehicleCreate;
     }
 
     public ResponseEntity<Vehicle> updateVehicle(VehicleDto vehicle){
@@ -64,13 +82,8 @@ public class VehicleController {
 
     private void setDataVehicle(Vehicle newVehicle, VehicleDto vehicle) {
         newVehicle.setName(vehicle.getName());
-        newVehicle.setVehicleType(vehicle.getVehicleType());
         newVehicle.setRegistration(vehicle.getRegistration());
-        newVehicle.setMaxVolume(vehicle.getMaxVolume());
-        newVehicle.setMaxWeight(vehicle.getMaxWeight());
-        newVehicle.setMaxLenght(vehicle.getMaxLenght());
-        newVehicle.setMaxWidth(vehicle.getMaxWidth());
-        newVehicle.setMaxHigh(vehicle.getMaxHigh());
+
     }
 
     public ResponseEntity<String> deleteVehicle(int hash) {

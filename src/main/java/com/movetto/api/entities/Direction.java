@@ -2,6 +2,7 @@ package com.movetto.api.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +25,9 @@ public class Direction {
 
     @ManyToOne
     private User user;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Service> services;
 
     private LocalDateTime registrationDate;
     private boolean active;
@@ -128,6 +132,14 @@ public class Direction {
         this.user = user;
     }
 
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
@@ -160,15 +172,15 @@ public class Direction {
                 Objects.equals(getCountry(), direction.getCountry()) &&
                 Objects.equals(getCoordinate(), direction.getCoordinate()) &&
                 Objects.equals(getUser(), direction.getUser()) &&
+                Objects.equals(getServices(), direction.getServices()) &&
                 Objects.equals(getRegistrationDate(), direction.getRegistrationDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getStreet(),
-                getPostalCode(), getCity(), getState(), getCountry(),
-                getHash(), getCoordinate(), getUser(), getRegistrationDate(),
-                isActive());
+        return Objects.hash(getId(), getName(), getStreet(), getPostalCode(), getCity(),
+                getState(), getCountry(), getHash(), getCoordinate(), getUser(),
+                getServices(), getRegistrationDate(), isActive());
     }
 
     @Override
@@ -184,6 +196,7 @@ public class Direction {
                 ", hash=" + hash +
                 ", coordinate=" + coordinate +
                 ", user=" + user +
+                ", services=" + services +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +
                 '}';

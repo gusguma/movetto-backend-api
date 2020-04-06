@@ -1,28 +1,21 @@
 package com.movetto.api.entities;
 
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class Vehicle {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Vehicle {
 
     @Id
     @GeneratedValue
     private int id;
     @Column(nullable = false)
     private String name;
-    @Enumerated(value = EnumType.STRING)
-    private VehicleType vehicleType;
     @Column(unique = true)
     private String registration;
-    private double maxVolume;
-    private double maxWeight;
-    private double maxLenght;
-    private double maxWidth;
-    private double maxHigh;
+    @Column(unique = true)
     private int hash;
 
     @ManyToOne
@@ -38,19 +31,9 @@ public class Vehicle {
         this.active = true;
     }
 
-    public Vehicle(String name, VehicleType vehicleType,
-                   @Nullable String registration, double maxVolume,
-                   double maxWeight, double maxLenght, double maxWidth,
-                   double maxHigh) {
+    public Vehicle(User user){
         this();
-        this.name = name;
-        this.vehicleType = vehicleType;
-        this.registration = registration;
-        this.maxVolume = maxVolume;
-        this.maxWeight = maxWeight;
-        this.maxLenght = maxLenght;
-        this.maxWidth = maxWidth;
-        this.maxHigh = maxHigh;
+        this.user = user;
     }
 
     public int getId() {
@@ -69,60 +52,12 @@ public class Vehicle {
         this.name = name;
     }
 
-    public VehicleType getVehicleType() {
-        return vehicleType;
-    }
-
-    public void setVehicleType(VehicleType vehicleType) {
-        this.vehicleType = vehicleType;
-    }
-
     public String getRegistration() {
         return registration;
     }
 
     public void setRegistration(String registration) {
         this.registration = registration;
-    }
-
-    public double getMaxVolume() {
-        return maxVolume;
-    }
-
-    public void setMaxVolume(double maxVolume) {
-        this.maxVolume = maxVolume;
-    }
-
-    public double getMaxWeight() {
-        return maxWeight;
-    }
-
-    public void setMaxWeight(double maxWeight) {
-        this.maxWeight = maxWeight;
-    }
-
-    public double getMaxLenght() {
-        return maxLenght;
-    }
-
-    public void setMaxLenght(double maxLenght) {
-        this.maxLenght = maxLenght;
-    }
-
-    public double getMaxWidth() {
-        return maxWidth;
-    }
-
-    public void setMaxWidth(double maxWidth) {
-        this.maxWidth = maxWidth;
-    }
-
-    public double getMaxHigh() {
-        return maxHigh;
-    }
-
-    public void setMaxHigh(double maxHigh) {
-        this.maxHigh = maxHigh;
     }
 
     public int getHash() {
@@ -163,26 +98,18 @@ public class Vehicle {
         if (!(o instanceof Vehicle)) return false;
         Vehicle vehicle = (Vehicle) o;
         return getId() == vehicle.getId() &&
-                Double.compare(vehicle.getMaxVolume(), getMaxVolume()) == 0 &&
-                Double.compare(vehicle.getMaxWeight(), getMaxWeight()) == 0 &&
-                Double.compare(vehicle.getMaxLenght(), getMaxLenght()) == 0 &&
-                Double.compare(vehicle.getMaxWidth(), getMaxWidth()) == 0 &&
-                Double.compare(vehicle.getMaxHigh(), getMaxHigh()) == 0 &&
                 getHash() == vehicle.getHash() &&
                 getName().equals(vehicle.getName()) &&
-                getVehicleType() == vehicle.getVehicleType() &&
                 Objects.equals(getRegistration(), vehicle.getRegistration()) &&
-                Objects.equals(getUser(), vehicle.getUser()) &&
+                getUser().equals(vehicle.getUser()) &&
                 Objects.equals(getRegistrationDate(), vehicle.getRegistrationDate()) &&
                 Objects.equals(isActive(), vehicle.isActive());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getVehicleType(), getRegistration(),
-                getMaxVolume(), getMaxWeight(), getMaxLenght(), getMaxWidth(),
-                getMaxHigh(), getHash(), getUser(), getRegistrationDate(),
-                isActive());
+        return Objects.hash(getId(), getName(), getRegistration(), getHash(),
+                getUser(), getRegistrationDate(), isActive());
     }
 
     @Override
@@ -190,13 +117,7 @@ public class Vehicle {
         return "Vehicle{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", vehicleType=" + vehicleType +
                 ", registration='" + registration + '\'' +
-                ", maxVolume=" + maxVolume +
-                ", maxWeight=" + maxWeight +
-                ", maxLenght=" + maxLenght +
-                ", maxWidth=" + maxWidth +
-                ", maxHigh=" + maxHigh +
                 ", hash=" + hash +
                 ", user=" + user +
                 ", registrationDate=" + registrationDate +
