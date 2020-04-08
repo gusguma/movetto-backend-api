@@ -6,9 +6,9 @@ import java.util.Objects;
 @Entity
 public class Car extends VehicleType {
 
-    public String make;
-    public String model;
-    public String description;
+    private String make;
+    private String model;
+    private String description;
 
     public Car() {
         //Empty for Framework
