@@ -37,8 +37,6 @@ public abstract class Service {
         this.vehicle = vehicle;
     }
 
-
-
     public int getId() {
         return id;
     }
