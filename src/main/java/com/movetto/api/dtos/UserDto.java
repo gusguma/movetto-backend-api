@@ -20,6 +20,7 @@ public class UserDto extends UserMinimumDto {
 
     private Set<Role> roles;
     private Set<Direction> directions;
+    private Set<Vehicle> vehicles;
 
     private LocalDateTime registrationDate;
     private boolean active;

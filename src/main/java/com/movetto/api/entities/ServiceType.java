@@ -15,6 +15,7 @@ public abstract class ServiceType extends Service {
     private ServiceTypeEnum serviceType;
 
     public ServiceType() {
+        super();
         this.description = "";
         this.price = 0.0;
     }

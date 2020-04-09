@@ -10,6 +10,7 @@ public class Travel extends ServiceType {
     private LocalDateTime travelDatetime;
 
     public Travel(){
+        super();
         this.people = 1;
         setServiceType(ServiceTypeEnum.TRAVEL);
     }
@@ -26,6 +27,4 @@ public class Travel extends ServiceType {
         setStartDirection(startDirection);
         setEndDirection(endDirection);
     }
-
-
 }

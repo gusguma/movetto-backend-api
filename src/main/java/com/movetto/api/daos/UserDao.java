@@ -13,7 +13,6 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     @Query(value = "select new com.movetto.api.dtos.UserMinimumDto(u.displayName,u.email,u.uid) from User u")
     List<UserMinimumDto> findAllUsers();
-
     Optional<User> findUserByUid(String uid);
     Optional<User> findUserByEmail(String email);
     Optional<List<User>> findUsersByRolesLike(Role role);

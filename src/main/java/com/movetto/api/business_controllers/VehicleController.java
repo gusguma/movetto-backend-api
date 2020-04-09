@@ -3,6 +3,7 @@ package com.movetto.api.business_controllers;
 import com.movetto.api.daos.VehicleDao;
 import com.movetto.api.dtos.VehicleDto;
 import com.movetto.api.entities.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,29 +22,26 @@ public class VehicleController {
         this.vehicleDao = vehicleDao;
     }
 
-    public List<Vehicle> readVehicles(){
-        return vehicleDao.findAll();
+    public ResponseEntity<List<Vehicle>> readVehicles(){
+        return vehicleDao.findAllByActiveTrue()
+                .map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<List<Vehicle>> findUserVehicles(String uid) {
-        return vehicleDao.findVehiclesByUserUid(uid).map(ResponseEntity::ok)
-                .orElseGet(()->ResponseEntity.noContent().build());
-    }
-
-    public ResponseEntity<Vehicle> findVehicleByHash(int hash) {
-        return vehicleDao.findVehicleByHash(hash).map(ResponseEntity::ok)
+    public ResponseEntity<Vehicle> findVehicleById(int id) {
+        return vehicleDao.findVehicleById(id)
+                .map(ResponseEntity::ok)
                 .orElseGet(()->ResponseEntity.noContent().build());
     }
 
     public ResponseEntity<Vehicle> saveVehicle(VehicleDto vehicle){
-        if (findVehicleByHash(vehicle.getHash()).hasBody()) {
+        if (vehicleDao.findVehicleById(vehicle.getId()).isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.FOUND)
                     .build();
         } else {
             Vehicle vehicleCreate = selectVehicle(vehicle);
             setDataVehicle(vehicleCreate,vehicle);
-            vehicleCreate.setHash(vehicleCreate.hashCode());
             vehicleDao.save(vehicleCreate);
             return ResponseEntity.ok(vehicleCreate);
         }
@@ -69,7 +67,7 @@ public class VehicleController {
     }
 
     public ResponseEntity<Vehicle> updateVehicle(VehicleDto vehicle){
-        Optional<Vehicle> vehicleStored = vehicleDao.findVehicleByHash(vehicle.getHash());
+        Optional<Vehicle> vehicleStored = vehicleDao.findVehicleById(vehicle.getId());
         if (vehicleStored.isPresent()){
             Vehicle vehicleUpdate = vehicleStored.get();
             setDataVehicle(vehicleUpdate, vehicle);
@@ -83,11 +81,10 @@ public class VehicleController {
     private void setDataVehicle(Vehicle newVehicle, VehicleDto vehicle) {
         newVehicle.setName(vehicle.getName());
         newVehicle.setRegistration(vehicle.getRegistration());
-
     }
 
-    public ResponseEntity<String> deleteVehicle(int hash) {
-        Optional<Vehicle> optionalVehicle = vehicleDao.findVehicleByHash(hash);
+    public ResponseEntity<String> deleteVehicle(int id) {
+        Optional<Vehicle> optionalVehicle = vehicleDao.findVehicleById(id);
         if (optionalVehicle.isPresent() && optionalVehicle.get().isActive()){
             Vehicle vehicleDelete = optionalVehicle.get();
             vehicleDelete.setActive(false);

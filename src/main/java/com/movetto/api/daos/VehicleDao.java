@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VehicleDao extends JpaRepository<Vehicle,Integer> {
-    Optional<Vehicle> findVehicleByHash(int hash);
-    Optional<List<Vehicle>> findVehiclesByUserUid(String uid);
+
+    Optional<List<Vehicle>> findAllByActiveTrue();
+    Optional<Vehicle> findVehicleById(int id);
 }

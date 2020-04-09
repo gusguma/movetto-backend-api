@@ -1,5 +1,7 @@
 package com.movetto.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -29,11 +31,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Direction> directions;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Vehicle> vehicles;
 
     private LocalDateTime registrationDate;
     private Boolean active;
@@ -42,7 +42,6 @@ public class User {
         this.roles = new HashSet<>();
         roles.add(Role.USER);
         this.directions = new HashSet<>();
-        this.vehicles = new HashSet<>();
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
@@ -130,14 +129,6 @@ public class User {
         this.directions = directions;
     }
 
-    public Set<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(Set<Vehicle> vehicles) {
-        this.vehicles = vehicles;
-    }
-
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
@@ -168,7 +159,6 @@ public class User {
                 Objects.equals(getPartner(), user.getPartner()) &&
                 Objects.equals(getRoles(), user.getRoles()) &&
                 Objects.equals(getDirections(), user.getDirections()) &&
-                Objects.equals(getVehicles(), user.getVehicles()) &&
                 Objects.equals(getRegistrationDate(), user.getRegistrationDate()) &&
                 Objects.equals(active, user.active);
     }
@@ -176,7 +166,7 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getDisplayName(), getEmail(), getUid(), getPhone(),
-                getCustomer(), getPartner(), getRoles(), getDirections(), getVehicles(),
+                getCustomer(), getPartner(), getRoles(), getDirections(),
                 getRegistrationDate(), active);
     }
 
@@ -192,7 +182,6 @@ public class User {
                 ", partner=" + partner +
                 ", roles=" + roles +
                 ", directions=" + directions +
-                ", vehicles=" + vehicles +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +
                 '}';
@@ -243,11 +232,6 @@ public class User {
 
         public Builder directions (Set<Direction> directions){
             user.directions = directions;
-            return this;
-        }
-
-        public Builder vehicles (Set<Vehicle> vehicles){
-            user.vehicles = vehicles;
             return this;
         }
 

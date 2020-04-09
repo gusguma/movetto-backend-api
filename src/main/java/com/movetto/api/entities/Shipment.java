@@ -11,7 +11,7 @@ public class Shipment extends ServiceType {
 
     private LocalDateTime shipmentDatetimeLimit;
 
-    @OneToMany(mappedBy = "shipment", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Package> packages;
 
 

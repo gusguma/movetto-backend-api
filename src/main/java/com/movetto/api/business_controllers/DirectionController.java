@@ -1,8 +1,10 @@
 package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.DirectionDao;
+import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.DirectionDto;
 import com.movetto.api.entities.Direction;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,47 +17,42 @@ import java.util.Optional;
 public class DirectionController {
 
     private DirectionDao directionDao;
+    private UserDao userDao;
 
     @Autowired
-    public DirectionController(DirectionDao directionDao, UserController userController) {
+    public DirectionController(DirectionDao directionDao, UserDao userDao) {
         this.directionDao = directionDao;
+        this.userDao = userDao;
     }
 
     public ResponseEntity<List<Direction>> readDirections(){
-        List<Direction> directions = directionDao.findAll();
-        return (directions.isEmpty()) ? ResponseEntity
-                .noContent().build() : ResponseEntity.ok(directions);
-    }
-
-    public ResponseEntity<List<Direction>> readDirectionsByUid(String uid) {
-        return directionDao.findDirectionsByUserUid(uid)
+        return directionDao.findAllByActiveTrue()
                 .map(ResponseEntity::ok)
-                .orElseGet(()->ResponseEntity.noContent().build());
+                .orElseGet(()->ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Direction> findDirectionByHash(int hash) {
-        return directionDao.findDirectionByHash(hash).map(ResponseEntity::ok)
-                .orElseGet(()->ResponseEntity.noContent().build());
+    public ResponseEntity<Direction> findDirectionById(int id) {
+        return directionDao.findDirectionById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(()->ResponseEntity.notFound().build());
     }
 
     public ResponseEntity<Direction> saveDirection(DirectionDto direction){
-        if (findDirectionByHash(direction.getHash()).hasBody()) {
+        if (directionDao.findDirectionById(direction.getId()).isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.FOUND)
                     .build();
         } else {
             Direction directionCreate = new Direction();
             setDataDirection(directionCreate,direction);
-            directionCreate.setUser(direction.getUser());
-            directionCreate.setHash(directionCreate.hashCode());
             directionDao.save(directionCreate);
             return ResponseEntity.ok(directionCreate);
         }
     }
 
-    public ResponseEntity<Direction> updateDirection(DirectionDto direction){
-        Optional<Direction> directionStored = directionDao.findDirectionByHash(direction.getHash());
-        if (directionStored.isPresent()){
+    public ResponseEntity<Direction> updateDirection(DirectionDto direction) {
+        Optional<Direction> directionStored = directionDao.findDirectionById(direction.getId());
+        if (directionStored.isPresent()) {
             Direction directionUpdate = directionStored.get();
             setDataDirection(directionUpdate, direction);
             directionDao.save(directionUpdate);
@@ -65,8 +62,8 @@ public class DirectionController {
         }
     }
 
-    private void setDataDirection(Direction newDirection, DirectionDto direction) {
-        newDirection.setName(direction.getName());
+    private void setDataDirection (Direction newDirection, DirectionDto direction) {
+        newDirection.setDirectionType(direction.getDirectionType());
         newDirection.setStreet(direction.getStreet());
         newDirection.setPostalCode(direction.getPostalCode());
         newDirection.setCity(direction.getCity());
@@ -75,13 +72,13 @@ public class DirectionController {
         newDirection.setCoordinate(direction.getCoordinate());
     }
 
-    public ResponseEntity<String> deleteDirection(int hash) {
-        Optional<Direction> optionalDirection = directionDao.findDirectionByHash(hash);
-        if (optionalDirection.isPresent() && optionalDirection.get().isActive()){
-            Direction directionDelete = optionalDirection.get();
+    public ResponseEntity<String> deleteDirection(int id) {
+        Optional<Direction> directionStored = directionDao.findDirectionById(id);
+        if (directionStored.isPresent() && directionStored.get().isActive()) {
+            Direction directionDelete = directionStored.get();
             directionDelete.setActive(false);
             directionDao.save(directionDelete);
-            return ResponseEntity.ok("La direccion " + directionDelete.getName() + " se ha eliminado.");
+            return ResponseEntity.ok("La direccion se ha eliminado.");
         } else {
             return ResponseEntity.notFound().build();
         }

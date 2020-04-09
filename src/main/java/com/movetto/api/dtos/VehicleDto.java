@@ -18,7 +18,6 @@ public class VehicleDto {
     private double maxLenght;
     private double maxWidth;
     private double maxHigh;
-    private int hash;
 
     private User user;
 
@@ -27,7 +26,7 @@ public class VehicleDto {
 
     public VehicleDto(int id, @NotNull String name, VehicleTypeEnum vehicleType,
                       String registration, double maxVolume, double maxWeight,
-                      double maxLenght, double maxWidth, double maxHigh, int hash,
+                      double maxLenght, double maxWidth, double maxHigh,
                       User user, LocalDateTime registrationDate, Boolean active) {
         this.id = id;
         this.name = name;
@@ -38,7 +37,6 @@ public class VehicleDto {
         this.maxLenght = maxLenght;
         this.maxWidth = maxWidth;
         this.maxHigh = maxHigh;
-        this.hash = hash;
         this.user = user;
         this.registrationDate = registrationDate;
         this.active = active;
@@ -116,14 +114,6 @@ public class VehicleDto {
         this.maxHigh = maxHigh;
     }
 
-    public int getHash() {
-        return hash;
-    }
-
-    public void setHash(int hash) {
-        this.hash = hash;
-    }
-
     public User getUser() {
         return user;
     }
@@ -160,7 +150,6 @@ public class VehicleDto {
                 ", maxLenght=" + maxLenght +
                 ", maxWidth=" + maxWidth +
                 ", maxHigh=" + maxHigh +
-                ", hash=" + hash +
                 ", user=" + user +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +

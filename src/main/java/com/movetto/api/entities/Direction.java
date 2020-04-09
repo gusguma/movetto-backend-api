@@ -2,9 +2,7 @@ package com.movetto.api.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 public class Direction {
@@ -13,36 +11,28 @@ public class Direction {
     @GeneratedValue
     private int id;
     @Column(nullable = false)
-    private String name;
+    @Enumerated(value = EnumType.STRING)
+    private DirectionType directionType;
     private String street;
     private String postalCode;
     private String city;
     private String state;
     private String country;
-    private int hash;
 
     @Embedded
     private Coordinate coordinate;
-
-    @ManyToOne
-    private User user;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Service> services;
 
     private LocalDateTime registrationDate;
     private boolean active;
 
     public Direction() {
-        this.name = "default";
-        this.hash = hashCode();
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
 
     public Direction(String street, String postalCode, String city,
-                     String state, String country, Coordinate coordinate,
-                     User user) {
+                     String state, String country, Coordinate coordinate
+                     ) {
         this();
         this.street = street;
         this.postalCode = postalCode;
@@ -50,7 +40,6 @@ public class Direction {
         this.state = state;
         this.country = country;
         this.coordinate = coordinate;
-        this.user = user;
     }
 
     public int getId() {
@@ -61,12 +50,12 @@ public class Direction {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public DirectionType getDirectionType() {
+        return directionType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDirectionType(DirectionType directionType) {
+        this.directionType = directionType;
     }
 
     public String getStreet() {
@@ -109,36 +98,12 @@ public class Direction {
         this.country = country;
     }
 
-    public int getHash() {
-        return hash;
-    }
-
-    public void setHash(int hash) {
-        this.hash = hash;
-    }
-
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Service> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Service> services) {
-        this.services = services;
     }
 
     public LocalDateTime getRegistrationDate() {
@@ -163,41 +128,26 @@ public class Direction {
         if (!(o instanceof Direction)) return false;
         Direction direction = (Direction) o;
         return getId() == direction.getId() &&
-                getHash() == direction.getHash() &&
                 isActive() == direction.isActive() &&
-                getName().equals(direction.getName()) &&
                 Objects.equals(getStreet(), direction.getStreet()) &&
                 Objects.equals(getPostalCode(), direction.getPostalCode()) &&
                 Objects.equals(getCity(), direction.getCity()) &&
                 Objects.equals(getState(), direction.getState()) &&
                 Objects.equals(getCountry(), direction.getCountry()) &&
                 Objects.equals(getCoordinate(), direction.getCoordinate()) &&
-                Objects.equals(getUser(), direction.getUser()) &&
-                Objects.equals(getServices(), direction.getServices()) &&
                 Objects.equals(getRegistrationDate(), direction.getRegistrationDate());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getStreet(), getPostalCode(), getCity(),
-                getState(), getCountry(), getHash(), getCoordinate(), getUser(),
-                getServices(), getRegistrationDate(), isActive());
     }
 
     @Override
     public String toString() {
         return "Direction{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", street='" + street + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", country='" + country + '\'' +
-                ", hash=" + hash +
                 ", coordinate=" + coordinate +
-                ", user=" + user +
-                ", services=" + services +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +
                 '}';

@@ -15,7 +15,7 @@ public class VehicleResource {
 
     public static final String VEHICLE = "/vehicles";
 
-    public static final String HASH = "/{hash}";
+    public static final String ID = "/{id}";
 
     private VehicleController vehicleController;
 
@@ -25,13 +25,13 @@ public class VehicleResource {
     }
 
     @GetMapping
-    public List<Vehicle> findAllVehicles(){
+    public ResponseEntity<List<Vehicle>> findAllVehicles(){
         return vehicleController.readVehicles();
     }
 
-    @GetMapping(value = HASH)
-    public ResponseEntity<Vehicle> findVehicleByHash(@PathVariable int hash){
-        return vehicleController.findVehicleByHash(hash);
+    @GetMapping(value = ID)
+    public ResponseEntity<Vehicle> findVehicleById(@PathVariable int id){
+        return vehicleController.findVehicleById(id);
     }
 
     @PostMapping
@@ -44,8 +44,8 @@ public class VehicleResource {
         return vehicleController.updateVehicle(vehicle);
     }
 
-    @DeleteMapping(value = HASH)
-    public ResponseEntity<String> deleteDirectionByHash(@PathVariable int hash){
-        return vehicleController.deleteVehicle(hash);
+    @DeleteMapping(value = ID)
+    public ResponseEntity<String> deleteDirectionByHash(@PathVariable int id){
+        return vehicleController.deleteVehicle(id);
     }
 }
