@@ -10,14 +10,15 @@ public class Direction {
     @Id
     @GeneratedValue
     private int id;
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private DirectionType directionType;
     private String street;
     private String postalCode;
     private String city;
     private String state;
     private String country;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private DirectionType directionType;
 
     @Embedded
     private Coordinate coordinate;
@@ -31,8 +32,8 @@ public class Direction {
     }
 
     public Direction(String street, String postalCode, String city,
-                     String state, String country, Coordinate coordinate
-                     ) {
+                     String state, String country, Coordinate coordinate,
+                     DirectionType directionType) {
         this();
         this.street = street;
         this.postalCode = postalCode;
@@ -40,6 +41,7 @@ public class Direction {
         this.state = state;
         this.country = country;
         this.coordinate = coordinate;
+        this.directionType = directionType;
     }
 
     public int getId() {
@@ -48,14 +50,6 @@ public class Direction {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public DirectionType getDirectionType() {
-        return directionType;
-    }
-
-    public void setDirectionType(DirectionType directionType) {
-        this.directionType = directionType;
     }
 
     public String getStreet() {
@@ -104,6 +98,14 @@ public class Direction {
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
+    }
+
+    public DirectionType getDirectionType() {
+        return directionType;
+    }
+
+    public void setDirectionType(DirectionType directionType) {
+        this.directionType = directionType;
     }
 
     public LocalDateTime getRegistrationDate() {

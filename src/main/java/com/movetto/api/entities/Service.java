@@ -29,11 +29,14 @@ public abstract class Service {
         this.active = true;
     }
 
-    public Service(Customer customer, Partner partner, Vehicle vehicle){
+    public Service(Customer customer, Partner partner, Vehicle vehicle,
+                   Direction startDirection, Direction endDirection){
         this();
         this.customer = customer;
         this.partner = partner;
         this.vehicle = vehicle;
+        this.startDirection = startDirection;
+        this.endDirection = endDirection;
     }
 
     public int getId() {

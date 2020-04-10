@@ -1,13 +1,11 @@
-package com.movetto.api.entities;
+package com.movetto.api.dtos;
+
+import com.movetto.api.entities.VehicleTypeEnum;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
-import java.util.Objects;
 
-@MappedSuperclass
-public abstract class VehicleType extends Vehicle {
-
+public abstract class VehicleTypeDto extends VehicleDto {
     private double maxVolume; // m3
     private double maxWeight; // Kg
     private double maxLenght; // cm
@@ -18,7 +16,7 @@ public abstract class VehicleType extends Vehicle {
     @Enumerated(value = EnumType.STRING)
     private VehicleTypeEnum vehicleTypeEnum;
 
-    public VehicleType() {
+    public VehicleTypeDto() {
         super();
         placesAvailable = 0;
     }
@@ -80,34 +78,15 @@ public abstract class VehicleType extends Vehicle {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof VehicleType)) return false;
-        if (!super.equals(o)) return false;
-        VehicleType that = (VehicleType) o;
-        return Double.compare(that.getMaxVolume(), getMaxVolume()) == 0 &&
-                Double.compare(that.getMaxWeight(), getMaxWeight()) == 0 &&
-                Double.compare(that.getMaxLenght(), getMaxLenght()) == 0 &&
-                Double.compare(that.getMaxWidth(), getMaxWidth()) == 0 &&
-                Double.compare(that.getMaxHigh(), getMaxHigh()) == 0 &&
-                getPlacesAvailable() == that.getPlacesAvailable();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getMaxVolume(), getMaxWeight(),
-                getMaxLenght(), getMaxWidth(), getMaxHigh(), getPlacesAvailable());
-    }
-
-    @Override
     public String toString() {
-        return "VehicleType{" +
+        return "VehicleTypeDto{" +
                 "maxVolume=" + maxVolume +
                 ", maxWeight=" + maxWeight +
                 ", maxLenght=" + maxLenght +
                 ", maxWidth=" + maxWidth +
                 ", maxHigh=" + maxHigh +
                 ", placesAvailable=" + placesAvailable +
+                ", vehicleTypeEnum=" + vehicleTypeEnum +
                 '}';
     }
 }

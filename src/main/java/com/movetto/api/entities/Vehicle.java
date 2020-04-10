@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Vehicle {
 
     @Id
@@ -23,10 +23,6 @@ public abstract class Vehicle {
         this.name = "DEFAULT";
         this.registrationDate = LocalDateTime.now();
         this.active = true;
-    }
-
-    public Vehicle(User user){
-        this();
     }
 
     public int getId() {

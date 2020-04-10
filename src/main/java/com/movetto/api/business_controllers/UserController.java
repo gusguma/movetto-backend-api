@@ -50,7 +50,7 @@ public class UserController {
         Optional<User> userExist = userDao.findUserByUid(user.getUid());
         if (userExist.isPresent()){
             return ResponseEntity
-                    .status(HttpStatus.FOUND)
+                    .status(HttpStatus.CONFLICT)
                     .build();
         } else {
             User userCreate = new User();
