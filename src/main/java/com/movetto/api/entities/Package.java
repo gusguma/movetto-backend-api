@@ -1,7 +1,6 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
