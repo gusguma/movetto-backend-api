@@ -18,11 +18,13 @@ import java.util.List;
 public class UserResource {
     public static final String USERS = "/users";
 
-    public static final String UID = "/{uid}";
+    public static final String USER_UID = "/{uid}";
     public static final String CUSTOMERS = "/customers";
     public static final String PARTNERS = "/partners";
     public static final String DIRECTIONS = "/directions";
     public static final String VEHICLES = "/vehicles";
+    public static final String USER_ID = "/{user_id}";
+
 
     private UserController userController;
     private CustomerController customerController;
@@ -44,11 +46,11 @@ public class UserResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserMinimumDto>> findAllUsers(){
+    public List<UserMinimumDto> findAllUsers(){
         return userController.readUsers();
     }
 
-    @GetMapping(value = UID)
+    @GetMapping(value = USER_UID)
     public ResponseEntity<User> findUserByUid(@PathVariable String uid){
         return userController.readUserByUid(uid);
     }
@@ -63,7 +65,7 @@ public class UserResource {
         return userController.updateUser(user);
     }
 
-    @DeleteMapping(value = UID)
+    @DeleteMapping(value = USER_UID)
     public ResponseEntity<String> deleteUser(@PathVariable String uid){
         return userController.deleteUser(uid);
     }
@@ -73,7 +75,7 @@ public class UserResource {
         return customerController.readCustomers();
     }
 
-    @GetMapping(value = CUSTOMERS + UID)
+    @GetMapping(value = CUSTOMERS + USER_UID)
     public ResponseEntity<User> findUserCustomer(@PathVariable String uid){
         return customerController.readCustomer(uid, Role.CUSTOMER);
     }
@@ -88,7 +90,7 @@ public class UserResource {
         return customerController.updateCustomer(user);
     }
 
-    @DeleteMapping(value = CUSTOMERS + UID)
+    @DeleteMapping(value = CUSTOMERS + USER_UID)
     public ResponseEntity<String> deleteCustomer(@PathVariable String uid){
         return customerController.deleteCustomer(uid);
     }
@@ -98,7 +100,7 @@ public class UserResource {
         return partnerController.readPartners();
     }
 
-    @GetMapping(value = PARTNERS + UID)
+    @GetMapping(value = PARTNERS + USER_UID)
     public ResponseEntity<User> findUserPartner(@PathVariable String uid){
         return partnerController.readPartner(uid, Role.PARTNER);
     }
@@ -113,18 +115,20 @@ public class UserResource {
         return partnerController.updatePartner(user);
     }
 
-    @DeleteMapping(value = PARTNERS + UID)
+    @DeleteMapping(value = PARTNERS + USER_UID)
     public ResponseEntity<String> deletePartner(@PathVariable String uid){
         return partnerController.deletePartner(uid);
     }
-
-    @GetMapping(value = UID + DIRECTIONS)
-    public ResponseEntity<List<Direction>> findUserDirections(@PathVariable String uid){
-        return directionController.readDirectionsByUid(uid);
+/*
+    @GetMapping(value = USER_ID + DIRECTIONS)
+    public ResponseEntity<List<Direction>> findUserDirections(@PathVariable int user_id){
+        return directionController.readDirectionsByUserId(user_id);
     }
 
-    @GetMapping(value = UID + VEHICLES)
-    public ResponseEntity<List<Vehicle>> findUserVehicles(@PathVariable String uid){
-        return vehicleController.findUserVehicles(uid);
+    @GetMapping(value = USER_ID + VEHICLES)
+    public ResponseEntity<List<Vehicle>> findUserVehicles(@PathVariable int user_id){
+        return vehicleController.readVehiclesByUserId(user_id);
     }
+
+ */
 }

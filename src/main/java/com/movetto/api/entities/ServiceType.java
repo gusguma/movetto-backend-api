@@ -15,12 +15,16 @@ public abstract class ServiceType extends Service {
     private ServiceTypeEnum serviceType;
 
     public ServiceType() {
+        super();
         this.description = "";
         this.price = 0.0;
     }
 
-    public ServiceType(Customer customer, Partner partner, Vehicle vehicle) {
-        super(customer, partner, vehicle);
+    public ServiceType(Customer customer, Partner partner, Vehicle vehicle,
+                       Direction start, Direction finish) {
+        super(customer, partner, vehicle, start, finish);
+        this.description = "";
+        this.price = 0.0;
     }
 
     public String getDescription() {

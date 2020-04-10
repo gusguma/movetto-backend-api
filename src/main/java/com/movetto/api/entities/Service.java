@@ -10,31 +10,33 @@ public abstract class Service {
     @Id
     @GeneratedValue
     private int id;
-    @ManyToOne
-    private Direction startDirection;
-    @ManyToOne
-    private Direction endDirection;
     @Embedded
     private Customer customer;
     @Embedded
     private Partner partner;
-    @OneToOne
+    @ManyToOne
+    private Direction startDirection;
+    @ManyToOne
+    private Direction endDirection;
+    @ManyToOne
     private Vehicle vehicle;
 
     private LocalDateTime registrationDate;
     private Boolean active;
 
     public Service() {
-        //Empty for Framework
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
 
-    public Service(Customer customer, Partner partner, Vehicle vehicle){
+    public Service(Customer customer, Partner partner, Vehicle vehicle,
+                   Direction startDirection, Direction endDirection){
         this();
         this.customer = customer;
         this.partner = partner;
         this.vehicle = vehicle;
+        this.startDirection = startDirection;
+        this.endDirection = endDirection;
     }
 
     public int getId() {

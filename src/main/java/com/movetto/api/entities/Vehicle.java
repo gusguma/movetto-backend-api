@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Vehicle {
 
     @Id
@@ -15,25 +15,14 @@ public abstract class Vehicle {
     private String name;
     @Column(unique = true)
     private String registration;
-    @Column(unique = true)
-    private int hash;
-
-    @ManyToOne
-    private User user;
 
     private LocalDateTime registrationDate;
     private Boolean active;
 
     public Vehicle() {
-        this.name = "default";
-        this.hash = hashCode();
+        this.name = "DEFAULT";
         this.registrationDate = LocalDateTime.now();
         this.active = true;
-    }
-
-    public Vehicle(User user){
-        this();
-        this.user = user;
     }
 
     public int getId() {
@@ -60,22 +49,6 @@ public abstract class Vehicle {
         this.registration = registration;
     }
 
-    public int getHash() {
-        return hash;
-    }
-
-    public void setHash(int hash) {
-        this.hash = hash;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
@@ -98,18 +71,16 @@ public abstract class Vehicle {
         if (!(o instanceof Vehicle)) return false;
         Vehicle vehicle = (Vehicle) o;
         return getId() == vehicle.getId() &&
-                getHash() == vehicle.getHash() &&
                 getName().equals(vehicle.getName()) &&
                 Objects.equals(getRegistration(), vehicle.getRegistration()) &&
-                getUser().equals(vehicle.getUser()) &&
                 Objects.equals(getRegistrationDate(), vehicle.getRegistrationDate()) &&
                 Objects.equals(isActive(), vehicle.isActive());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getRegistration(), getHash(),
-                getUser(), getRegistrationDate(), isActive());
+        return Objects.hash(getId(), getName(), getRegistration(),
+                getRegistrationDate(), isActive());
     }
 
     @Override
@@ -118,8 +89,6 @@ public abstract class Vehicle {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", registration='" + registration + '\'' +
-                ", hash=" + hash +
-                ", user=" + user +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +
                 '}';

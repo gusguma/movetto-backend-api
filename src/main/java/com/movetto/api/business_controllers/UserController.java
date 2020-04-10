@@ -5,6 +5,7 @@ import com.movetto.api.dtos.UserDto;
 import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,8 @@ public class UserController {
         this.userDao = userDao;
     }
 
-    public ResponseEntity<List<UserMinimumDto>> readUsers(){
-        List<UserMinimumDto> users = userDao.findAllUsers();
-        return (users.isEmpty()) ? ResponseEntity
-                .noContent().build() : ResponseEntity.ok(users);
+    public List<UserMinimumDto> readUsers(){
+        return userDao.findAllUsers();
     }
 
     public ResponseEntity<User> readUserByUid(String uid){
@@ -51,7 +50,7 @@ public class UserController {
         Optional<User> userExist = userDao.findUserByUid(user.getUid());
         if (userExist.isPresent()){
             return ResponseEntity
-                    .status(HttpStatus.FOUND)
+                    .status(HttpStatus.CONFLICT)
                     .build();
         } else {
             User userCreate = new User();

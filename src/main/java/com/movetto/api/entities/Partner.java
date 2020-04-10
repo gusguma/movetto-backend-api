@@ -1,8 +1,14 @@
 package com.movetto.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Embeddable
 public class Partner {
@@ -12,6 +18,10 @@ public class Partner {
     @Column(unique = true)
     private String driverId;
 
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Vehicle> vehicles;
+
     public Partner() {
         //Empty for Framework
     }
@@ -19,6 +29,7 @@ public class Partner {
     public Partner(User user) {
         this.partnerId = user.getPartner().partnerId;
         this.driverId = user.getPartner().driverId;
+        this.vehicles = new HashSet<>();
         user.getRoles().add(Role.PARTNER);
     }
 
@@ -36,6 +47,14 @@ public class Partner {
 
     public void setDriverId(String driverId) {
         this.driverId = driverId;
+    }
+
+    public Set<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Set<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     @Override

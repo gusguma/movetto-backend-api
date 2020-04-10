@@ -1,6 +1,8 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
+import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,19 +19,21 @@ public class Package {
     @Enumerated(value = EnumType.STRING)
     private PackageStatus status;
 
-    @ManyToOne()
-    private Shipment shipment;
+    private LocalDateTime registrationDate;
+    private Boolean active;
 
     public Package() {
-        //Empty for Framework
+        this.status = PackageStatus.PREPARED;
+        this.registrationDate = LocalDateTime.now();
+        this.active = true;
     }
 
     public Package(double weight, double width, double lenght, double high){
+        this();
         this.weight = weight;
         this.width = width;
         this.lenght = lenght;
         this.high = high;
-        this.status = PackageStatus.PREPARED;
     }
 
     public int getId() {
@@ -80,14 +84,6 @@ public class Package {
         this.status = status;
     }
 
-    public Shipment getShipment() {
-        return shipment;
-    }
-
-    public void setShipment(Shipment shipment) {
-        this.shipment = shipment;
-    }
-
     public double getVolume(){
         return width * lenght * high;
     }
@@ -102,14 +98,13 @@ public class Package {
                 Double.compare(aPackage.getWidth(), getWidth()) == 0 &&
                 Double.compare(aPackage.getLenght(), getLenght()) == 0 &&
                 Double.compare(aPackage.getHigh(), getHigh()) == 0 &&
-                getStatus() == aPackage.getStatus() &&
-                getShipment().equals(aPackage.getShipment());
+                getStatus() == aPackage.getStatus();
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getWeight(), getWidth(), getLenght(),
-                getHigh(), getStatus(), getShipment());
+                getHigh(), getStatus());
     }
 
     @Override
@@ -121,7 +116,6 @@ public class Package {
                 ", lenght=" + lenght +
                 ", high=" + high +
                 ", status=" + status +
-                ", shipment=" + shipment +
                 '}';
     }
 }

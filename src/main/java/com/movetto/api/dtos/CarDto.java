@@ -1,16 +1,14 @@
-package com.movetto.api.entities;
+package com.movetto.api.dtos;
 
-import javax.persistence.Entity;
-import java.util.Objects;
+import com.movetto.api.entities.VehicleTypeEnum;
 
-@Entity
-public class Car extends VehicleType {
+public class CarDto extends VehicleTypeDto {
 
     private String make;
     private String model;
     private String description;
 
-    public Car() {
+    public CarDto() {
         super();
         setMaxVolume(0.5);
         setMaxWeight(250.0);
@@ -24,7 +22,7 @@ public class Car extends VehicleType {
         this.setVehicleTypeEnum(VehicleTypeEnum.CAR);
     }
 
-    public Car (String registration, String make, String model, String description){
+    public CarDto (String registration, String make, String model, String description){
         this();
         this.setRegistration(registration);
         this.make = make;
@@ -57,24 +55,8 @@ public class Car extends VehicleType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Car)) return false;
-        if (!super.equals(o)) return false;
-        Car car = (Car) o;
-        return Objects.equals(getMake(), car.getMake()) &&
-                Objects.equals(getModel(), car.getModel()) &&
-                Objects.equals(getDescription(), car.getDescription());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getMake(), getModel(), getDescription());
-    }
-
-    @Override
     public String toString() {
-        return "Car{" +
+        return "CarDto{" +
                 "make='" + make + '\'' +
                 ", model='" + model + '\'' +
                 ", description='" + description + '\'' +

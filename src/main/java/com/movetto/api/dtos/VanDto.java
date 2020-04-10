@@ -1,19 +1,14 @@
-package com.movetto.api.entities;
+package com.movetto.api.dtos;
 
-import javax.persistence.Entity;
-import java.util.Objects;
-
-@Entity
-public class Car extends VehicleType {
+public class VanDto extends VehicleTypeDto {
 
     private String make;
     private String model;
     private String description;
 
-    public Car() {
-        super();
-        setMaxVolume(0.5);
-        setMaxWeight(250.0);
+    public VanDto() {
+        setMaxVolume(1.5);
+        setMaxWeight(160.0);
         setMaxLenght(200.0);
         setMaxWidth(200.0);
         setMaxHigh(200.0);
@@ -21,15 +16,13 @@ public class Car extends VehicleType {
         this.model = "";
         this.description = "";
         this.setPlacesAvailable(4);
-        this.setVehicleTypeEnum(VehicleTypeEnum.CAR);
     }
 
-    public Car (String registration, String make, String model, String description){
+    public VanDto (String registration, String make, String model){
         this();
         this.setRegistration(registration);
         this.make = make;
         this.model = model;
-        this.description = description;
     }
 
     public String getMake() {
@@ -57,24 +50,8 @@ public class Car extends VehicleType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Car)) return false;
-        if (!super.equals(o)) return false;
-        Car car = (Car) o;
-        return Objects.equals(getMake(), car.getMake()) &&
-                Objects.equals(getModel(), car.getModel()) &&
-                Objects.equals(getDescription(), car.getDescription());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getMake(), getModel(), getDescription());
-    }
-
-    @Override
     public String toString() {
-        return "Car{" +
+        return "VanDto{" +
                 "make='" + make + '\'' +
                 ", model='" + model + '\'' +
                 ", description='" + description + '\'' +

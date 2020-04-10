@@ -15,7 +15,7 @@ public class DirectionResource {
 
     public static final String DIRECTION = "/directions";
 
-    public static final String HASH = "/{hash}";
+    public static final String ID = "/{id}";
 
     private DirectionController directionController;
 
@@ -29,11 +29,9 @@ public class DirectionResource {
         return directionController.readDirections();
     }
 
-
-
-    @GetMapping(value = HASH)
-    public ResponseEntity<Direction> findDirectionByHash(@PathVariable int hash){
-        return directionController.findDirectionByHash(hash);
+    @GetMapping(value = ID)
+    public ResponseEntity<Direction> findDirectionById(@PathVariable int id){
+        return directionController.findDirectionById(id);
     }
 
     @PostMapping
@@ -46,8 +44,8 @@ public class DirectionResource {
         return directionController.updateDirection(direction);
     }
 
-    @DeleteMapping(value = HASH)
-    public ResponseEntity<String> deleteDirectionByHash(@PathVariable int hash){
-        return directionController.deleteDirection(hash);
+    @DeleteMapping(value = ID)
+    public ResponseEntity<String> deleteDirectionById(@PathVariable int id){
+        return directionController.deleteDirection(id);
     }
 }

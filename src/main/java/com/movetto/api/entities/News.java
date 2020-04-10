@@ -1,8 +1,9 @@
 package com.movetto.api.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class News {
@@ -10,6 +11,12 @@ public class News {
     @Id
     @GeneratedValue
     private int id;
+
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<User> users;
+
+
 
 
 

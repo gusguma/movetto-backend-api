@@ -11,12 +11,6 @@ public class Van extends VehicleType {
     private String description;
 
     public Van() {
-        //Empty for Framework
-    }
-
-    public Van(User user, String registration) {
-        super(user);
-        setRegistration(registration);
         setMaxVolume(1.5);
         setMaxWeight(160.0);
         setMaxLenght(200.0);
@@ -25,11 +19,12 @@ public class Van extends VehicleType {
         this.make = "";
         this.model = "";
         this.description = "";
-        this.setPlacesAvailable(6);
+        this.setPlacesAvailable(4);
     }
 
-    public Van (User user, String registration, String make, String model){
-        this(user, registration);
+    public Van (String registration, String make, String model){
+        this();
+        this.setRegistration(registration);
         this.make = make;
         this.model = model;
     }
