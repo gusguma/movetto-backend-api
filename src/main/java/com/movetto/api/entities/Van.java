@@ -11,6 +11,7 @@ public class Van extends VehicleType {
     private String description;
 
     public Van() {
+        super();
         setMaxVolume(1.5);
         setMaxWeight(160.0);
         setMaxLenght(200.0);
@@ -19,14 +20,16 @@ public class Van extends VehicleType {
         this.make = "";
         this.model = "";
         this.description = "";
-        this.setPlacesAvailable(4);
+        this.setPlacesAvailable(2);
+        this.setVehicleTypeEnum(VehicleTypeEnum.VAN);
     }
 
-    public Van (String registration, String make, String model){
+    public Van (String registration, String make, String model, String description){
         this();
         this.setRegistration(registration);
         this.make = make;
         this.model = model;
+        this.description = description;
     }
 
     public String getMake() {

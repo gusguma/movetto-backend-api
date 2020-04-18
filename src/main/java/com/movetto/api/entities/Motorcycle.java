@@ -11,6 +11,7 @@ public class Motorcycle extends VehicleType {
     private String description;
 
     public Motorcycle() {
+        super();
         setMaxVolume(0.13);
         setMaxWeight(80.0);
         setMaxLenght(50.0);

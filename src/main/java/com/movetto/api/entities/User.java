@@ -1,7 +1,5 @@
 package com.movetto.api.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -31,8 +29,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @JsonManagedReference
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Direction> directions;
 
     private LocalDateTime registrationDate;
