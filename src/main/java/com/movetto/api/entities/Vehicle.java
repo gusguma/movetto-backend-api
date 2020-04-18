@@ -1,9 +1,21 @@
 package com.movetto.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Bike.class, name = "Bike"),
+        @JsonSubTypes.Type(value = Car.class, name = "Car"),
+        @JsonSubTypes.Type(value = Motorcycle.class, name = "Motorcycle"),
+        @JsonSubTypes.Type(value = Van.class, name = "Van")
+})
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Vehicle {

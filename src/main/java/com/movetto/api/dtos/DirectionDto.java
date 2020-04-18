@@ -12,31 +12,26 @@ public class DirectionDto {
 
     @NotNull
     private int id;
-    @NotNull
-    private DirectionType directionType;
     private String street;
     @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.POSTAL_CODE)
     private String postalCode;
     private String city;
     private String state;
     private String country;
-    private int hash;
+    @NotNull
+    private DirectionType directionType;
 
     private Coordinate coordinate;
 
-    @NotNull
-    private User user;
-
-    private LocalDateTime localDateTime;
+    private LocalDateTime registrationDate;
     private boolean active;
 
     public DirectionDto(){
         //Empty for Framework
     }
 
-    public DirectionDto(User user, DirectionType directionType){
+    public DirectionDto(DirectionType directionType){
         this.directionType = directionType;
-        this.user = user;
     }
 
     public int getId() {
@@ -95,14 +90,6 @@ public class DirectionDto {
         this.country = country;
     }
 
-    public int getHash() {
-        return hash;
-    }
-
-    public void setHash(int hash) {
-        this.hash = hash;
-    }
-
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -111,20 +98,12 @@ public class DirectionDto {
         this.coordinate = coordinate;
     }
 
-    public User getUser() {
-        return user;
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
-
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setRegistrationDate(LocalDateTime registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     public boolean isActive() {

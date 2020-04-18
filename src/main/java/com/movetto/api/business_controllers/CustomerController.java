@@ -1,7 +1,10 @@
 package com.movetto.api.business_controllers;
 
+import com.movetto.api.daos.DirectionDao;
 import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.UserDto;
+import com.movetto.api.entities.Direction;
+import com.movetto.api.entities.DirectionType;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 
@@ -12,16 +15,19 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class CustomerController extends UserController {
 
     private UserDao customerDao;
+    private DirectionDao directionDao;
 
     @Autowired
-    public CustomerController(UserDao userDao) {
+    public CustomerController(UserDao userDao, DirectionDao directionDao) {
         super(userDao);
         this.customerDao = userDao;
+        this.directionDao = directionDao;
     }
 
     public ResponseEntity<List<User>> readCustomers(){
@@ -45,9 +51,8 @@ public class CustomerController extends UserController {
                     .status(HttpStatus.FOUND).build();
         } else if (userExist.isPresent()){
             User userCustomerNew = userExist.get();
-            userCustomerNew.setCustomer(user.getCustomer());
+            setCustomerData(userCustomerNew, user);
             userCustomerNew.getRoles().add(Role.CUSTOMER);
-            userCustomerNew.setDirections(user.getDirections());//TODO
             customerDao.save(userCustomerNew);
             return ResponseEntity.ok(userCustomerNew);
         } else {
@@ -60,8 +65,7 @@ public class CustomerController extends UserController {
                 .findUserByUidAndRolesLike(user.getUid(),Role.CUSTOMER);
         if (userExist.isPresent()){
             User userCustomerUpdated = userExist.get();
-            userCustomerUpdated.setCustomer(user.getCustomer());
-            userCustomerUpdated.setDirections(user.getDirections());//TODO
+            setCustomerData(userCustomerUpdated, user);
             customerDao.save(userCustomerUpdated);
             return ResponseEntity.ok(userCustomerUpdated);
         } else {
@@ -79,5 +83,13 @@ public class CustomerController extends UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private User setCustomerData(User updateUser, UserDto userInput){
+        updateUser.setDisplayName(userInput.getDisplayName());
+        updateUser.setPhone(userInput.getPhone());
+        updateUser.setCustomer(userInput.getCustomer());
+        updateUser.setDirections(userInput.getDirections());
+        return updateUser;
     }
 }

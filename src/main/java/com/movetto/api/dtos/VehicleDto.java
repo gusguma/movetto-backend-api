@@ -1,15 +1,6 @@
 package com.movetto.api.dtos;
 
-import com.movetto.api.entities.User;
-import com.movetto.api.entities.Vehicle;
-import com.movetto.api.entities.VehicleTypeEnum;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public abstract class VehicleDto {
 

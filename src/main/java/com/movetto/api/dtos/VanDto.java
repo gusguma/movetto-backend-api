@@ -1,5 +1,7 @@
 package com.movetto.api.dtos;
 
+import com.movetto.api.entities.VehicleTypeEnum;
+
 public class VanDto extends VehicleTypeDto {
 
     private String make;
@@ -16,13 +18,15 @@ public class VanDto extends VehicleTypeDto {
         this.model = "";
         this.description = "";
         this.setPlacesAvailable(4);
+        this.setVehicleTypeEnum(VehicleTypeEnum.VAN);
     }
 
-    public VanDto (String registration, String make, String model){
+    public VanDto (String registration, String make, String model, String description){
         this();
         this.setRegistration(registration);
         this.make = make;
         this.model = model;
+        this.description = description;
     }
 
     public String getMake() {

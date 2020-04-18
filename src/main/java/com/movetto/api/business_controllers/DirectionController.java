@@ -5,6 +5,7 @@ import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.DirectionDto;
 import com.movetto.api.entities.Direction;
 
+import com.movetto.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class DirectionController {
+public class DirectionController{
 
     private DirectionDao directionDao;
     private UserDao userDao;
@@ -37,16 +38,22 @@ public class DirectionController {
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Direction> saveDirection(DirectionDto direction){
-        if (directionDao.findDirectionById(direction.getId()).isPresent()) {
-            return ResponseEntity
-                    .status(HttpStatus.FOUND)
-                    .build();
+    public ResponseEntity<Direction> saveDirection(DirectionDto direction, String uid){
+        Optional<User> user = userDao.findUserByUid(uid);
+        Optional<Direction> directionStored = directionDao.findDirectionById(direction.getId());
+        if (user.isPresent()) {
+            if (!directionStored.isPresent()){
+                User userUpdate = user.get();
+                Direction directionCreate = new Direction();
+                setDataDirection(directionCreate,direction);
+                userUpdate.getDirections().add(directionCreate);
+                userDao.save(userUpdate);
+                return ResponseEntity.ok(directionCreate);
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
         } else {
-            Direction directionCreate = new Direction();
-            setDataDirection(directionCreate,direction);
-            directionDao.save(directionCreate);
-            return ResponseEntity.ok(directionCreate);
+            return ResponseEntity.notFound().build();
         }
     }
 

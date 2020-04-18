@@ -16,6 +16,8 @@ public class DirectionResource {
     public static final String DIRECTION = "/directions";
 
     public static final String ID = "/{id}";
+    public static final String UID = "/{uid}";
+
 
     private DirectionController directionController;
 
@@ -34,9 +36,9 @@ public class DirectionResource {
         return directionController.findDirectionById(id);
     }
 
-    @PostMapping
-    public ResponseEntity<Direction> saveDirection(@RequestBody DirectionDto direction){
-        return directionController.saveDirection(direction);
+    @PostMapping(value = UID)
+    public ResponseEntity<Direction> saveDirection(@RequestBody DirectionDto direction, @PathVariable String uid){
+        return directionController.saveDirection(direction, uid);
     }
 
     @PutMapping

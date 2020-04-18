@@ -14,10 +14,8 @@ public class UserDto extends UserMinimumDto {
 
     @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.MOBILE_NUMBER)
     private String phone;
-
     private Customer customer;
     private Partner partner;
-
     private Set<Role> roles;
     private Set<Direction> directions;
     private Set<Vehicle> vehicles;
