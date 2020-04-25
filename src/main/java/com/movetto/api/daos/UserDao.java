@@ -3,6 +3,7 @@ package com.movetto.api.daos;
 import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
+import com.movetto.api.entities.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
