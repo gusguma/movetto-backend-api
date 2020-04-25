@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(UserResource.USERS)
@@ -23,8 +24,6 @@ public class UserResource {
     public static final String PARTNERS = "/partners";
     public static final String DIRECTIONS = "/directions";
     public static final String VEHICLES = "/vehicles";
-    public static final String USER_ID = "/{user_id}";
-
 
     private UserController userController;
     private CustomerController customerController;
@@ -119,16 +118,14 @@ public class UserResource {
     public ResponseEntity<String> deletePartner(@PathVariable String uid){
         return partnerController.deletePartner(uid);
     }
-/*
-    @GetMapping(value = USER_ID + DIRECTIONS)
-    public ResponseEntity<List<Direction>> findUserDirections(@PathVariable int user_id){
-        return directionController.readDirectionsByUserId(user_id);
+
+    @GetMapping(value = USER_UID + DIRECTIONS)
+    public ResponseEntity<Set<Direction>> findUserDirections(@PathVariable String uid){
+        return userController.findUserDirectionsByUid(uid);
     }
 
-    @GetMapping(value = USER_ID + VEHICLES)
-    public ResponseEntity<List<Vehicle>> findUserVehicles(@PathVariable int user_id){
-        return vehicleController.readVehiclesByUserId(user_id);
+    @GetMapping(value = USER_UID + VEHICLES)
+    public ResponseEntity<Set<Vehicle>> findUserVehicles(@PathVariable String uid){
+        return partnerController.findUserVehiclesByUid(uid);
     }
-
- */
 }

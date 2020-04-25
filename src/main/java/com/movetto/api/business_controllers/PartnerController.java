@@ -2,9 +2,11 @@ package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.UserDto;
+import com.movetto.api.entities.Direction;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 
+import com.movetto.api.entities.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class PartnerController extends UserController {
@@ -80,4 +83,16 @@ public class PartnerController extends UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    public ResponseEntity<Set<Vehicle>> findUserVehiclesByUid(String  uid){
+        Optional<User> user = partnerDao.findUserByUidAndRolesLike(uid, Role.PARTNER);
+        if (user.isPresent()){
+            Set<Vehicle> vehicles = user.get().getPartner().getVehicles();
+            return ResponseEntity.ok(vehicles);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.movetto.api.business_controllers;
 import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.UserDto;
 import com.movetto.api.dtos.UserMinimumDto;
+import com.movetto.api.entities.Direction;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -86,6 +88,16 @@ public class UserController {
             user.setActive(false);
             userDao.save(user);
             return ResponseEntity.ok("El usuario " + user.getDisplayName() + " se ha eliminado");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public ResponseEntity<Set<Direction>> findUserDirectionsByUid(String  uid){
+        Optional<User> user = userDao.findUserByUid(uid);
+        if (user.isPresent()){
+            Set<Direction> directions = user.get().getDirections();
+            return ResponseEntity.ok(directions);
         } else {
             return ResponseEntity.notFound().build();
         }
