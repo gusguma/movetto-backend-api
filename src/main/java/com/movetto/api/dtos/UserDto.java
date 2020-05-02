@@ -78,6 +78,14 @@ public class UserDto extends UserMinimumDto {
         this.directions = directions;
     }
 
+    public Set<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Set<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }

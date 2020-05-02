@@ -2,7 +2,6 @@ package com.movetto.api.dtos;
 
 import com.movetto.api.entities.Coordinate;
 import com.movetto.api.entities.DirectionType;
-import com.movetto.api.entities.User;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 
 public class DirectionDto {
 
-    @NotNull
     private int id;
     private String street;
     @Pattern(regexp = com.movetto.api.dtos.validations.Pattern.POSTAL_CODE)
@@ -27,10 +25,11 @@ public class DirectionDto {
     private boolean active;
 
     public DirectionDto(){
+        directionType = DirectionType.USER;
         //Empty for Framework
     }
 
-    public DirectionDto(DirectionType directionType){
+    public DirectionDto(@NotNull DirectionType directionType){
         this.directionType = directionType;
     }
 

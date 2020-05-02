@@ -3,7 +3,6 @@ package com.movetto.api.business_controllers;
 import com.movetto.api.daos.CarDao;
 import com.movetto.api.daos.VehicleDao;
 import com.movetto.api.dtos.CarDto;
-import com.movetto.api.entities.Bike;
 import com.movetto.api.entities.Car;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -16,8 +15,8 @@ import java.util.Optional;
 @Controller
 public class CarController extends VehicleController{
 
-    public CarDao carDao;
-    public ModelMapper modelMapper;
+    private final CarDao carDao;
+    private final ModelMapper modelMapper;
 
     public CarController(VehicleDao vehicleDao, CarDao carDao) {
         super(vehicleDao);

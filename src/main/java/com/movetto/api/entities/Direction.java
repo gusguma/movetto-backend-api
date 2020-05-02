@@ -2,7 +2,6 @@ package com.movetto.api.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 public class Direction {
@@ -27,6 +26,7 @@ public class Direction {
     private boolean active;
 
     public Direction() {
+
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
@@ -122,22 +122,6 @@ public class Direction {
 
     public void setActive(boolean active) {
         this.active = active;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Direction)) return false;
-        Direction direction = (Direction) o;
-        return getId() == direction.getId() &&
-                isActive() == direction.isActive() &&
-                Objects.equals(getStreet(), direction.getStreet()) &&
-                Objects.equals(getPostalCode(), direction.getPostalCode()) &&
-                Objects.equals(getCity(), direction.getCity()) &&
-                Objects.equals(getState(), direction.getState()) &&
-                Objects.equals(getCountry(), direction.getCountry()) &&
-                Objects.equals(getCoordinate(), direction.getCoordinate()) &&
-                Objects.equals(getRegistrationDate(), direction.getRegistrationDate());
     }
 
     @Override

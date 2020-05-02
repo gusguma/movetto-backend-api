@@ -25,10 +25,6 @@ public abstract class VehicleDto {
         this.id = id;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
     public String getName() {
         return name;
     }
@@ -53,11 +49,11 @@ public abstract class VehicleDto {
         this.registrationDate = registrationDate;
     }
 
-    public Boolean isActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

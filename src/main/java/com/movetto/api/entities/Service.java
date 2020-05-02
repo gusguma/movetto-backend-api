@@ -22,7 +22,7 @@ public abstract class Service {
     private Vehicle vehicle;
 
     private LocalDateTime registrationDate;
-    private Boolean active;
+    private boolean active;
 
     public Service() {
         this.registrationDate = LocalDateTime.now();
@@ -85,6 +85,22 @@ public abstract class Service {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDateTime registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override
