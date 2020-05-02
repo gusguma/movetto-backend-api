@@ -16,8 +16,8 @@ import java.util.Optional;
 @Controller
 public class BikeController extends VehicleController {
 
-    public BikeDao bikeDao;
-    public ModelMapper modelMapper;
+    private final BikeDao bikeDao;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BikeController(VehicleDao vehicleDao, BikeDao bikeDao) {

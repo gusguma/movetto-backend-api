@@ -12,7 +12,7 @@ public abstract class ServiceType extends Service {
     private double price;
 
     @Enumerated(value = EnumType.STRING)
-    private ServiceTypeEnum serviceType;
+    private ServiceTypeEnum serviceTypeEnum;
 
     public ServiceType() {
         super();
@@ -44,11 +44,11 @@ public abstract class ServiceType extends Service {
     }
 
     public ServiceTypeEnum getServiceType() {
-        return serviceType;
+        return serviceTypeEnum;
     }
 
-    public void setServiceType(ServiceTypeEnum serviceType) {
-        this.serviceType = serviceType;
+    public void setServiceType(ServiceTypeEnum serviceTypeEnum) {
+        this.serviceTypeEnum = serviceTypeEnum;
     }
 
     @Override
@@ -73,7 +73,7 @@ public abstract class ServiceType extends Service {
         return "ServiceType{" +
                 "description='" + description + '\'' +
                 ", price=" + price +
-                ", serviceType=" + serviceType +
+                ", serviceType=" + serviceTypeEnum +
                 '}';
     }
 }

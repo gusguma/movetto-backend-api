@@ -19,7 +19,7 @@ public class Package {
     private PackageStatus status;
 
     private LocalDateTime registrationDate;
-    private Boolean active;
+    private boolean active;
 
     public Package() {
         this.status = PackageStatus.PREPARED;
@@ -81,6 +81,22 @@ public class Package {
 
     public void setStatus(PackageStatus status) {
         this.status = status;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDateTime registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public double getVolume(){

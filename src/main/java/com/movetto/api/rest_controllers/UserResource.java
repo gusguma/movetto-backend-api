@@ -17,6 +17,7 @@ import java.util.Set;
 @RestController
 @RequestMapping(UserResource.USERS)
 public class UserResource {
+
     public static final String USERS = "/users";
 
     public static final String USER_UID = "/{uid}";
@@ -25,23 +26,17 @@ public class UserResource {
     public static final String DIRECTIONS = "/directions";
     public static final String VEHICLES = "/vehicles";
 
-    private UserController userController;
-    private CustomerController customerController;
-    private PartnerController partnerController;
-    private DirectionController directionController;
-    private VehicleController vehicleController;
+    private final UserController userController;
+    private final CustomerController customerController;
+    private final PartnerController partnerController;
 
     @Autowired
     public UserResource(UserController userController,
                         CustomerController customerController,
-                        PartnerController partnerController,
-                        DirectionController directionController,
-                        VehicleController vehicleController) {
+                        PartnerController partnerController) {
         this.userController = userController;
         this.customerController = customerController;
         this.partnerController = partnerController;
-        this.directionController = directionController;
-        this.vehicleController = vehicleController;
     }
 
     @GetMapping

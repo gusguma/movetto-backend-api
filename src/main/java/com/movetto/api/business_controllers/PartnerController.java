@@ -2,7 +2,6 @@ package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.UserDto;
-import com.movetto.api.entities.Direction;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 
@@ -64,7 +63,7 @@ public class PartnerController extends UserController {
         if (userStored.isPresent()){
             User userPartnerUpdated = userStored.get();
             userPartnerUpdated.setPartner(user.getPartner());
-            userPartnerUpdated.setDirections(user.getDirections());//TODO
+            userPartnerUpdated.setDirections(user.getDirections());
             partnerDao.save(userPartnerUpdated);
             return ResponseEntity.ok(userPartnerUpdated);
         } else {

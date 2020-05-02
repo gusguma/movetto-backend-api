@@ -16,8 +16,8 @@ import java.util.Optional;
 @Controller
 public class VanController extends VehicleController {
 
-    public VanDao vanDao;
-    public ModelMapper modelMapper;
+    private final VanDao vanDao;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public VanController(VehicleDao vehicleDao, VanDao vanDao) {
