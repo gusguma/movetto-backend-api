@@ -27,10 +27,11 @@ public class DirectionDto {
     private boolean active;
 
     public DirectionDto(){
+        directionType = DirectionType.USER;
         //Empty for Framework
     }
 
-    public DirectionDto(DirectionType directionType){
+    public DirectionDto(@NotNull DirectionType directionType){
         this.directionType = directionType;
     }
 
