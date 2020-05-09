@@ -1,5 +1,7 @@
 package com.movetto.api.entities;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -52,24 +54,11 @@ public class Partner {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Partner)) return false;
-        Partner partner = (Partner) o;
-        return Objects.equals(getPartnerId(), partner.getPartnerId()) &&
-                Objects.equals(getDriverId(), partner.getDriverId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPartnerId(), getDriverId());
-    }
-
-    @Override
     public String toString() {
         return "Partner{" +
                 "partnerId='" + partnerId + '\'' +
                 ", driverId='" + driverId + '\'' +
+                ", vehicles=" + vehicles +
                 '}';
     }
 }

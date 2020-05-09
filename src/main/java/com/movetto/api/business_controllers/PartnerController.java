@@ -2,6 +2,7 @@ package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.UserDto;
+import com.movetto.api.entities.Partner;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 
@@ -58,11 +59,11 @@ public class PartnerController extends UserController {
     }
 
     public ResponseEntity<User> updatePartner(UserDto user){
-        Optional<User> userStored = partnerDao
+        Optional<User> userExist = partnerDao
                 .findUserByUidAndRolesLike(user.getUid(),Role.PARTNER);
-        if (userStored.isPresent()){
-            User userPartnerUpdated = userStored.get();
-            setPartnerData(userPartnerUpdated,user);
+        if (userExist.isPresent()){
+            User userPartnerUpdated = userExist.get();
+            setPartnerData(userPartnerUpdated, user);
             partnerDao.save(userPartnerUpdated);
             return ResponseEntity.ok(userPartnerUpdated);
         } else {
@@ -82,6 +83,14 @@ public class PartnerController extends UserController {
         }
     }
 
+    private User setPartnerData(User updateUser, UserDto userInput){
+        updateUser.setDisplayName(userInput.getDisplayName());
+        updateUser.setPhone(userInput.getPhone());
+        updateUser.setPartner(userInput.getPartner());
+        updateUser.setDirections(userInput.getDirections());
+        return updateUser;
+    }
+
     public ResponseEntity<Set<Vehicle>> findUserVehiclesByUid(String  uid){
         Optional<User> user = partnerDao.findUserByUidAndRolesLike(uid, Role.PARTNER);
         if (user.isPresent()){
@@ -92,11 +101,5 @@ public class PartnerController extends UserController {
         }
     }
 
-    private User setPartnerData(User updateUser, UserDto userInput){
-        updateUser.setDisplayName(userInput.getDisplayName());
-        updateUser.setPhone(userInput.getPhone());
-        updateUser.setPartner(userInput.getPartner());
-        updateUser.setDirections(userInput.getDirections());
-        return updateUser;
-    }
+
 }
