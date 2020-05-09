@@ -99,6 +99,4 @@ public class PartnerController extends UserController {
         updateUser.setDirections(userInput.getDirections());
         return updateUser;
     }
-
-
 }
