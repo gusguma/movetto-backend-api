@@ -2,7 +2,6 @@ package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.UserDao;
 import com.movetto.api.dtos.UserDto;
-import com.movetto.api.entities.Partner;
 import com.movetto.api.entities.Role;
 import com.movetto.api.entities.User;
 
