@@ -22,14 +22,13 @@ public class VehicleResource {
     public static final String MOTORCYCLE = "/motorbike";
     public static final String CAR = "/car";
     public static final String VAN = "/van";
-
     public static final String ID = "/{id}";
 
-    private VehicleController vehicleController;
-    private BikeController bikeController;
-    private CarController carController;
-    private MotorcycleController motorcycleController;
-    private VanController vanController;
+    private final VehicleController vehicleController;
+    private final BikeController bikeController;
+    private final CarController carController;
+    private final MotorcycleController motorcycleController;
+    private final VanController vanController;
 
     @Autowired
     public VehicleResource(VehicleController vehicleController, BikeController bikeController,
@@ -51,6 +50,10 @@ public class VehicleResource {
     public ResponseEntity<Vehicle> findVehicleById(@PathVariable int id){
         return vehicleController.findVehicleById(id);
     }
+    @DeleteMapping(value = ID)
+    public ResponseEntity<String> deleteVehicle(@PathVariable int id){
+        return vehicleController.deleteVehicleById(id);
+    }
 
     //BIKE
     @PostMapping(value = BIKE)
@@ -61,11 +64,6 @@ public class VehicleResource {
     @PutMapping(value = BIKE)
     public ResponseEntity<Bike> updateBike(@RequestBody BikeDto bikeDto){
         return bikeController.updateBike(bikeDto);
-    }
-
-    @DeleteMapping(value = BIKE)
-    public ResponseEntity<String> deleteBike(@PathVariable int id){
-        return bikeController.deleteBike(id);
     }
 
     //CAR
@@ -79,11 +77,6 @@ public class VehicleResource {
         return carController.updateCar(carDto);
     }
 
-    @DeleteMapping(value = CAR)
-    public ResponseEntity<String> deleteCar(@PathVariable int id){
-        return carController.deleteCar(id);
-    }
-
     //MOTORCYCLE
     @PostMapping(value = MOTORCYCLE)
     public ResponseEntity<Motorcycle> saveMotorcycle(@RequestBody MotorcycleDto motorcycleDto){
@@ -93,11 +86,6 @@ public class VehicleResource {
     @PutMapping(value = MOTORCYCLE)
     public ResponseEntity<Motorcycle> updateMotorcycle(@RequestBody MotorcycleDto motorcycleDto){
         return motorcycleController.updateMotorcycle(motorcycleDto);
-    }
-
-    @DeleteMapping(value = MOTORCYCLE)
-    public ResponseEntity<String> deleteMotorcycle(@PathVariable int id){
-        return motorcycleController.deleteMotorcycle(id);
     }
 
     //VAN
@@ -111,8 +99,4 @@ public class VehicleResource {
         return vanController.updateVan(vanDto);
     }
 
-    @DeleteMapping(value = VAN)
-    public ResponseEntity<String> deleteVan(@PathVariable int id){
-        return vanController.deleteVan(id);
-    }
 }

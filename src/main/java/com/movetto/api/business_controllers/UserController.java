@@ -19,7 +19,7 @@ import java.util.Set;
 @Controller
 public class UserController {
 
-    private UserDao userDao;
+    private final UserDao userDao;
 
     @Autowired
     public UserController(UserDao userDao){

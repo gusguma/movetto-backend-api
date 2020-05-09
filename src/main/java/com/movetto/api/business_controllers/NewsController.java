@@ -14,4 +14,6 @@ public class NewsController {
         this.newsDao = newsDao;
         this.modelMapper = modelMapper;
     }
+
+
 }

@@ -18,7 +18,7 @@ import java.util.Set;
 @Controller
 public class PartnerController extends UserController {
 
-    private UserDao partnerDao;
+    private final UserDao partnerDao;
 
     @Autowired
     public PartnerController(UserDao userDao) {
@@ -62,8 +62,7 @@ public class PartnerController extends UserController {
                 .findUserByUidAndRolesLike(user.getUid(),Role.PARTNER);
         if (userStored.isPresent()){
             User userPartnerUpdated = userStored.get();
-            userPartnerUpdated.setPartner(user.getPartner());
-            userPartnerUpdated.setDirections(user.getDirections());
+            setPartnerData(userPartnerUpdated,user);
             partnerDao.save(userPartnerUpdated);
             return ResponseEntity.ok(userPartnerUpdated);
         } else {
@@ -91,6 +90,14 @@ public class PartnerController extends UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private User setPartnerData(User updateUser, UserDto userInput){
+        updateUser.setDisplayName(userInput.getDisplayName());
+        updateUser.setPhone(userInput.getPhone());
+        updateUser.setPartner(userInput.getPartner());
+        updateUser.setDirections(userInput.getDirections());
+        return updateUser;
     }
 
 
