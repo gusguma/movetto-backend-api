@@ -18,7 +18,6 @@ public class DirectionResource {
     public static final String ID = "/{id}";
     public static final String UID = "/{uid}";
 
-
     private DirectionController directionController;
 
     @Autowired

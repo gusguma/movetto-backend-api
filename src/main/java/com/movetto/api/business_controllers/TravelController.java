@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TravelController {
 
     private final TravelDao travelDao;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public TravelController(TravelDao travelDao, ModelMapper modelMapper) {
+    public TravelController(TravelDao travelDao) {
         this.travelDao = travelDao;
-        this.modelMapper = modelMapper;
     }
 }

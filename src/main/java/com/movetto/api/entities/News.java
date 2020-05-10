@@ -18,7 +18,7 @@ public class News {
     private String urlImage;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Tag> tags;
+    private Set<Tag> labels;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<User> users;
 
@@ -26,12 +26,12 @@ public class News {
     private boolean active;
 
     public News() {
-        title = "Titulo";
-        subtitle = "Subtitulo";
-        shortDescription = "Descripción Corta";
-        largeDescription = "Descripción Larga";
-        urlImage = "https://via.placeholder.com/300";
-        tags = new HashSet<>();
+        title = "";
+        subtitle = "";
+        shortDescription = "";
+        largeDescription = "";
+        urlImage = "";
+        labels = new HashSet<>();
         users = new HashSet<>();
     }
 
@@ -83,12 +83,12 @@ public class News {
         this.urlImage = urlImage;
     }
 
-    public Set<Tag> getTags() {
-        return tags;
+    public Set<Tag> getLabels() {
+        return labels;
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+    public void setLabels(Set<Tag> labels) {
+        this.labels = labels;
     }
 
     public Set<User> getUsers() {
@@ -115,19 +115,6 @@ public class News {
         this.active = active;
     }
 
-    @Override
-    public String toString() {
-        return "News{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", subtitle='" + subtitle + '\'' +
-                ", shortDescription='" + shortDescription + '\'' +
-                ", largeDescription='" + largeDescription + '\'' +
-                ", urlImage='" + urlImage + '\'' +
-                ", tags=" + tags +
-                ", users=" + users +
-                ", registrationDate=" + registrationDate +
-                ", active=" + active +
-                '}';
-    }
+
+
 }
