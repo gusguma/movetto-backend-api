@@ -1,7 +1,6 @@
 package com.movetto.api.entities;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -10,10 +9,14 @@ public abstract class Service {
     @Id
     @GeneratedValue
     private int id;
+    private String description;
+    private double price;
+
     @Embedded
     private Customer customer;
     @Embedded
     private Partner partner;
+
     @ManyToOne
     private Direction startDirection;
     @ManyToOne
@@ -29,14 +32,31 @@ public abstract class Service {
         this.active = true;
     }
 
-    public Service(Customer customer, Partner partner, Vehicle vehicle,
-                   Direction startDirection, Direction endDirection){
+    public Service(Customer customer
+            ,Direction startDirection,Direction endDirection){
         this();
         this.customer = customer;
-        this.partner = partner;
-        this.vehicle = vehicle;
         this.startDirection = startDirection;
         this.endDirection = endDirection;
+    }
+
+    public void calculateServicePrice(Service service){
+        if (service.getClass() == Shipment.class){
+            calculateShipmentPrice((Shipment)service);
+        }
+        if (service.getClass() == Travel.class){
+            calculateTravelPrice((Travel) service);
+        }
+    }
+
+    private void calculateShipmentPrice(Shipment shipment){
+        shipment.setShipmentPrice();
+        price = shipment.getPriceShipment();
+    }
+
+    private void calculateTravelPrice(Travel travel){
+        travel.setTravelPrice();
+        price = travel.getPriceTravel();
     }
 
     public int getId() {
@@ -47,20 +67,20 @@ public abstract class Service {
         this.id = id;
     }
 
-    public Direction getStartDirection() {
-        return startDirection;
+    public String getDescription() {
+        return description;
     }
 
-    public void setStartDirection(Direction startDirection) {
-        this.startDirection = startDirection;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Direction getEndDirection() {
-        return endDirection;
+    public double getPrice() {
+        return price;
     }
 
-    public void setEndDirection(Direction endDirection) {
-        this.endDirection = endDirection;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public Customer getCustomer() {
@@ -77,6 +97,22 @@ public abstract class Service {
 
     public void setPartner(Partner partner) {
         this.partner = partner;
+    }
+
+    public Direction getStartDirection() {
+        return startDirection;
+    }
+
+    public void setStartDirection(Direction startDirection) {
+        this.startDirection = startDirection;
+    }
+
+    public Direction getEndDirection() {
+        return endDirection;
+    }
+
+    public void setEndDirection(Direction endDirection) {
+        this.endDirection = endDirection;
     }
 
     public Vehicle getVehicle() {
@@ -104,33 +140,18 @@ public abstract class Service {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Service)) return false;
-        Service service = (Service) o;
-        return getId() == service.getId() &&
-                getStartDirection().equals(service.getStartDirection()) &&
-                getEndDirection().equals(service.getEndDirection()) &&
-                getCustomer().equals(service.getCustomer()) &&
-                getPartner().equals(service.getPartner()) &&
-                getVehicle().equals(service.getVehicle());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getStartDirection(), getEndDirection(),
-                getCustomer(), getPartner(), getVehicle());
-    }
-
-    @Override
     public String toString() {
         return "Service{" +
                 "id=" + id +
-                ", startDirection=" + startDirection +
-                ", endDirection=" + endDirection +
+                ", description='" + description + '\'' +
+                ", price=" + price +
                 ", customer=" + customer +
                 ", partner=" + partner +
+                ", startDirection=" + startDirection +
+                ", endDirection=" + endDirection +
                 ", vehicle=" + vehicle +
+                ", registrationDate=" + registrationDate +
+                ", active=" + active +
                 '}';
     }
 }

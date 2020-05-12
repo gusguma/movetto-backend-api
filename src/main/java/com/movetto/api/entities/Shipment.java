@@ -1,30 +1,38 @@
 package com.movetto.api.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Shipment extends ServiceType {
+public class Shipment extends Service {
 
     private LocalDateTime shipmentDatetimeLimit;
+    private double minimumPrice;
+    private double priceShipment;
+
+    @Enumerated(value = EnumType.STRING)
+    private ShipmentStatus status;
 
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Package> packages;
 
     public Shipment() {
-        this.shipmentDatetimeLimit = LocalDateTime.now().plusDays(5);
-        setServiceType(ServiceTypeEnum.SHIPMENT);
+        super();
+        this.minimumPrice = 5.00;
     }
 
-    public Shipment(Customer customer, Partner partner, Vehicle vehicle,
-                    Direction start, Direction finish) {
-        super(customer, partner, vehicle, start, finish);
+    public Shipment(Customer customer,Direction start,Direction finish) {
+        super(customer,start,finish);
         this.shipmentDatetimeLimit = LocalDateTime.now().plusDays(5);
-        setServiceType(ServiceTypeEnum.SHIPMENT);
+        this.packages = new HashSet<>();
+    }
+
+    public void setShipmentPrice(){
+        priceShipment = this.getMinimumPrice() + this.getPackages().stream()
+                .mapToDouble(Package::getPricePackage)
+                .sum();
     }
 
     public LocalDateTime getShipmentDatetimeLimit() {
@@ -33,6 +41,30 @@ public class Shipment extends ServiceType {
 
     public void setShipmentDatetimeLimit(LocalDateTime shipmentDatetimeLimit) {
         this.shipmentDatetimeLimit = shipmentDatetimeLimit;
+    }
+
+    public double getMinimumPrice() {
+        return minimumPrice;
+    }
+
+    public void setMinimumPrice(double minimumPrice) {
+        this.minimumPrice = minimumPrice;
+    }
+
+    public double getPriceShipment() {
+        return priceShipment;
+    }
+
+    public void setPriceShipment(double priceShipment) {
+        this.priceShipment = priceShipment;
+    }
+
+    public ShipmentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ShipmentStatus status) {
+        this.status = status;
     }
 
     public Set<Package> getPackages() {
@@ -44,24 +76,12 @@ public class Shipment extends ServiceType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Shipment)) return false;
-        if (!super.equals(o)) return false;
-        Shipment shipment = (Shipment) o;
-        return Objects.equals(getShipmentDatetimeLimit(), shipment.getShipmentDatetimeLimit()) &&
-                Objects.equals(getPackages(), shipment.getPackages());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getShipmentDatetimeLimit(), getPackages());
-    }
-
-    @Override
     public String toString() {
         return "Shipment{" +
                 "shipmentDatetimeLimit=" + shipmentDatetimeLimit +
+                ", minimumPrice=" + minimumPrice +
+                ", priceShipment=" + priceShipment +
+                ", status=" + status +
                 ", packages=" + packages +
                 '}';
     }

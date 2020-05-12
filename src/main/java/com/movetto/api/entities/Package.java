@@ -2,7 +2,6 @@ package com.movetto.api.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 public class Package {
@@ -14,6 +13,8 @@ public class Package {
     private double width;
     private double lenght;
     private double high;
+    private double pricePackage;
+    private double weightVolume;
 
     @Enumerated(value = EnumType.STRING)
     private PackageStatus status;
@@ -22,7 +23,8 @@ public class Package {
     private boolean active;
 
     public Package() {
-        this.status = PackageStatus.PREPARED;
+        this.status = PackageStatus.SAVED;
+        this.weightVolume = 333;
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
@@ -33,6 +35,23 @@ public class Package {
         this.width = width;
         this.lenght = lenght;
         this.high = high;
+        this.setPackagePrice();
+    }
+
+    public double getPackageVolume(){
+       return (width * lenght * high) / 1000000;
+    }
+
+    public double getPackageWeightVolume(){
+        return getPackageVolume() * weightVolume;
+    }
+
+    public void setPackagePrice(){
+        if (getPackageWeightVolume() > weight){
+            pricePackage = 1.00 * getPackageWeightVolume();
+        } else {
+            pricePackage = 1.00 * weight;
+        }
     }
 
     public int getId() {
@@ -75,6 +94,22 @@ public class Package {
         this.high = high;
     }
 
+    public double getPricePackage() {
+        return pricePackage;
+    }
+
+    public void setPricePackage(double price) {
+        this.pricePackage = price;
+    }
+
+    public double getWeightVolume() {
+        return weightVolume;
+    }
+
+    public void setWeightVolume(double weightVolume) {
+        this.weightVolume = weightVolume;
+    }
+
     public PackageStatus getStatus() {
         return status;
     }
@@ -99,29 +134,6 @@ public class Package {
         this.active = active;
     }
 
-    public double getVolume(){
-        return width * lenght * high;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Package)) return false;
-        Package aPackage = (Package) o;
-        return getId() == aPackage.getId() &&
-                Double.compare(aPackage.getWeight(), getWeight()) == 0 &&
-                Double.compare(aPackage.getWidth(), getWidth()) == 0 &&
-                Double.compare(aPackage.getLenght(), getLenght()) == 0 &&
-                Double.compare(aPackage.getHigh(), getHigh()) == 0 &&
-                getStatus() == aPackage.getStatus();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getWeight(), getWidth(), getLenght(),
-                getHigh(), getStatus());
-    }
-
     @Override
     public String toString() {
         return "Package{" +
@@ -130,7 +142,11 @@ public class Package {
                 ", width=" + width +
                 ", lenght=" + lenght +
                 ", high=" + high +
+                ", price=" + pricePackage +
+                ", weightVolume=" + weightVolume +
                 ", status=" + status +
+                ", registrationDate=" + registrationDate +
+                ", active=" + active +
                 '}';
     }
 }
