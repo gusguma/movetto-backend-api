@@ -1,6 +1,5 @@
 package com.movetto.api.business_controllers;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.movetto.api.business_services.NewsService;
 import com.movetto.api.daos.NewsDao;
 import com.movetto.api.daos.UserDao;

@@ -16,7 +16,7 @@ public class Travel extends Service {
     private Date end;
 
     @Enumerated(value = EnumType.STRING)
-    private ShipmentStatus status;
+    private TravelStatus status;
 
     public Travel(){
         super();
@@ -24,6 +24,7 @@ public class Travel extends Service {
         this.priceHour = 20.50;
         this.priceKm = 1.05;
         this.people = 1;
+        this.status = TravelStatus.SAVED;
     }
 
     public Travel(Customer customer,Direction startDirection, Direction endDirection) {
@@ -113,26 +114,13 @@ public class Travel extends Service {
         this.end = end;
     }
 
-    public ShipmentStatus getStatus() {
+    public TravelStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ShipmentStatus status) {
+    public void setStatus(TravelStatus status) {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Travel{" +
-                "people=" + people +
-                ", distance=" + distance +
-                ", minimumPrice=" + minimumPrice +
-                ", priceHour=" + priceHour +
-                ", priceKm=" + priceKm +
-                ", priceTravel=" + priceTravel +
-                ", start=" + start +
-                ", end=" + end +
-                ", status=" + status +
-                '}';
-    }
+
 }

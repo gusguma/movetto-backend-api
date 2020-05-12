@@ -18,13 +18,18 @@ public class Shipment extends Service {
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Package> packages;
 
+    @ManyToOne
+    private User destinationUser;
+
     public Shipment() {
         super();
         this.minimumPrice = 5.00;
+        this.status = ShipmentStatus.SAVED;
     }
 
-    public Shipment(Customer customer,Direction start,Direction finish) {
+    public Shipment(Customer customer,Direction start,Direction finish, User destinationUser) {
         super(customer,start,finish);
+        this.destinationUser = destinationUser;
         this.shipmentDatetimeLimit = LocalDateTime.now().plusDays(5);
         this.packages = new HashSet<>();
     }
@@ -75,6 +80,14 @@ public class Shipment extends Service {
         this.packages = packages;
     }
 
+    public User getDestinationUser() {
+        return destinationUser;
+    }
+
+    public void setDestinationUser(User destinationUser) {
+        this.destinationUser = destinationUser;
+    }
+
     @Override
     public String toString() {
         return "Shipment{" +
@@ -83,6 +96,7 @@ public class Shipment extends Service {
                 ", priceShipment=" + priceShipment +
                 ", status=" + status +
                 ", packages=" + packages +
+                ", destinationUser=" + destinationUser +
                 '}';
     }
 }
