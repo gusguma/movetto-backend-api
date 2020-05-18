@@ -1,72 +1,49 @@
-package com.movetto.api.entities;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+package com.movetto.api.dtos;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.*;
+import com.movetto.api.entities.*;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(use = NAME)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Shipment.class, name = "Shipment"),
-        @JsonSubTypes.Type(value = Travel.class, name = "Travel")
+        @JsonSubTypes.Type(value = TravelDto.class, name = "Travel"),
+        @JsonSubTypes.Type(value = ShipmentDto.class, name = "Shipment")
 })
-public abstract class Service {
 
-    @Id
-    @GeneratedValue
+public abstract class ServiceDto implements Serializable {
+
     private int id;
     private String description;
     private double price;
-
-    @ManyToOne
     private User customer;
-    @ManyToOne
     private User partner;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Direction startDirection;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Direction endDirection;
-    @ManyToOne
     private Vehicle vehicle;
-
     private LocalDateTime registrationDate;
     private boolean active;
 
-    public Service() {
+    public ServiceDto() {
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
 
-    public Service(User customer
-            ,Direction startDirection,Direction endDirection){
+    public ServiceDto(User customer
+            , Direction startDirection, Direction endDirection){
         this();
         this.customer = customer;
         this.startDirection = startDirection;
         this.endDirection = endDirection;
     }
 
-    public void calculateServicePrice(Service service){
-        if (service.getClass() == Shipment.class){
-            calculateShipmentPrice((Shipment)service);
-        }
-        if (service.getClass() == Travel.class){
-            calculateTravelPrice((Travel) service);
-        }
-    }
-
-    private void calculateShipmentPrice(Shipment shipment){
-        shipment.setShipmentPrice();
-        price = shipment.getPriceShipment();
-    }
-
-    private void calculateTravelPrice(Travel travel){
-        travel.setTravelPrice();
-        price = travel.getPriceTravel();
+    public ServiceDto(User customer, User partner, Vehicle vehicle){
+        this.customer = customer;
+        this.partner = partner;
+        this.vehicle = vehicle;
     }
 
     public int getId() {
@@ -151,7 +128,7 @@ public abstract class Service {
 
     @Override
     public String toString() {
-        return "Service{" +
+        return "ServiceDto{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", price=" + price +

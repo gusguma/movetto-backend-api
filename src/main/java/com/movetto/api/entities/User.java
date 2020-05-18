@@ -15,9 +15,7 @@ public class User {
     private String displayName;
     @Column(unique = true)
     private String email;
-    @Column(unique = true)
     private String uid;
-    @Column(unique = true)
     private String phone;
 
     @Embedded

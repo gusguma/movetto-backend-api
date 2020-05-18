@@ -57,22 +57,6 @@ public class Van extends VehicleType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Van)) return false;
-        if (!super.equals(o)) return false;
-        Van van = (Van) o;
-        return Objects.equals(getMake(), van.getMake()) &&
-                Objects.equals(getModel(), van.getModel()) &&
-                Objects.equals(getDescription(), van.getDescription());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getMake(), getModel(), getDescription());
-    }
-
-    @Override
     public String toString() {
         return "Van{" +
                 "make='" + make + '\'' +

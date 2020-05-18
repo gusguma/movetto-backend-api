@@ -28,20 +28,6 @@ public class Customer {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Customer)) return false;
-        if (!super.equals(o)) return false;
-        Customer customer = (Customer) o;
-        return Objects.equals(getCustomerId(), customer.getCustomerId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getCustomerId());
-    }
-
-    @Override
     public String toString() {
         return "Customer{" +
                 "customerId='" + customerId + '\'' +

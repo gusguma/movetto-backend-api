@@ -57,22 +57,6 @@ public class Motorcycle extends VehicleType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Motorcycle)) return false;
-        if (!super.equals(o)) return false;
-        Motorcycle that = (Motorcycle) o;
-        return Objects.equals(getMake(), that.getMake()) &&
-                Objects.equals(getModel(), that.getModel()) &&
-                Objects.equals(getDescription(), that.getDescription());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getMake(), getModel(), getDescription());
-    }
-
-    @Override
     public String toString() {
         return "Motorcycle{" +
                 "make='" + make + '\'' +

@@ -1,28 +1,61 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.Date;
 
 @Entity
-public class Travel extends ServiceType {
+public class Travel extends Service {
 
     private int people;
-    private LocalDateTime travelDatetime;
+    private double distance;
+    private double minimumPrice;
+    private double priceHour;
+    private double priceKm;
+    private double priceTravel;
+    private Date start;
+    private Date end;
+
+    @Enumerated(value = EnumType.STRING)
+    private TravelStatus status;
 
     public Travel(){
         super();
+        this.minimumPrice = 2.40;
+        this.priceHour = 20.50;
+        this.priceKm = 1.05;
         this.people = 1;
-        setServiceType(ServiceTypeEnum.TRAVEL);
-        this.travelDatetime = LocalDateTime.now().plusDays(1);
+        this.status = TravelStatus.SAVED;
     }
 
-    public Travel(Direction startDirection, Direction endDirection,
-                  Vehicle vehicle, Customer customer, Partner partner) {
-        super(customer, partner, vehicle, startDirection, endDirection);
+    public Travel(User customer,Direction startDirection, Direction endDirection) {
+        super(customer, startDirection, endDirection);
         this.people = 1;
-        setServiceType(ServiceTypeEnum.TRAVEL);
-        this.travelDatetime = LocalDateTime.now().plusDays(1);
+    }
+
+    public double getTravelDuration(){
+        double diference = end.getTime() - start.getTime();
+        diference /= 3600000;
+        return diference;
+    }
+
+    public double getTravelPriceHours(){
+        return getTravelDuration() * priceHour;
+    }
+
+    public double getTravelPriceDistance(){
+        return distance * priceKm;
+    }
+
+    public void setTravelPrice(){
+        priceTravel = Math.max(getTravelPriceDistance(), getTravelPriceHours());
+    }
+
+    public void setPriceTravel(double priceTravel) {
+        this.priceTravel = priceTravel;
+    }
+
+    public double getPriceTravel() {
+        return priceTravel;
     }
 
     public int getPeople() {
@@ -33,34 +66,61 @@ public class Travel extends ServiceType {
         this.people = people;
     }
 
-    public LocalDateTime getTravelDatetime() {
-        return travelDatetime;
+    public double getDistance() {
+        return distance;
     }
 
-    public void setTravelDatetime(LocalDateTime travelDatetime) {
-        this.travelDatetime = travelDatetime;
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Travel)) return false;
-        if (!super.equals(o)) return false;
-        Travel travel = (Travel) o;
-        return getPeople() == travel.getPeople() &&
-                Objects.equals(getTravelDatetime(), travel.getTravelDatetime());
+    public double getMinimumPrice() {
+        return minimumPrice;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getPeople(), getTravelDatetime());
+    public void setMinimumPrice(double minimumPrice) {
+        this.minimumPrice = minimumPrice;
     }
 
-    @Override
-    public String toString() {
-        return "Travel{" +
-                "people=" + people +
-                ", travelDatetime=" + travelDatetime +
-                '}';
+    public double getPriceHour() {
+        return priceHour;
     }
+
+    public void setPriceHour(double priceHour) {
+        this.priceHour = priceHour;
+    }
+
+    public double getPriceKm() {
+        return priceKm;
+    }
+
+    public void setPriceKm(double priceKm) {
+        this.priceKm = priceKm;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
+    public TravelStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TravelStatus status) {
+        this.status = status;
+    }
+
+
 }

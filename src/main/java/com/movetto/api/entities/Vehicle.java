@@ -78,24 +78,6 @@ public abstract class Vehicle {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Vehicle)) return false;
-        Vehicle vehicle = (Vehicle) o;
-        return getId() == vehicle.getId() &&
-                getName().equals(vehicle.getName()) &&
-                Objects.equals(getRegistration(), vehicle.getRegistration()) &&
-                Objects.equals(getRegistrationDate(), vehicle.getRegistrationDate()) &&
-                Objects.equals(isActive(), vehicle.isActive());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getRegistration(),
-                getRegistrationDate(), isActive());
-    }
-
-    @Override
     public String toString() {
         return "Vehicle{" +
                 "id=" + id +

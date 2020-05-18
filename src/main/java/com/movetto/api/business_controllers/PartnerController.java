@@ -18,7 +18,7 @@ import java.util.Set;
 @Controller
 public class PartnerController extends UserController {
 
-    private UserDao partnerDao;
+    private final UserDao partnerDao;
 
     @Autowired
     public PartnerController(UserDao userDao) {
@@ -58,12 +58,11 @@ public class PartnerController extends UserController {
     }
 
     public ResponseEntity<User> updatePartner(UserDto user){
-        Optional<User> userStored = partnerDao
+        Optional<User> userExist = partnerDao
                 .findUserByUidAndRolesLike(user.getUid(),Role.PARTNER);
-        if (userStored.isPresent()){
-            User userPartnerUpdated = userStored.get();
-            userPartnerUpdated.setPartner(user.getPartner());
-            userPartnerUpdated.setDirections(user.getDirections());
+        if (userExist.isPresent()){
+            User userPartnerUpdated = userExist.get();
+            setPartnerData(userPartnerUpdated, user);
             partnerDao.save(userPartnerUpdated);
             return ResponseEntity.ok(userPartnerUpdated);
         } else {
@@ -81,6 +80,14 @@ public class PartnerController extends UserController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    private User setPartnerData(User updateUser, UserDto userInput){
+        updateUser.setDisplayName(userInput.getDisplayName());
+        updateUser.setPhone(userInput.getPhone());
+        updateUser.setPartner(userInput.getPartner());
+        updateUser.setDirections(userInput.getDirections());
+        return updateUser;
     }
 
     public ResponseEntity<Set<Vehicle>> findUserVehiclesByUid(String  uid){

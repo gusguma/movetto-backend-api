@@ -26,7 +26,6 @@ public class Direction {
     private boolean active;
 
     public Direction() {
-
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }

@@ -18,7 +18,6 @@ public class UserDto extends UserMinimumDto {
     private Partner partner;
     private Set<Role> roles;
     private Set<Direction> directions;
-    private Set<Vehicle> vehicles;
 
     private LocalDateTime registrationDate;
     private boolean active;
@@ -76,14 +75,6 @@ public class UserDto extends UserMinimumDto {
 
     public void setDirections(Set<Direction> directions) {
         this.directions = directions;
-    }
-
-    public Set<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(Set<Vehicle> vehicles) {
-        this.vehicles = vehicles;
     }
 
     public LocalDateTime getRegistrationDate() {
