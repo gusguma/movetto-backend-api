@@ -68,6 +68,24 @@ public class UserController {
         }
     }
 
+    public ResponseEntity<User> saveUserByEmail(UserDto user){
+        Optional<User> userExist = userDao.findUserByEmail(user.getEmail());
+        if (userExist.isPresent()){
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .build();
+        } else {
+            User userCreate = new User();
+            userCreate.setDisplayName(user.getDisplayName());
+            userCreate.setPhone(user.getPhone());
+            userCreate.setEmail(user.getEmail());
+            userCreate.setUid(user.getUid());
+            userCreate.setDirections(user.getDirections());
+            userDao.save(userCreate);
+            return ResponseEntity.ok(userCreate);
+        }
+    }
+
     public ResponseEntity<User> updateUser(UserDto user){
         Optional<User> userExist = userDao.findUserByUid(user.getUid());
         if (userExist.isPresent()){

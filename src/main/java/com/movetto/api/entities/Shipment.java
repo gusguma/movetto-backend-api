@@ -15,7 +15,7 @@ public class Shipment extends Service {
     @Enumerated(value = EnumType.STRING)
     private ShipmentStatus status;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Package> packages;
 
     @ManyToOne
@@ -27,11 +27,13 @@ public class Shipment extends Service {
         this.status = ShipmentStatus.SAVED;
     }
 
-    public Shipment(Customer customer,Direction start,Direction finish, User destinationUser) {
+    public Shipment(User customer,Direction start,Direction finish, User destinationUser) {
         super(customer,start,finish);
         this.destinationUser = destinationUser;
         this.shipmentDatetimeLimit = LocalDateTime.now().plusDays(5);
         this.packages = new HashSet<>();
+        this.status = ShipmentStatus.SAVED;
+        this.minimumPrice = 5.00;
     }
 
     public void setShipmentPrice(){

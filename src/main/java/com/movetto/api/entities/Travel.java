@@ -27,7 +27,7 @@ public class Travel extends Service {
         this.status = TravelStatus.SAVED;
     }
 
-    public Travel(Customer customer,Direction startDirection, Direction endDirection) {
+    public Travel(User customer,Direction startDirection, Direction endDirection) {
         super(customer, startDirection, endDirection);
         this.people = 1;
     }

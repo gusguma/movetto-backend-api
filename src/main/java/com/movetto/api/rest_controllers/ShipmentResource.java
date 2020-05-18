@@ -1,18 +1,12 @@
 package com.movetto.api.rest_controllers;
 
-import com.movetto.api.business_controllers.NewsController;
 import com.movetto.api.business_controllers.ShipmentController;
-import com.movetto.api.dtos.NewsDto;
-import com.movetto.api.entities.News;
+import com.movetto.api.dtos.ShipmentDto;
 import com.movetto.api.entities.Shipment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -21,8 +15,9 @@ public class ShipmentResource {
 
     public static final String SHIPMENTS = "/shipments";
     public static final String UID = "/{uid}";
+    public static final String ID = "/id/{id}";
 
-    private ShipmentController shipmentController;
+    private final ShipmentController shipmentController;
 
     @Autowired
     public ShipmentResource(ShipmentController shipmentController) {
@@ -30,13 +25,32 @@ public class ShipmentResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Shipment>> findAllNews() {
+    public ResponseEntity<List<Shipment>> findAllShipments() {
         return shipmentController.readShipments();
     }
 
     @GetMapping(value = UID)
-    public ResponseEntity<List<Shipment>> findNewsByUser(@PathVariable String uid){
-        return shipmentController.findShipmentsByUserUid(uid);
+    public ResponseEntity<List<Shipment>> findShipmentsByUser(@PathVariable String uid){
+        return shipmentController.readShipmentsByUserUid(uid);
     }
 
+    @GetMapping(value = ID)
+    public ResponseEntity<Shipment> findShipmentById(@PathVariable int id){
+        return shipmentController.readShipmentById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<Shipment> saveShipment (@RequestBody ShipmentDto shipment){
+        return shipmentController.saveShipment(shipment);
+    }
+
+    @PutMapping
+    public ResponseEntity<Shipment> updateShipment (@RequestBody ShipmentDto shipment){
+        return shipmentController.updateShipment(shipment);
+    }
+
+    @DeleteMapping(value = ID)
+    public ResponseEntity<Shipment> deleteShipment (@PathVariable int id){
+        return shipmentController.deleteShipment(id);
+    }
 }

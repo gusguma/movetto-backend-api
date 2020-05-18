@@ -21,6 +21,8 @@ public class UserResource {
     public static final String USERS = "/users";
 
     public static final String USER_UID = "/{uid}";
+    public static final String EMAIL = "/email";
+    public static final String EMAIL_PARAM = "/{email}";
     public static final String CUSTOMERS = "/customers";
     public static final String PARTNERS = "/partners";
     public static final String DIRECTIONS = "/directions";
@@ -49,9 +51,19 @@ public class UserResource {
         return userController.readUserByUid(uid);
     }
 
+    @GetMapping(value = EMAIL + EMAIL_PARAM)
+    public ResponseEntity<User> findUserByEmail(@PathVariable String email){
+        return userController.readUserByEmail(email);
+    }
+
     @PostMapping
     public ResponseEntity<UserMinimumDto> saveUser(@RequestBody UserMinimumDto user){
         return userController.saveUser(user);
+    }
+
+    @PostMapping(value = EMAIL)
+    public ResponseEntity<User> saveUserByEmail(@RequestBody UserDto user){
+        return userController.saveUserByEmail(user);
     }
 
     @PutMapping
