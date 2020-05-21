@@ -7,8 +7,6 @@ import com.movetto.api.entities.Role;
 import com.movetto.api.entities.Shipment;
 import com.movetto.api.entities.ShipmentStatus;
 import com.movetto.api.entities.User;
-import com.sun.org.apache.bcel.internal.generic.ARETURN;
-import org.apache.el.parser.AstLambdaParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @Controller
 public class ShipmentController {

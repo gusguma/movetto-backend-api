@@ -1,6 +1,5 @@
 package com.movetto.api.daos;
 
-import com.movetto.api.entities.Customer;
 import com.movetto.api.entities.Shipment;
 import com.movetto.api.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;

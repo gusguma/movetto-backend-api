@@ -23,6 +23,14 @@ public class UserMinimumDto {
         this.uid = uid;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getDisplayName() {
         return displayName;
     }

@@ -87,7 +87,7 @@ public class UserController {
     }
 
     public ResponseEntity<User> updateUser(UserDto user){
-        Optional<User> userExist = userDao.findUserByUid(user.getUid());
+        Optional<User> userExist = userDao.findById(user.getId());
         if (userExist.isPresent()){
             User userUpdated = userExist.get();
             userUpdated.setDisplayName(user.getDisplayName());

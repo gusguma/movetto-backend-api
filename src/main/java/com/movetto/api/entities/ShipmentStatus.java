@@ -7,4 +7,5 @@ public enum ShipmentStatus {
     public String shipmentStatusName(){
         return "SHIPMENT_STATUS_" + this.toString();
     }
+
 }
