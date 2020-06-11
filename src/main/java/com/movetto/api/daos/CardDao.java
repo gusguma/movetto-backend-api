@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface CardDao extends JpaRepository<Card, Integer> {
 
-    Optional<List<Card>> findAllByUserAndActiveIsTrue(User user);
+    Optional<List<Card>> findAllByActiveIsTrue();
+    Optional<List<Card>> findAllByActiveIsTrueAndUser(User user);
 
 }

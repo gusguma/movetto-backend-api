@@ -47,6 +47,41 @@ public class ShipmentController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    public ResponseEntity<List<Shipment>> readShipmentsByPartnerUid(String uid) {
+        Optional<User> userStored = userDao.findUserByUidAndRolesLike(uid, Role.PARTNER);
+        return userStored.map(user -> shipmentDao.findAllByPartnerAndActiveIsTrue(user)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<List<Shipment>> readShipmentsAvailable(String uid) {
+        Optional<User> userStored = userDao.findUserByUid(uid);
+        return userStored.map(user ->
+                shipmentDao.findShipmentsByCustomerIsNotLikeAndStatusLike(user, ShipmentStatus.PAID)
+                        .map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<List<Shipment>> readShipmentsPending(String uid) {
+        Optional<User> userStored = userDao.findUserByUid(uid);
+        return userStored.map(user ->
+                shipmentDao.findShipmentsByPartnerAndStatusIsNotLike(user, ShipmentStatus.PAID)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<List<Shipment>> readShipmentsFinished(String uid) {
+        Optional<User> userStored = userDao.findUserByUid(uid);
+        return userStored.map(user ->
+                shipmentDao.findShipmentsByPartnerAndStatusIsLike(user, ShipmentStatus.FINISHED)
+                        .map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     public ResponseEntity<Shipment> saveShipment(ShipmentDto shipmentDto) {
         if (readShipmentById(shipmentDto.getId()).hasBody()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -64,8 +99,9 @@ public class ShipmentController {
                     shipment.setEndDirection(shipmentDto.getEndDirection());
                     shipment.setDestinationUser(shipmentDto.getDestinationUser());
                     shipment.setPackages(shipmentDto.getPackages());
-                    shipmentDao.save(shipment);
-                    return ResponseEntity.ok(shipment);
+                    shipment.setStatus(shipmentDto.getStatus());
+                    shipment.setVehicle(shipmentDto.getVehicle());
+                    return checkPartner(shipment,shipmentDto);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -90,5 +126,16 @@ public class ShipmentController {
         );
         shipment.setPackages(shipmentDto.getPackages());
         return shipment;
+    }
+
+    private ResponseEntity<Shipment> checkPartner(Shipment shipment, ShipmentDto shipmentDto) {
+        if (shipment.getPartner() == null ||
+                shipment.getPartner() == shipmentDto.getPartner()) {
+            shipment.setPartner(shipmentDto.getPartner());
+            shipmentDao.save(shipment);
+            return ResponseEntity.ok(shipment);
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 }

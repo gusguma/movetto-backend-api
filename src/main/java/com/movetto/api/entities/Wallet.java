@@ -16,7 +16,7 @@ public class Wallet {
     @OneToOne
     private User user;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Transaction> transactions;
 
     private LocalDateTime registrationDate;

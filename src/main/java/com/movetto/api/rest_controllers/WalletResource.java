@@ -15,7 +15,7 @@ public class WalletResource {
 
     public static final String WALLET = "/wallet";
     public static final String ID = "/{id}";
-    public static final String USER_UID = "/user/{uid}";
+    public static final String USER_UID = "/users/{uid}";
     public static final String CARD = "/card/{uid}";
 
     private final WalletController walletController;

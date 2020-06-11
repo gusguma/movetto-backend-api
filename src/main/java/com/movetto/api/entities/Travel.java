@@ -1,7 +1,8 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Entity
 public class Travel extends Service {
@@ -12,8 +13,8 @@ public class Travel extends Service {
     private double priceHour;
     private double priceKm;
     private double priceTravel;
-    private Date start;
-    private Date end;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
     @Enumerated(value = EnumType.STRING)
     private TravelStatus status;
@@ -29,33 +30,27 @@ public class Travel extends Service {
 
     public Travel(User customer,Direction startDirection, Direction endDirection) {
         super(customer, startDirection, endDirection);
+        this.minimumPrice = 2.40;
+        this.priceHour = 20.50;
+        this.priceKm = 1.05;
         this.people = 1;
+        this.status = TravelStatus.SAVED;
     }
 
-    public double getTravelDuration(){
-        double diference = end.getTime() - start.getTime();
-        diference /= 3600000;
-        return diference;
+    private long getTravelDuration(){
+        return Duration.between(start,end).toHours();
     }
 
-    public double getTravelPriceHours(){
+    private double getTravelPriceHours(){
         return getTravelDuration() * priceHour;
     }
 
-    public double getTravelPriceDistance(){
+    private double getTravelPriceDistance(){
         return distance * priceKm;
     }
 
     public void setTravelPrice(){
         priceTravel = Math.max(getTravelPriceDistance(), getTravelPriceHours());
-    }
-
-    public void setPriceTravel(double priceTravel) {
-        this.priceTravel = priceTravel;
-    }
-
-    public double getPriceTravel() {
-        return priceTravel;
     }
 
     public int getPeople() {
@@ -98,19 +93,27 @@ public class Travel extends Service {
         this.priceKm = priceKm;
     }
 
-    public Date getStart() {
+    public double getPriceTravel() {
+        return priceTravel;
+    }
+
+    public void setPriceTravel(double priceTravel) {
+        this.priceTravel = priceTravel;
+    }
+
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 
@@ -122,5 +125,18 @@ public class Travel extends Service {
         this.status = status;
     }
 
-
+    @Override
+    public String toString() {
+        return "Travel{" +
+                "people=" + people +
+                ", distance=" + distance +
+                ", minimumPrice=" + minimumPrice +
+                ", priceHour=" + priceHour +
+                ", priceKm=" + priceKm +
+                ", priceTravel=" + priceTravel +
+                ", start=" + start +
+                ", end=" + end +
+                ", status=" + status +
+                '}';
+    }
 }

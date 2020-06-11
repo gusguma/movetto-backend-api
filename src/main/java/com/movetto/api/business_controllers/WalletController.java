@@ -45,7 +45,7 @@ public class WalletController {
 
     public ResponseEntity<List<Card>> readCardsByUserUid (String uid) {
         Optional<User> user = userDao.findUserByUid(uid);
-        return user.map(value -> cardDao.findAllByUserAndActiveIsTrue(value)
+        return user.map(value -> cardDao.findAllByActiveIsTrueAndUser(value)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build()))
                 .orElseGet(() -> ResponseEntity.notFound().build());

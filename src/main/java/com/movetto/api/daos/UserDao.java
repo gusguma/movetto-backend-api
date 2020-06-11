@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserDao extends JpaRepository<User, Integer> {
 
-    @Query(value = "select new com.movetto.api.dtos.UserMinimumDto(u.displayName,u.email,u.uid) from User u")
+    @Query(value = "select new com.movetto.api.dtos.UserMinimumDto(u.id, u.displayName,u.email,u.uid) from User u")
     List<UserMinimumDto> findAllUsers();
     Optional<User> findUserByUid(String uid);
     Optional<User> findUserByEmail(String email);

@@ -16,6 +16,11 @@ public class ShipmentResource {
     public static final String SHIPMENTS = "/shipments";
     public static final String UID = "/{uid}";
     public static final String ID = "/id/{id}";
+    public static final String PARTNER_ID = "/partners/{uid}";
+    public static final String AVAILABLE = "/available/{uid}";
+    public static final String PENDING = "/pending/{uid}";
+    public static final String FINISHED = "/finished/{uid}";
+
 
     private final ShipmentController shipmentController;
 
@@ -37,6 +42,26 @@ public class ShipmentResource {
     @GetMapping(value = ID)
     public ResponseEntity<Shipment> findShipmentById(@PathVariable int id){
         return shipmentController.readShipmentById(id);
+    }
+
+    @GetMapping(value = PARTNER_ID)
+    public ResponseEntity<List<Shipment>> findShipmentsByPartnerUid(@PathVariable String uid){
+        return shipmentController.readShipmentsByPartnerUid(uid);
+    }
+
+    @GetMapping(value = AVAILABLE)
+    public ResponseEntity<List<Shipment>> findShipmentsAvailable(@PathVariable String uid){
+        return shipmentController.readShipmentsAvailable(uid);
+    }
+
+    @GetMapping(value = PENDING)
+    public ResponseEntity<List<Shipment>> findShipmentsPending(@PathVariable String uid){
+        return shipmentController.readShipmentsPending(uid);
+    }
+
+    @GetMapping(value = FINISHED)
+    public ResponseEntity<List<Shipment>> findShipmentsFinished(@PathVariable String uid){
+        return shipmentController.readShipmentsFinished(uid);
     }
 
     @PostMapping
