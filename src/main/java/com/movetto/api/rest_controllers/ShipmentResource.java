@@ -21,7 +21,6 @@ public class ShipmentResource {
     public static final String PENDING = "/pending/{uid}";
     public static final String FINISHED = "/finished/{uid}";
 
-
     private final ShipmentController shipmentController;
 
     @Autowired

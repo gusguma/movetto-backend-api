@@ -67,7 +67,8 @@ public class ShipmentController {
     public ResponseEntity<List<Shipment>> readShipmentsPending(String uid) {
         Optional<User> userStored = userDao.findUserByUid(uid);
         return userStored.map(user ->
-                shipmentDao.findShipmentsByPartnerAndStatusIsNotLike(user, ShipmentStatus.PAID)
+                shipmentDao.findShipmentsByPartnerAndStatusIsNotLikeAndStatusIsNotLike(
+                        user, ShipmentStatus.PAID, ShipmentStatus.FINISHED)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -100,7 +101,6 @@ public class ShipmentController {
                     shipment.setDestinationUser(shipmentDto.getDestinationUser());
                     shipment.setPackages(shipmentDto.getPackages());
                     shipment.setStatus(shipmentDto.getStatus());
-                    shipment.setVehicle(shipmentDto.getVehicle());
                     return checkPartner(shipment,shipmentDto);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -129,13 +129,16 @@ public class ShipmentController {
     }
 
     private ResponseEntity<Shipment> checkPartner(Shipment shipment, ShipmentDto shipmentDto) {
-        if (shipment.getPartner() == null ||
-                shipment.getPartner() == shipmentDto.getPartner()) {
+        if (shipment.getPartner() == null) {
             shipment.setPartner(shipmentDto.getPartner());
+            shipment.setVehicle(shipmentDto.getVehicle());
             shipmentDao.save(shipment);
             return ResponseEntity.ok(shipment);
-        } else {
+        }
+        if (shipment.getPartner() != shipmentDto.getPartner()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+        shipmentDao.save(shipment);
+        return ResponseEntity.ok(shipment);
     }
 }

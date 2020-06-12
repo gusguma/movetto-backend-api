@@ -14,6 +14,7 @@ public interface ShipmentDao extends JpaRepository<Shipment,Integer> {
     Optional<List<Shipment>> findAllByCustomerIsAndActiveTrue(User user);
     Optional<List<Shipment>> findAllByPartnerAndActiveIsTrue(User partner);
     Optional<List<Shipment>> findShipmentsByCustomerIsNotLikeAndStatusLike(User customer, ShipmentStatus status);
-    Optional<List<Shipment>> findShipmentsByPartnerAndStatusIsNotLike(User partner, ShipmentStatus status);
+    Optional<List<Shipment>> findShipmentsByPartnerAndStatusIsNotLikeAndStatusIsNotLike(
+            User partner, ShipmentStatus status, ShipmentStatus status2);
     Optional<List<Shipment>> findShipmentsByPartnerAndStatusIsLike(User partner, ShipmentStatus status);
 }

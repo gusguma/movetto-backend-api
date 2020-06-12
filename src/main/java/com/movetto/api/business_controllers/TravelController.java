@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +45,42 @@ public class TravelController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    public ResponseEntity<List<Travel>> readTravelsByPartnerUid(String uid) {
+        Optional<User> userStored = userDao.findUserByUidAndRolesLike(uid, Role.PARTNER);
+        return userStored.map(user -> travelDao.findAllByPartnerAndActiveIsTrue(user)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<List<Travel>> readTravelsAvailable(String uid) {
+        Optional<User> userStored = userDao.findUserByUid(uid);
+        return userStored.map(user ->
+                travelDao.findTravelsByCustomerIsNotLikeAndStatusLike(user, TravelStatus.PAID)
+                        .map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<List<Travel>> readTravelsPending(String uid) {
+        Optional<User> userStored = userDao.findUserByUid(uid);
+        return userStored.map(user ->
+                travelDao.findTravelsByPartnerAndStatusIsNotLikeAndStatusIsNotLike(
+                        user, TravelStatus.PAID, TravelStatus.FINISHED)
+                        .map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<List<Travel>> readTravelsFinished(String uid) {
+        Optional<User> userStored = userDao.findUserByUid(uid);
+        return userStored.map(user ->
+                travelDao.findTravelsByPartnerAndStatusIsLike(user, TravelStatus.FINISHED)
+                        .map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     public ResponseEntity<Travel> saveTravel(TravelDto travelDto) {
         if (readTravelById(travelDto.getId()).hasBody()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -67,8 +102,7 @@ public class TravelController {
                     travel.setEnd(travelDto.getEnd());
                     travel.setPriceTravel(travelDto.getPriceTravel());
                     travel.setStatus(travelDto.getStatus());
-                    travelDao.save(travel);
-                    return ResponseEntity.ok(travel);
+                    return checkPartner(travel, travelDto);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -97,5 +131,19 @@ public class TravelController {
         travel.setPriceTravel(travelDto.getPriceTravel());
         travel.setStatus(travelDto.getStatus());
         return travel;
+    }
+
+    private ResponseEntity<Travel> checkPartner(Travel travel, TravelDto travelDto) {
+        if (travel.getPartner() == null) {
+            travel.setPartner(travelDto.getPartner());
+            travel.setVehicle(travelDto.getVehicle());
+            travelDao.save(travel);
+            return ResponseEntity.ok(travel);
+        }
+        if (travel.getPartner() != travelDto.getPartner()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        travelDao.save(travel);
+        return ResponseEntity.ok(travel);
     }
 }

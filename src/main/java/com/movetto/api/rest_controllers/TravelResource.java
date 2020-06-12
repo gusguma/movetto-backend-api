@@ -18,6 +18,10 @@ public class TravelResource {
     public static final String TRAVELS = "/travels";
     public static final String UID = "/{uid}";
     public static final String ID = "/id/{id}";
+    public static final String PARTNER_ID = "/partners/{uid}";
+    public static final String AVAILABLE = "/available/{uid}";
+    public static final String PENDING = "/pending/{uid}";
+    public static final String FINISHED = "/finished/{uid}";
 
     private final TravelController travelController;
 
@@ -27,7 +31,7 @@ public class TravelResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Travel>> findAllShipments() {
+    public ResponseEntity<List<Travel>> findAllTravels() {
         return travelController.readTravels();
     }
 
@@ -39,6 +43,26 @@ public class TravelResource {
     @GetMapping(value = ID)
     public ResponseEntity<Travel> findTravelById(@PathVariable int id){
         return travelController.readTravelById(id);
+    }
+
+    @GetMapping(value = PARTNER_ID)
+    public ResponseEntity<List<Travel>> findTravelsByPartnerUid(@PathVariable String uid){
+        return travelController.readTravelsByPartnerUid(uid);
+    }
+
+    @GetMapping(value = AVAILABLE)
+    public ResponseEntity<List<Travel>> findTravelsAvailable(@PathVariable String uid){
+        return travelController.readTravelsAvailable(uid);
+    }
+
+    @GetMapping(value = PENDING)
+    public ResponseEntity<List<Travel>> findTravelsPending(@PathVariable String uid){
+        return travelController.readTravelsPending(uid);
+    }
+
+    @GetMapping(value = FINISHED)
+    public ResponseEntity<List<Travel>> findTravelsFinished(@PathVariable String uid){
+        return travelController.readTravelsFinished(uid);
     }
 
     @PostMapping
