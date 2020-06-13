@@ -102,7 +102,10 @@ public class TravelController {
                     travel.setEnd(travelDto.getEnd());
                     travel.setPriceTravel(travelDto.getPriceTravel());
                     travel.setStatus(travelDto.getStatus());
-                    return checkPartner(travel, travelDto);
+                    travel.setPartner(travelDto.getPartner());
+                    travel.setVehicle(travelDto.getVehicle());
+                    travelDao.save(travel);
+                    return ResponseEntity.ok(travel);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -131,19 +134,5 @@ public class TravelController {
         travel.setPriceTravel(travelDto.getPriceTravel());
         travel.setStatus(travelDto.getStatus());
         return travel;
-    }
-
-    private ResponseEntity<Travel> checkPartner(Travel travel, TravelDto travelDto) {
-        if (travel.getPartner() == null) {
-            travel.setPartner(travelDto.getPartner());
-            travel.setVehicle(travelDto.getVehicle());
-            travelDao.save(travel);
-            return ResponseEntity.ok(travel);
-        }
-        if (travel.getPartner() != travelDto.getPartner()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        travelDao.save(travel);
-        return ResponseEntity.ok(travel);
     }
 }

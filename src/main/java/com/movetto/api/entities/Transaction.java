@@ -15,7 +15,8 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 @JsonTypeInfo(use = NAME)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Payment.class, name = "Payment"),
-        @JsonSubTypes.Type(value = Deposit.class, name = "Deposit")
+        @JsonSubTypes.Type(value = Deposit.class, name = "Deposit"),
+        @JsonSubTypes.Type(value = Charge.class, name = "Charge")
 })
 public abstract class Transaction {
 

@@ -101,7 +101,10 @@ public class ShipmentController {
                     shipment.setDestinationUser(shipmentDto.getDestinationUser());
                     shipment.setPackages(shipmentDto.getPackages());
                     shipment.setStatus(shipmentDto.getStatus());
-                    return checkPartner(shipment,shipmentDto);
+                    shipment.setPartner(shipmentDto.getPartner());
+                    shipment.setVehicle(shipmentDto.getVehicle());
+                    shipmentDao.save(shipment);
+                    return ResponseEntity.ok(shipment);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -128,17 +131,4 @@ public class ShipmentController {
         return shipment;
     }
 
-    private ResponseEntity<Shipment> checkPartner(Shipment shipment, ShipmentDto shipmentDto) {
-        if (shipment.getPartner() == null) {
-            shipment.setPartner(shipmentDto.getPartner());
-            shipment.setVehicle(shipmentDto.getVehicle());
-            shipmentDao.save(shipment);
-            return ResponseEntity.ok(shipment);
-        }
-        if (shipment.getPartner() != shipmentDto.getPartner()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        shipmentDao.save(shipment);
-        return ResponseEntity.ok(shipment);
-    }
 }
