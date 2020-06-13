@@ -17,5 +17,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
-
 }
