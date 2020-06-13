@@ -5,6 +5,7 @@ import com.movetto.api.daos.VehicleDao;
 import com.movetto.api.dtos.CarDto;
 import com.movetto.api.entities.Car;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ public class CarController extends VehicleController{
     private final CarDao carDao;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public CarController(VehicleDao vehicleDao, CarDao carDao) {
         super(vehicleDao);
         this.carDao = carDao;

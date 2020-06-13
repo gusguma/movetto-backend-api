@@ -23,6 +23,21 @@ public class UserMinimumDto {
         this.uid = uid;
     }
 
+    public UserMinimumDto(@NotNull int id, @NotNull String displayName, @NotNull String email, @NotNull String uid) {
+        this.id = id;
+        this.displayName = displayName;
+        this.email = email;
+        this.uid = uid;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getDisplayName() {
         return displayName;
     }

@@ -6,35 +6,40 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonTypeInfo(use = NAME)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = Bike.class, name = "Bike"),
-        @JsonSubTypes.Type(value = Car.class, name = "Car"),
-        @JsonSubTypes.Type(value = Motorcycle.class, name = "Motorcycle"),
-        @JsonSubTypes.Type(value = Van.class, name = "Van")
+        @JsonSubTypes.Type(value = Payment.class, name = "Payment"),
+        @JsonSubTypes.Type(value = Deposit.class, name = "Deposit"),
+        @JsonSubTypes.Type(value = Charge.class, name = "Charge")
 })
-public abstract class Vehicle {
+public abstract class Transaction {
 
     @Id
     @GeneratedValue
     private int id;
-    @Column(nullable = false)
-    private String name;
-    @Column(unique = true)
-    private String registration;
+    private double amount;
+
+    @Enumerated(value = EnumType.STRING)
+    private TransactionStatus status;
 
     private LocalDateTime registrationDate;
-    private Boolean active;
+    private boolean active;
 
-    public Vehicle() {
-        this.name = "DEFAULT";
+    public Transaction(){
         this.registrationDate = LocalDateTime.now();
         this.active = true;
+    }
+
+    public Transaction(double amount) {
+        this();
+        this.status = TransactionStatus.CREATED;
+        this.amount = amount;
     }
 
     public int getId() {
@@ -45,20 +50,20 @@ public abstract class Vehicle {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public double getAmount() {
+        return amount;
     }
 
-    public String getRegistration() {
-        return registration;
+    public TransactionStatus getStatus() {
+        return status;
     }
 
-    public void setRegistration(String registration) {
-        this.registration = registration;
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
     }
 
     public LocalDateTime getRegistrationDate() {
@@ -69,20 +74,20 @@ public abstract class Vehicle {
         this.registrationDate = registrationDate;
     }
 
-    public Boolean isActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
     @Override
     public String toString() {
-        return "Vehicle{" +
+        return "Transaction{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", registration='" + registration + '\'' +
+                ", amount=" + amount +
+                ", status=" + status +
                 ", registrationDate=" + registrationDate +
                 ", active=" + active +
                 '}';
