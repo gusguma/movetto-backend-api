@@ -1,7 +1,6 @@
 package com.movetto.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.movetto.api.entities.Customer;
 import com.movetto.api.entities.Direction;
 import com.movetto.api.entities.ShipmentStatus;
 import com.movetto.api.entities.User;

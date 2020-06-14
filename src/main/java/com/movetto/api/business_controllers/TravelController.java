@@ -2,7 +2,6 @@ package com.movetto.api.business_controllers;
 
 import com.movetto.api.daos.TravelDao;
 import com.movetto.api.daos.UserDao;
-import com.movetto.api.dtos.ShipmentDto;
 import com.movetto.api.dtos.TravelDto;
 import com.movetto.api.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;

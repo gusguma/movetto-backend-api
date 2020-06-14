@@ -19,26 +19,25 @@ public class NewsService {
     private static final String POSTS_URL = "/posts";
 
     private RestTemplate restTemplate;
-    private ObjectMapper mapper;
     private Environment environment;
 
     @Autowired
     public NewsService(Environment environment) {
         this.restTemplate = new RestTemplate();
-        this.mapper = new ObjectMapper();
         this.environment = environment;
     }
 
-    public List<NewsDto> getNews() throws IOException {
+    public List<NewsDto> getNews() {
         String blogId = environment.getProperty("BLOG_ID");
         String apiKey = environment.getProperty("BLOGGER_API_KEY");
         String uri = BLOGGER_BASE_URL + blogId + POSTS_URL + "?key=" + apiKey + "&fetchImages=true";
-        ResponseEntity<NewsService.Adapter> response = restTemplate.getForEntity(uri,NewsService.Adapter.class);
-        if (response.hasBody()){
+        ResponseEntity<NewsService.Adapter> response = restTemplate.getForEntity(uri, NewsService.Adapter.class);
+        if (response.hasBody()) {
             NewsService.Adapter adapter = response.getBody();
+            assert adapter != null;
             return adapter.items;
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public static class Adapter {
