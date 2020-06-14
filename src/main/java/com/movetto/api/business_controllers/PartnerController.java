@@ -50,6 +50,9 @@ public class PartnerController extends UserController {
             userPartnerNew.setPartner(user.getPartner());
             userPartnerNew.getRoles().add(Role.PARTNER);
             userPartnerNew.setDirections(user.getDirections());
+            if (userPartnerNew.getPhone() == null) {
+                userPartnerNew.setPhone(user.getPhone());
+            }
             partnerDao.save(userPartnerNew);
             return ResponseEntity.ok(userPartnerNew);
         } else {

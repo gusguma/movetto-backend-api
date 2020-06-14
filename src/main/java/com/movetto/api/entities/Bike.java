@@ -1,7 +1,6 @@
 package com.movetto.api.entities;
 
 import javax.persistence.Entity;
-import java.util.Objects;
 
 @Entity
 public class Bike extends VehicleType {
@@ -21,7 +20,7 @@ public class Bike extends VehicleType {
         this.setVehicleTypeEnum(VehicleTypeEnum.BIKE);
     }
 
-    public Bike(String make, String description){
+    public Bike(String make, String description) {
         this();
         this.make = make;
         this.description = description;
