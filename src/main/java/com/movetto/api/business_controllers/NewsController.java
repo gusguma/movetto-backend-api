@@ -31,8 +31,7 @@ public class NewsController {
     }
 
     public List<NewsDto> readNews() throws IOException {
-        List<NewsDto> news = newsService.getNews();
-        return news;
+        return newsService.getNews();
     }
 
     public ResponseEntity<List<News>> findNewsByUsers(String uid) {
