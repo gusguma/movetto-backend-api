@@ -2,6 +2,7 @@ package com.movetto.api.business_services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movetto.api.dtos.NewsDto;
+import com.movetto.api.entities.News;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -37,7 +38,7 @@ public class NewsService {
             assert adapter != null;
             return adapter.items;
         }
-        return new ArrayList<>();
+        return new ArrayList<NewsDto>();
     }
 
     public static class Adapter {
@@ -49,7 +50,7 @@ public class NewsService {
         @Autowired
         public Adapter(){
             this.kind = "";
-            this.items = new ArrayList<>();
+            this.items = new ArrayList<NewsDto>();
             this.etag = "";
         }
 

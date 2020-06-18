@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 
 @Entity
 public class Wallet {
@@ -31,12 +32,17 @@ public class Wallet {
     public Wallet(User user) {
         this();
         this.user = user;
-        this.transactions = new HashSet<>();
+        this.transactions = new HashSet<Transaction>();
     }
 
     public void calculateBalance(){
         this.balance = transactions.stream()
-                .mapToDouble(Transaction::getAmount).sum();
+                .mapToDouble(new ToDoubleFunction<Transaction>() {
+                    @Override
+                    public double applyAsDouble(Transaction value) {
+                        return value.getAmount();
+                    }
+                }).sum();
     }
 
     public int getId() {

@@ -22,7 +22,7 @@ public class Partner {
     public Partner(User user) {
         this.partnerId = user.getPartner().partnerId;
         this.driverId = user.getPartner().driverId;
-        this.vehicles = new HashSet<>();
+        this.vehicles = new HashSet<Vehicle>();
         user.getRoles().add(Role.PARTNER);
     }
 

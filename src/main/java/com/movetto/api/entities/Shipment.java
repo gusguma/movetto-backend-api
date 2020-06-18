@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 
 @Entity
 public class Shipment extends Service {
@@ -31,14 +32,19 @@ public class Shipment extends Service {
         super(customer,start,finish);
         this.destinationUser = destinationUser;
         this.shipmentDatetimeLimit = LocalDateTime.now().plusDays(5);
-        this.packages = new HashSet<>();
+        this.packages = new HashSet<Package>();
         this.status = ShipmentStatus.SAVED;
         this.minimumPrice = 5.00;
     }
 
     public void setShipmentPrice(){
         priceShipment = this.getMinimumPrice() + this.getPackages().stream()
-                .mapToDouble(Package::getPricePackage)
+                .mapToDouble(new ToDoubleFunction<Package>() {
+                    @Override
+                    public double applyAsDouble(Package value) {
+                        return value.getPricePackage();
+                    }
+                })
                 .sum();
     }
 
