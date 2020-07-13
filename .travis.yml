@@ -11,10 +11,6 @@ notifications:
 services:
   - mysql
 
-dist: xenial
-
-sudo: required
-
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS api;'
   - mysql api < src/test/api.sql

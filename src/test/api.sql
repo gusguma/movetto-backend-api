@@ -34,7 +34,7 @@ CREATE TABLE `card`
     `user_id`           int(11)      DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `FKl4gbym62l738id056y12rt6q6` (`user_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -76,7 +76,7 @@ CREATE TABLE `direction`
     `state`             varchar(255) DEFAULT NULL,
     `street`            varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -190,7 +190,7 @@ SET character_set_client = utf8mb4;
 CREATE TABLE `hibernate_sequence`
 (
     `next_val` bigint(20) DEFAULT NULL
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -230,7 +230,7 @@ CREATE TABLE `news`
     `title`             varchar(255) DEFAULT NULL,
     `url_image`         varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -258,7 +258,7 @@ CREATE TABLE `news_labels`
     `labels_id` int(11) NOT NULL,
     PRIMARY KEY (`news_id`, `labels_id`),
     KEY `FK92hte1y6p9cbxm90ikvcydisc` (`labels_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -286,7 +286,7 @@ CREATE TABLE `news_users`
     `users_id` int(11) NOT NULL,
     PRIMARY KEY (`news_id`, `users_id`),
     KEY `FKojac3uwkhtbhwjyxwxqjg8sh7` (`users_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -321,7 +321,7 @@ CREATE TABLE `package`
     `weight_volume`     double  NOT NULL,
     `width`             double  NOT NULL,
     PRIMARY KEY (`id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -381,7 +381,7 @@ CREATE TABLE `service`
     KEY `FKilaifx4ofb00ednaogofiypn9` (`partner_id`),
     KEY `FKctceyyxlrtekwhnaot1xgnyr9` (`start_direction_id`),
     KEY `FK6fnmjdjln3oexu231vwf1e5kh` (`vehicle_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -429,7 +429,7 @@ CREATE TABLE `shipment`
     `destination_user_id`     int(11)      DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `FKtcv1pho8ii2oqc16qan23vulh` (`destination_user_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -468,7 +468,7 @@ CREATE TABLE `shipment_packages`
     `packages_id` int(11) NOT NULL,
     PRIMARY KEY (`shipment_id`, `packages_id`),
     UNIQUE KEY `UK_n41ksgxdhnnj5kvs5vvkhukb2` (`packages_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -510,7 +510,7 @@ CREATE TABLE `tag`
     `id`   int(11) NOT NULL,
     `name` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -545,7 +545,7 @@ CREATE TABLE `transaction`
     PRIMARY KEY (`id`),
     KEY `FKc1dpp3bpa7sm3b23ywr1yyvo5` (`service_id`),
     KEY `FK484i2t8acnct6xy8ylevl40go` (`card_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -595,7 +595,7 @@ CREATE TABLE `travel`
     `id`            int(11) NOT NULL,
     `status`        varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -640,7 +640,7 @@ CREATE TABLE `user`
     UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`) USING HASH,
     UNIQUE KEY `UK_4yaf6tjm0jduantayvd4bqts8` (`driver_id`) USING HASH,
     UNIQUE KEY `UK_h4ivmkbkxkh2ngoqn3i0tu3ky` (`partner_id`) USING HASH
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -685,7 +685,7 @@ CREATE TABLE `user_directions`
     `directions_id` int(11) NOT NULL,
     PRIMARY KEY (`user_id`, `directions_id`),
     UNIQUE KEY `UK_f4lm9n4p4xr3p420135h1sy4y` (`directions_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -717,7 +717,7 @@ CREATE TABLE `user_roles`
     `user_id` int(11) NOT NULL,
     `roles`   varchar(255) DEFAULT NULL,
     KEY `FK55itppkw3i07do3h7qoclqd4k` (`user_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -759,7 +759,7 @@ CREATE TABLE `user_vehicles`
     `vehicles_id` int(11) NOT NULL,
     PRIMARY KEY (`user_id`, `vehicles_id`),
     UNIQUE KEY `UK_9j5jv72lre66julwmi3hx5bxb` (`vehicles_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -804,7 +804,7 @@ CREATE TABLE `vehicle`
     `model`             varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `UK_tjmofyrt4whp0m1vaql9njjdo` (`registration`) USING HASH
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -842,7 +842,7 @@ CREATE TABLE `wallet`
     `user_id`           int(11)  DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `FKbs4ogwiknsup4rpw8d47qw9dx` (`user_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -874,7 +874,7 @@ CREATE TABLE `wallet_transactions`
     `transactions_id` int(11) NOT NULL,
     PRIMARY KEY (`wallet_id`, `transactions_id`),
     UNIQUE KEY `UK_ih1d10xdrgoibf7na9f3lcb1` (`transactions_id`)
-) ENGINE = MyISAM
+) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
