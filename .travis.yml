@@ -12,7 +12,7 @@ services:
  - mysql
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS api;'
-  - mysql -u root api < test/api.sql
+  - mysql -u root api < src/test/api.sql
 script:
   #Test unitario y de integracion con cobertura (jacoco)
   - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify
