@@ -9,7 +9,19 @@ notifications:
     recipients:
       - $EMAIL
 services:
- - mysql
+  - mysql
+
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+
+dist: trusty
+
+sudo: required
+
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS api;'
   - mysql api < src/test/api.sql
