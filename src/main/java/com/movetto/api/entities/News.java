@@ -31,8 +31,8 @@ public class News {
         shortDescription = "";
         largeDescription = "";
         urlImage = "";
-        labels = new HashSet<>();
-        users = new HashSet<>();
+        labels = new HashSet<Tag>();
+        users = new HashSet<User>();
     }
 
     public int getId() {

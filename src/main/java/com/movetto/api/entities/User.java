@@ -34,9 +34,9 @@ public class User {
     private Boolean active;
 
     public User() {
-        this.roles = new HashSet<>();
+        this.roles = new HashSet<Role>();
         roles.add(Role.USER);
-        this.directions = new HashSet<>();
+        this.directions = new HashSet<Direction>();
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }

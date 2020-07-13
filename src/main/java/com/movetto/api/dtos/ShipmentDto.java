@@ -1,7 +1,6 @@
 package com.movetto.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.movetto.api.entities.Customer;
 import com.movetto.api.entities.Direction;
 import com.movetto.api.entities.ShipmentStatus;
 import com.movetto.api.entities.User;
@@ -30,7 +29,7 @@ public class ShipmentDto extends ServiceDto {
         super(customer,start,finish);
         this.destinationUser = destinationUser;
         this.shipmentDatetimeLimit = LocalDateTime.now().plusDays(5);
-        this.packages = new HashSet<>();
+        this.packages = new HashSet<Package>();
     }
 
     public LocalDateTime getShipmentDatetimeLimit() {

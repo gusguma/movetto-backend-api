@@ -1,9 +1,7 @@
 package com.movetto.api.rest_controllers;
 
 import com.movetto.api.business_controllers.TravelController;
-import com.movetto.api.dtos.ShipmentDto;
 import com.movetto.api.dtos.TravelDto;
-import com.movetto.api.entities.Shipment;
 import com.movetto.api.entities.Travel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

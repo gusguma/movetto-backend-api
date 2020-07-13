@@ -2,7 +2,6 @@ package com.movetto.api.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.util.Objects;
 
 @Embeddable
 public class Customer {
