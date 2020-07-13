@@ -1,15 +1,12 @@
 package com.movetto.api.business_services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movetto.api.dtos.NewsDto;
-import com.movetto.api.entities.News;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
