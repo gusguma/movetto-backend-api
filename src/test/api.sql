@@ -661,7 +661,7 @@ CREATE TABLE user_vehicles
 (
     user_id     int(11) NOT NULL,
     vehicles_id int(11) NOT NULL,
-    PRIMARY KEY (user_id(11), vehicles_id(11)),
+    PRIMARY KEY (user_id, vehicles_id),
     UNIQUE KEY UK_9j5jv72lre66julwmi3hx5bxb (vehicles_id)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
