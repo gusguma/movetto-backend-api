@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ApiTestConfig
-public class UserResourceIT {
+class UserResourceIT {
 
     private static final String UID = "/t6bpbrIi8Ba8C0AxMYL8nWB1mqi2";
 
