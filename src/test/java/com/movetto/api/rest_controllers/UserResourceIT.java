@@ -44,11 +44,13 @@ class UserResourceIT {
 
     @Test
     void testFindUserByUidNotExist() {
-        this.webTestClient
+        User user = this.webTestClient
                 .get().uri(UserResource.USERS + "/564d")
                 .exchange()
-                .expectStatus()
-                .isNotFound();
+                .expectStatus().isNotFound()
+                .expectBody(User.class)
+                .returnResult().getResponseBody();
+        assertNull(user);
     }
 
 }
