@@ -334,11 +334,11 @@ CREATE TABLE service
     start_direction_id int(11)      DEFAULT NULL,
     vehicle_id         int(11)      DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY FKvw4e42v2avsgrsvjhd1edgxf (customer_id(11)),
-    KEY FK2xi1gorhp4pd2t5s93r0glekd (end_direction_id(11)),
-    KEY FKilaifx4ofb00ednaogofiypn9 (partner_id(11)),
-    KEY FKctceyyxlrtekwhnaot1xgnyr9 (start_direction_id(11)),
-    KEY FK6fnmjdjln3oexu231vwf1e5kh (vehicle_id(11))
+    KEY FKvw4e42v2avsgrsvjhd1edgxf (customer_id),
+    KEY FK2xi1gorhp4pd2t5s93r0glekd (end_direction_id),
+    KEY FKilaifx4ofb00ednaogofiypn9 (partner_id),
+    KEY FKctceyyxlrtekwhnaot1xgnyr9 (start_direction_id),
+    KEY FK6fnmjdjln3oexu231vwf1e5kh (vehicle_id)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
