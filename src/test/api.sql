@@ -701,7 +701,7 @@ CREATE TABLE vehicle
     make              varchar(255) DEFAULT NULL,
     model             varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY UK_tjmofyrt4whp0m1vaql9njjdo (registration) USING HASH
+    UNIQUE KEY UK_tjmofyrt4whp0m1vaql9njjdo (registration(20)) USING HASH
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
