@@ -549,7 +549,7 @@ CREATE TABLE `user`
 (
     `id`              int(11) NOT NULL,
     active            bit(1)       DEFAULT NULL,
-    customer_id       varchar(255) DEFAULT NULL,
+    customer_id       varchar(20)  DEFAULT NULL,
     display_name      varchar(255) DEFAULT NULL,
     email             varchar(255) DEFAULT NULL,
     driver_id         varchar(20)  DEFAULT NULL,
