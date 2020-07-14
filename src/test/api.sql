@@ -558,10 +558,10 @@ CREATE TABLE `user`
     registration_date datetime     DEFAULT NULL,
     uid               varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY UK_bv23tjhe3c029w3d3x0435imy (customer_id) USING HASH,
-    UNIQUE KEY UK_ob8kqyqqgmefl0aco34akdtpe (email) USING HASH,
-    UNIQUE KEY UK_4yaf6tjm0jduantayvd4bqts8 (driver_id) USING HASH,
-    UNIQUE KEY UK_h4ivmkbkxkh2ngoqn3i0tu3ky (partner_id) USING HASH
+    UNIQUE KEY UK_bv23tjhe3c029w3d3x0435imy (customer_id(255)) USING HASH,
+    UNIQUE KEY UK_ob8kqyqqgmefl0aco34akdtpe (email(255)) USING HASH,
+    UNIQUE KEY UK_4yaf6tjm0jduantayvd4bqts8 (driver_id(255)) USING HASH,
+    UNIQUE KEY UK_h4ivmkbkxkh2ngoqn3i0tu3ky (partner_id(255)) USING HASH
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -599,7 +599,7 @@ CREATE TABLE user_directions
 (
     user_id       int(11) NOT NULL,
     directions_id int(11) NOT NULL,
-    PRIMARY KEY (user_id, directions_id),
+    PRIMARY KEY (user_id(11), directions_id(11)),
     UNIQUE KEY UK_f4lm9n4p4xr3p420135h1sy4y (directions_id)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
