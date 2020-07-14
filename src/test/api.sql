@@ -599,7 +599,7 @@ CREATE TABLE user_directions
 (
     user_id       int(11) NOT NULL,
     directions_id int(11) NOT NULL,
-    PRIMARY KEY (user_id(11), directions_id(11)),
+    PRIMARY KEY (user_id, directions_id),
     UNIQUE KEY UK_f4lm9n4p4xr3p420135h1sy4y (directions_id)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4;
