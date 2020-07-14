@@ -9,15 +9,17 @@ notifications:
     recipients:
       - $EMAIL
 services:
- - mysql
+  - mysql
+
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS api;'
+  - mysql api < src/test/api.sql
 script:
   #Test unitario y de integracion con cobertura (jacoco)
   - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify
   #SONARCLOUD
-  - mvn sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=gusguma-github -Dsonar.login=$SONAR
-  #HEROKU
+  - mvn verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=gusguma-github -Dsonar.login=$SONAR
+#HEROKU
 #Deploy https://movetto-backend-api.herokuapp.com/api
 deploy:
   provider: heroku

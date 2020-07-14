@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ApiTestConfig
-public class UserResourceIT {
+class UserResourceIT {
 
     private static final String UID = "/t6bpbrIi8Ba8C0AxMYL8nWB1mqi2";
 
@@ -44,11 +44,13 @@ public class UserResourceIT {
 
     @Test
     void testFindUserByUidNotExist() {
-        this.webTestClient
+        User user = this.webTestClient
                 .get().uri(UserResource.USERS + "/564d")
                 .exchange()
-                .expectStatus()
-                .isNotFound();
+                .expectStatus().isNotFound()
+                .expectBody(User.class)
+                .returnResult().getResponseBody();
+        assertNull(user);
     }
 
 }
