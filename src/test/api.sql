@@ -551,7 +551,7 @@ CREATE TABLE `user`
     active            bit(1)       DEFAULT NULL,
     customer_id       varchar(20)  DEFAULT NULL,
     display_name      varchar(255) DEFAULT NULL,
-    email             varchar(255) DEFAULT NULL,
+    email             varchar(100) DEFAULT NULL,
     driver_id         varchar(20)  DEFAULT NULL,
     partner_id        varchar(20)  DEFAULT NULL,
     phone             varchar(255) DEFAULT NULL,
