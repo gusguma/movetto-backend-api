@@ -1,17 +1,13 @@
 package com.movetto.api.rest_controllers;
 
-import com.google.api.client.util.DateTime;
 import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
 
