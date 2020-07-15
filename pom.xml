@@ -37,6 +37,7 @@
         <junit.platform.version>1.2.0</junit.platform.version>
         <!-- OpenAPI -->
         <openapi.version>1.1.31</openapi.version>
+        <!-- Jacoco -->
         <jacoco.version>0.8.5</jacoco.version>
     </properties>
     <dependencyManagement>
