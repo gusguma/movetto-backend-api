@@ -51,9 +51,7 @@ public class UserController {
     public ResponseEntity<UserMinimumDto> saveUser(UserMinimumDto user){
         Optional<User> userExist = userDao.findUserByUid(user.getUid());
         if (userExist.isPresent()){
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {
             User userCreate = new User();
             userCreate.setDisplayName(user.getDisplayName());
