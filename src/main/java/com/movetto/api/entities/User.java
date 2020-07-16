@@ -1,13 +1,14 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue
