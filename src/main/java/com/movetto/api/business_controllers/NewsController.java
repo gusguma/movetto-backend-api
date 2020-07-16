@@ -30,7 +30,7 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-    public List<NewsDto> readNews() throws IOException {
+    public List<NewsDto> readNews() {
         return newsService.getNews();
     }
 

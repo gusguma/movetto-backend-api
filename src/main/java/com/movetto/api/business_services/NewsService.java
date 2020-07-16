@@ -35,7 +35,7 @@ public class NewsService {
             assert adapter != null;
             return adapter.items;
         }
-        return new ArrayList<NewsDto>();
+        return new ArrayList<>();
     }
 
     public static class Adapter {
@@ -47,7 +47,7 @@ public class NewsService {
         @Autowired
         public Adapter(){
             this.kind = "";
-            this.items = new ArrayList<NewsDto>();
+            this.items = new ArrayList<>();
             this.etag = "";
         }
 
