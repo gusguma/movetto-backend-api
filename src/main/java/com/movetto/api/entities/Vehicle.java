@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
         @JsonSubTypes.Type(value = Motorcycle.class, name = "Motorcycle"),
         @JsonSubTypes.Type(value = Van.class, name = "Van")
 })
-public abstract class Vehicle {
+public abstract class Vehicle implements Serializable {
 
     @Id
     @GeneratedValue
