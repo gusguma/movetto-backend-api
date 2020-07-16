@@ -1,11 +1,12 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Embeddable
-public class Partner {
+public class Partner implements Serializable {
 
     @Column(unique = true)
     private String partnerId;
@@ -22,7 +23,7 @@ public class Partner {
     public Partner(User user) {
         this.partnerId = user.getPartner().partnerId;
         this.driverId = user.getPartner().driverId;
-        this.vehicles = new HashSet<Vehicle>();
+        this.vehicles = new HashSet<>();
         user.getRoles().add(Role.PARTNER);
     }
 

@@ -2,9 +2,10 @@ package com.movetto.api.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Embeddable
-public class Customer {
+public class Customer implements Serializable {
 
     @Column(unique = true)
     private String customerId;

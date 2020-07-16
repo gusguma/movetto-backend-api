@@ -1,10 +1,11 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-public class Direction {
+public class Direction implements Serializable {
 
     @Id
     @GeneratedValue

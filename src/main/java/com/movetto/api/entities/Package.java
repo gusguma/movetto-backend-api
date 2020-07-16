@@ -1,10 +1,11 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-public class Package {
+public class Package implements Serializable {
 
     @Id
     @GeneratedValue

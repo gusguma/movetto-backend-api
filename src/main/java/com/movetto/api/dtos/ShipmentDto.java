@@ -29,7 +29,7 @@ public class ShipmentDto extends ServiceDto {
         super(customer,start,finish);
         this.destinationUser = destinationUser;
         this.shipmentDatetimeLimit = LocalDateTime.now().plusDays(5);
-        this.packages = new HashSet<Package>();
+        this.packages = new HashSet<>();
     }
 
     public LocalDateTime getShipmentDatetimeLimit() {

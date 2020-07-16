@@ -1,13 +1,14 @@
 package com.movetto.api.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue
@@ -34,9 +35,9 @@ public class User {
     private Boolean active;
 
     public User() {
-        this.roles = new HashSet<Role>();
+        this.roles = new HashSet<>();
         roles.add(Role.USER);
-        this.directions = new HashSet<Direction>();
+        this.directions = new HashSet<>();
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
