@@ -32,19 +32,14 @@ public class Shipment extends Service {
         super(customer,start,finish);
         this.destinationUser = destinationUser;
         this.shipmentDatetimeLimit = LocalDateTime.now().plusDays(5);
-        this.packages = new HashSet<Package>();
+        this.packages = new HashSet<>();
         this.status = ShipmentStatus.SAVED;
         this.minimumPrice = 5.00;
     }
 
     public void setShipmentPrice(){
         priceShipment = this.getMinimumPrice() + this.getPackages().stream()
-                .mapToDouble(new ToDoubleFunction<Package>() {
-                    @Override
-                    public double applyAsDouble(Package value) {
-                        return value.getPricePackage();
-                    }
-                })
+                .mapToDouble(Package::getPricePackage)
                 .sum();
     }
 

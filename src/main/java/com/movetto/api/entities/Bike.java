@@ -1,6 +1,7 @@
 package com.movetto.api.entities;
 
 import javax.persistence.Entity;
+import java.util.Objects;
 
 @Entity
 public class Bike extends VehicleType {

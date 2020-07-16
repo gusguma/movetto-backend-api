@@ -23,7 +23,7 @@ public class Partner implements Serializable {
     public Partner(User user) {
         this.partnerId = user.getPartner().partnerId;
         this.driverId = user.getPartner().driverId;
-        this.vehicles = new HashSet<Vehicle>();
+        this.vehicles = new HashSet<>();
         user.getRoles().add(Role.PARTNER);
     }
 

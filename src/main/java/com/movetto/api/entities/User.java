@@ -35,9 +35,9 @@ public class User implements Serializable {
     private Boolean active;
 
     public User() {
-        this.roles = new HashSet<Role>();
+        this.roles = new HashSet<>();
         roles.add(Role.USER);
-        this.directions = new HashSet<Direction>();
+        this.directions = new HashSet<>();
         this.registrationDate = LocalDateTime.now();
         this.active = true;
     }

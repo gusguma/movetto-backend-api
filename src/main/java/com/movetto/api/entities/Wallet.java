@@ -32,17 +32,12 @@ public class Wallet {
     public Wallet(User user) {
         this();
         this.user = user;
-        this.transactions = new HashSet<Transaction>();
+        this.transactions = new HashSet<>();
     }
 
     public void calculateBalance(){
         this.balance = transactions.stream()
-                .mapToDouble(new ToDoubleFunction<Transaction>() {
-                    @Override
-                    public double applyAsDouble(Transaction value) {
-                        return value.getAmount();
-                    }
-                }).sum();
+                .mapToDouble(Transaction::getAmount).sum();
     }
 
     public int getId() {
