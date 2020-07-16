@@ -1,15 +1,25 @@
 package com.movetto.api.rest_controllers;
 
+import com.movetto.api.daos.UserDao;
+import com.movetto.api.dtos.UserDto;
 import com.movetto.api.dtos.UserMinimumDto;
 import com.movetto.api.entities.User;
+import javassist.NotFoundException;
+import org.apache.tomcat.jni.Local;
+import org.assertj.core.api.LocalDateAssert;
 import org.junit.jupiter.api.Test;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +31,9 @@ class UserResourceIT {
 
     @Autowired
     private WebTestClient webTestClient;
+
+    @Autowired
+    private UserDao userDao;
 
     @Test
     void testFindAllUsers() {
@@ -91,6 +104,7 @@ class UserResourceIT {
                 .expectStatus().isOk()
                 .expectBody(UserMinimumDto.class)
                 .returnResult().getResponseBody();
+        assertNotNull(userResponse);
         assertEquals(userResponse.getUid(), user.getUid());
     }
 
@@ -106,4 +120,68 @@ class UserResourceIT {
                 .returnResult().getResponseBody();
         assertNull(userResponse);
     }
+
+    @Test
+    void testSaveUserByEmailOk() {
+        String uid = String.valueOf(new Date().getTime());
+        User user = new User("Test", "test@" + uid + ".com", "test" + uid);
+        UserDto dto;
+        dto = this.webTestClient
+                .post().uri(UserResource.USERS + UserResource.EMAIL)
+                .body(BodyInserters.fromObject(user))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserDto.class)
+                .returnResult().getResponseBody();
+        assertNotNull(dto);
+        assertEquals(dto.getUid(), user.getUid());
+    }
+
+    @Test
+    void testSaveUserByEmailConflict() {
+        UserMinimumDto user = new UserMinimumDto("Test", "gusguma@gmail.com", "testxxx");
+        UserMinimumDto userResponse = this.webTestClient
+                .post().uri(UserResource.USERS + UserResource.EMAIL)
+                .body(BodyInserters.fromObject(user))
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.CONFLICT)
+                .expectBody(UserMinimumDto.class)
+                .returnResult().getResponseBody();
+        assertNull(userResponse);
+    }
+
+    @Test
+    void testUpdateUserOk() {
+        User user = null;
+        long date = new Date().getTime();
+        Optional<User> userOptional = userDao.findUserByEmail("rufino@gmail.com");
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+            user.setDisplayName("test" + date);
+        }
+        assert user != null;
+        User userUpdated = this.webTestClient
+                .put().uri(UserResource.USERS)
+                .body(BodyInserters.fromObject(user))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(User.class)
+                .returnResult().getResponseBody();
+        assertNotNull(userUpdated);
+        assertEquals(user.getDisplayName(), userUpdated.getDisplayName());
+    }
+
+    @Test
+    void testUpdateUserNotFound() {
+        User userNew = new User("Test", "test@test.com", "testxx");
+        User user = this.webTestClient
+                .put().uri(UserResource.USERS)
+                .body(BodyInserters.fromObject(userNew))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(User.class)
+                .returnResult().getResponseBody();
+        assertNull(user);
+    }
+
 }
